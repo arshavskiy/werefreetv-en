@@ -3,7 +3,14 @@
     <main class="en">
 
         <div class="post" v-for="post in posts" :key="post.id">
-            <router-link :to="{ name: 'post', params: { postId: post.slug}}">
+            <router-link :to="{ 
+                name: 'post', 
+                params: { 
+                postId: post.slug, 
+                html: post.html,
+                title: post.title,
+                published_at: post.published_at }}">
+
                 <img class="main_image" :src="post.feature_image" loading="lazy" />
                 <h3>{{post.title}}</h3>
                 <p>{{post.excerpt}}</p>

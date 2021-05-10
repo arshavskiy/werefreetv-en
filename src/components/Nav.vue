@@ -13,9 +13,13 @@
                     <router-link to="/">Home</router-link>
                 </div>
                 <div class="nav-links" v-for="page in pages" :key="page.id">
-                    <!-- <a href="https://www.wearefree.tv/">{{page.title}}</a> -->
-                    <router-link :to="{ path: page.url.split('.tv')[1] }">{{page.title}}</router-link>
-                    
+                    <router-link :to="{ 
+                        name: page.url.split('.tv')[1].split('/')[1], 
+                        params: { 
+                            pageName: page.slug, 
+                            html: page.html 
+                            }
+                        }">{{page.title}}</router-link>
 
                 </div>
 
@@ -69,13 +73,16 @@
       this.fetchNav();
     },
     mounted() {
-
+       console.debug('nav:', this.$store);
     },
     data() {
       return {
         nav:[],
         pages:[]
       }
+    },
+    computed: {
+    
     },
     methods: {
  
@@ -90,8 +97,11 @@
                         console.log(data);                 
                         // this.nav = data.meta.pagination.pages;
                         this.pages = data.pages.filter(p=> p.slug.includes('-en'));
-                        console.log('this.pages', this.pages);
+                        
+                        console.debug('this.pages', this.pages);
 
+                        this.$store.commit('pushData', this.pages)
+                        
                         this.loading = false;
 
                     }).catch(e => {
@@ -101,9 +111,6 @@
             },
       
     },
-    computed: {
- 
-    }
 }
 </script>
  

@@ -1,13 +1,12 @@
 <template>
-    <main class="post">
-        <Nav />
+    <main class="page">
 
         <h1>{{post.title}}</h1>
         <p>{{post.custom_excerpt}}</p>
 
         <PostMeta :date="post.dateForamted"></PostMeta>
 
-        <article id="html_iframe" v-html="post.html"></article>
+        <article id="page" v-html="post.html"></article>
 
         <Comments />
 
@@ -17,23 +16,27 @@
 
 <script>
     // @ is an alias to /src
-    import Nav from '../components/Nav.vue'
     import PostMeta from '../components/PostMeta.vue'
     import Comments from '../components/Comments.vue'
 
     export default {
         name: 'Post',
         components: {
-            Nav,
             PostMeta,
             Comments
         },
         beforeMount() {
-            this.params = this.$route.params;
+            this.post = this.$route.params;
+            this.post.dateForamted = new Date(this.post.published_at).toLocaleDateString('en-US');
+            this.post.gotContentFromFeed = true;
         },
         mounted() {
-            let params = this.params;
-            this.fetchData(params.postId);
+            let params = this.post;
+            console.debug("post:", params);
+        
+            if (!params.gotContentFromFeed) {
+                this.fetchData(params.postId);
+            }
 
         },
         computed: {
@@ -44,7 +47,8 @@
                 post: {},
                 error: null,
                 loading: true,
-                views: {}
+                views: {},
+                params: {}
                 // id: this.$route.postId = window.location.pathname.split('/')[2],
                 // id2: this.$route.postId2 = this.postId2
 
@@ -111,7 +115,7 @@
     }
 
     @media screen and (min-width:800) {
-         main.post>p {
+        main.post>p {
             font-size: 24px;
         }
     }
