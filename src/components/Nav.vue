@@ -41,7 +41,7 @@
             </div>
             
             <div class="site-nav-right">
-                <a href="https://t.me./wearefreetv" class="social-link">
+                <a href="https://t.me./wearefreetv" class="social-link" target="_blank">
                     <img src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/t_logo.png"
                         alt="Telegram account https://t.me./wearefreetv" height="30" />
                 </a>
@@ -58,6 +58,7 @@
                     <img alt="לתמוך בנו בפטריון"
                         src="https://static.wixstatic.com/media/414bba_8c8c95d099d34ffeaf0a2750255613f9~mv2.png/v1/fill/w_30,h_30,al_c,q_85,usm_0.66_1.00_0.01/414bba_8c8c95d099d34ffeaf0a2750255613f9~mv2.webp" />
                 </a>
+                <a href="http://wearefree.tv/tag/en" class="lang_url">EN</a>
             </div>
         </div>
        
@@ -174,6 +175,7 @@ nav a.lang_url {
     border: 1px solid #fff;
     padding: 10px;
     color: #fff;
+    font-size: 12px;
 
 }
 

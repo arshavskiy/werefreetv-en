@@ -2,9 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Post from '../views/Post.vue'
 // import Register from '../views/Register.vue'
-// import Support from '../views/Support.vue'
-import Page from '../views/Page.vue'
-// import Contact from '../views/Contact.vue'
+import Support from '../views/Support.vue'
+// import Page from '../views/Page.vue'
+import Register from "../views/Register";
+import Contact from '../views/Contact.vue'
 
 const routes = [
   {
@@ -13,19 +14,19 @@ const routes = [
     component: Home
   },
   {
-    path: '/register',
+    path: '/register-en',
     name: 'register-en',
-    component: Page,
+    component: Register,
   },
   {
-    path: '/contact',
+    path: '/contact-en',
     name: 'contact-en',
-    component: Page
+    component: Contact
   },
   {
-    path: '/supportus',
+    path: '/supportus-en',
     name: 'supportus-en',
-    component: Page
+    component: Support
   },
   {
     path: '/about',

@@ -32,7 +32,8 @@ const store = createStore({
             if (state.route.html.length) {
                 temp = state.route.html.filter(n => n.slug.includes(route)).pop().html;
             }
-            console.log('getData', temp);
+            console.log('getters state', state);
+            console.log('getters getData', temp);
             return temp
         }
     }
