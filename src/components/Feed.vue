@@ -1,6 +1,6 @@
 <template>
 
-    <main class="en">
+    <section class="en">
 
         <div class="post" v-for="post in posts" :key="post.id">
             <router-link :to="{ 
@@ -42,7 +42,7 @@
         <div id="loadMore" v-on:click="shout($event)" />
 
 
-    </main>
+    </section>
 </template>
 
 <script lang="js">
@@ -217,7 +217,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    main {
+    section {
         display: flex;
         flex-wrap: wrap;
     }
