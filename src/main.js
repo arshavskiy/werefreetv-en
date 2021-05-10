@@ -11,10 +11,10 @@ const vm = createApp(App).use(router)
 
 const store = createStore({
     state: {
-
         route: {
             html: {}
         },
+        loaded: false
     },
     mutations: {
         minusOne(state) {
@@ -22,6 +22,9 @@ const store = createStore({
         },
         pushData (state, n) {
             state.route.html = n;
+        },
+        pageLoaded (state){
+            state.loaded = true;
         }
 
     },
@@ -38,6 +41,9 @@ const store = createStore({
                 html: page.html,
                 title: page.title
             }
+        },
+        loaded(state){
+            return state.loaded;
         }
     }
 })

@@ -62,6 +62,7 @@
         },
         renderTriggered() {
             this.loadTrigger();
+            this.$store.commit('pageLoaded', true);
             
         },
         updated: function () {
@@ -273,7 +274,6 @@
 
     #loadMore {
         height: 1px;
-        border: 1px solid;
         width: 100%;
     }
 

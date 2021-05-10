@@ -80,13 +80,10 @@
                     .then(response => response.json())
                     .then(data=> {
                         console.log(data);
-                        // this.nav = data.meta.pagination.pages;
+
                         this.pages = data.pages.filter(p=> p.slug.includes('-en'));
-
-                        console.debug('this.pages', this.pages);
-
-                        this.$store.commit('pushData', this.pages)
-
+                        this.$store.commit('pushData', this.pages);
+                        this.$store.commit('pageLoaded', true);
                         this.loading = false;
 
                     }).catch(e => {
@@ -342,7 +339,7 @@
 
       input:checked ~ .inner {
           left: 0;
-          height: calc(100vh - 100px);
+          height: calc(100vh - 80px);
       }
   }
 </style>

@@ -5,10 +5,10 @@
         <p>{{post.custom_excerpt}}</p>
 
         <PostMeta :date="post.dateForamted"></PostMeta>
-
         <article id="page" v-html="post.html"></article>
 
-        <Comments />
+        <Comments/>
+
 
 
     </main>
@@ -19,6 +19,7 @@
     import PostMeta from '../components/PostMeta.vue'
     import Comments from '../components/Comments.vue'
 
+
     export default {
         name: 'Post',
         components: {
@@ -28,15 +29,15 @@
         beforeMount() {
             this.post = this.$route.params;
             this.post.dateForamted = new Date(this.post.published_at).toLocaleDateString('en-US');
-            this.post.gotContentFromFeed = true;
+            // this.post.gotContentFromFeed = true;
         },
         mounted() {
             let params = this.post;
             console.debug("post:", params);
         
-            if (!params.gotContentFromFeed) {
+            // if (!params.gotContentFromFeed) {
                 this.fetchData(params.postId);
-            }
+            // }
 
         },
         computed: {
