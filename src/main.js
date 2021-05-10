@@ -28,13 +28,16 @@ const store = createStore({
     getters: {
         getData(state) {
             let route = window.location.pathname.split('/')[1];
-            let temp = state.route.html;
+            let page = state.route.html;
             if (state.route.html.length) {
-                temp = state.route.html.filter(n => n.slug.includes(route)).pop().html;
+                page = state.route.html.filter(n => n.slug.includes(route)).pop()
             }
             console.log('getters state', state);
-            console.log('getters getData', temp);
-            return temp
+            console.log('getters getData', page);
+            return {
+                html: page.html,
+                title: page.title
+            }
         }
     }
 })

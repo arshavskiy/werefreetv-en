@@ -1,5 +1,5 @@
 <template>
-    <main class="page">
+    <main class="post">
 
         <h1>{{post.title}}</h1>
         <p>{{post.custom_excerpt}}</p>

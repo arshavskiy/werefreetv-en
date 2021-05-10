@@ -1,6 +1,7 @@
 <template>
   <!-- <Nav /> -->
   <section class="register">
+    <h2>{{getTitle}}</h2>
     <div class="AW-Form-1679204634"></div>
   </section>
 </template>
@@ -36,7 +37,9 @@ export default {
 
   },
   computed: {
-
+    getTitle () {
+      return this.$store.getters.getData.title;
+    }
   },
   watch: {
   },

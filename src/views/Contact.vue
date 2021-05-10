@@ -1,7 +1,8 @@
 <template>
   <!-- <Nav /> -->
   <section class="register">
-    <article v-html="getDataFromNav"></article>
+    <h2>{{getTitle}}</h2>
+    <article v-html="getHTMLFromNav"></article>
   </section>
 </template>
 
@@ -33,13 +34,17 @@ export default {
 
   },
   computed: {
-    getDataFromNav () {
-      return this.$store.getters.getData;
+    getHTMLFromNav () {
+      return this.$store.getters.getData.html;
+    },
+    getTitle () {
+      return this.$store.getters.getData.title;
     }
   },
   watch: {
-    getDataFromNav (newNavData, old) {
+    getHTMLFromNav(newNavData, old) {
       // Our fancy notification (2).
+      // this.page = newNavData;
       console.log(`We have ${old} state now, yay!`)
       console.log(`We have ${newNavData} state now, yay!`)
     }
@@ -50,3 +55,12 @@ export default {
 
 }
 </script>
+
+<style>
+
+   .register iframe {
+     max-width: calc(100vw - 20px);
+     margin: 0 auto;
+   }
+
+</style>
