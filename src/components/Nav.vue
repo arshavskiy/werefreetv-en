@@ -239,7 +239,7 @@
           flex-direction: column;
           width: inherit;
           background: #0a0b0c;
-          height: 100vh;
+          height: calc(100vh - 100px);
           padding: 10px;
           align-items: baseline;
           transition: 0.5s;
@@ -250,6 +250,8 @@
           display: flex;
           align-items: center;
           justify-content: space-around;
+          position: relative;
+          top: -10px;
       }
 
       .site-nav-left {
@@ -258,20 +260,6 @@
 
       .site-nav-left > div {
           margin: 10px 0;
-      }
-
-      /*.site-nav-logo {*/
-      /*    margin-bottom: 50px;*/
-      /*}*/
-      .mobile,
-      .site-nav-logo {
-          display: none;
-      }
-
-      .site-nav-logo.mobile {
-          display: initial;
-          opacity: 1;
-          width: 50px;
       }
 
       .site-nav-logo.mobile img {
