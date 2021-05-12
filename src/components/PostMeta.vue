@@ -4,16 +4,13 @@
         <div class="post-card-byline-content">
             <span class="data post-card-byline-date flex">
                 <time> {{date}} </time>
-                <img class="byline-meta-views-img" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png" alt="views" loading="lazy">                <!-- <span class="bull"> -->
+                <img class="byline-meta-views-img" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png" alt="views" loading="lazy">
                 <span class="bull-views">{{views.count}}</span>
             </span>
 
-            <span class="likes flex">
-                <img class="byline-like" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg"
-                    alt="views" loading="lazy">
-
+            <span class="likes flex" v-on:click="setLike($event)">
+                <img class="byline-like" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg" alt="views" loading="lazy">
                 <span class="byline-meta-like">{{views.like}}</span>
-
             </span>
 
         </div>
@@ -40,14 +37,27 @@
        this.params = this.$route.params;
     },
     mounted() {
-       this.getPostMeta()
+       this.getPostMeta();
     },
     methods: {
 
-      async getPostMeta(){
+      setLike(event) {
 
-            console.log('post params: ', this.params);
-            
+        const path = event.path || (event.composedPath && event.composedPath());
+        let type = path[0].className.includes('dislike') ? 'dislike' : 'like';
+        let dynamicPath = '/' + this.params.postId;
+
+        fetch('https://data.wearefree.tv/' + type + dynamicPath)
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+                this.views.like = json.views.like;
+
+          });
+
+      },
+
+      async getPostMeta(){
             fetch('https://data.wearefree.tv/counter/' + this.params.postId)
                 .then(response => response.json())
                 .then(data => {

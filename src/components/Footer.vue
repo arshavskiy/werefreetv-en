@@ -31,7 +31,7 @@ export default {
 
     .site-footer {
       position: relative;
-      margin: 20px -15px 20px -15px;
+      margin: 20px -8px 20px -8px;
       padding: 20px;
       color: #fff;
       background: #0a0b0c;

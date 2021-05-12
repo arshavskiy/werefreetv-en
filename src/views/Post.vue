@@ -56,6 +56,8 @@
             }
         },
         methods: {
+
+
             async fetchData(postId) {
 
                 let api =

@@ -42,7 +42,7 @@
                     <img alt="לתמוך בנו בפטריון"
                         src="https://static.wixstatic.com/media/414bba_8c8c95d099d34ffeaf0a2750255613f9~mv2.png/v1/fill/w_30,h_30,al_c,q_85,usm_0.66_1.00_0.01/414bba_8c8c95d099d34ffeaf0a2750255613f9~mv2.webp" />
                 </a>
-                <a href="http://wearefree.tv/tag/en" class="lang_url">EN</a>
+                <a href="https://www.wearefree.tv" class="lang_url">HE</a>
             </div>
         </div>
 
@@ -76,7 +76,10 @@
 
                 let api = `https://www.wearefree.tv/ghost/api/v3/content/pages/?key=86ada218ec30f07f1f44985d57`;
 
-                fetch(api, {cache: "force-cache"})
+                fetch(api, {
+                  cache: "force-cache",
+                  referrer: ""
+                })
                     .then(response => response.json())
                     .then(data=> {
                         console.log(data);
@@ -239,7 +242,7 @@
           flex-direction: column;
           width: inherit;
           background: #0a0b0c;
-          height: calc(100vh - 100px);
+          height: calc(100vh - 120px);
           padding: 10px;
           align-items: baseline;
           transition: 0.5s;
@@ -327,7 +330,6 @@
 
       input:checked ~ .inner {
           left: 0;
-          height: calc(100vh - 80px);
       }
   }
 </style>
