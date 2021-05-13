@@ -316,6 +316,8 @@
     .byline-like {
         height: 20px;
         padding: 0 5px;
+        position: relative;
+        top: -5px;
     }
 
     .post-card-byline-content {
@@ -324,8 +326,8 @@
         width: 100%;
         margin: 2px 0 0 6px;
         color: #90a2aa;
-        line-height: 1em;
         font-weight: 400;
+        font-size: 14px;
         letter-spacing: .2px;
         text-transform: uppercase;
     }

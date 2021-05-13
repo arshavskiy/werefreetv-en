@@ -1,5 +1,5 @@
 <template lang="html">
-  
+
     <section class="post-card-meta">
         <div class="post-card-byline-content">
             <span class="data post-card-byline-date flex">
@@ -17,7 +17,7 @@
     </section>
 
 </template>
- 
+
 <script lang="js">
 
   export default  {
@@ -66,11 +66,11 @@
         }
     },
     computed: {
- 
+
     }
 }
 </script>
- 
+
 <style scoped>
 
     section {
@@ -94,8 +94,10 @@
     }
 
     .byline-like {
-        height: 20px;
-        padding: 0 5px;
+      height: 20px;
+      padding: 0 5px;
+      position: relative;
+      top: -5px;
     }
 
     .post-card-byline-content {
@@ -103,11 +105,9 @@
         justify-content: space-between;
         align-items: center;
         max-width: 800px;
-        max-width: 800px;
         color: #000;
         font-weight: 400;
-        font-size: .8rem;
-        line-height: 1.2em;
+        font-size: 14px;
         letter-spacing: .2px;
         text-transform: uppercase;
     }
