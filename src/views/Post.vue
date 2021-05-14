@@ -25,8 +25,6 @@
             Comments
         },
         beforeMount() {
-
-            this.$store.commit('initLoader', true);
             this.post = this.$route.params;
             this.post.dateForamted = new Date(this.post.published_at).toLocaleDateString('en-US');
             // this.post.gotContentFromFeed = true;
@@ -68,12 +66,13 @@
                     `https://www.wearefree.tv/ghost/api/v3/content/posts/slug/${postId}/?key=86ada218ec30f07f1f44985d57&include=tags`;
 
                 fetch(api, {
-                        cache: "force-cache"
+                    cache: "force-cache",
+                    cacheControl: "max-age=1500"
                     })
                     .then(response => response.json())
                     .then(data => {
                         const post = data.posts[0];
-                        console.log("Post: ", post);
+                        console.debug("Post fetchData: ", post);
 
                         post.dateForamted = new Date(post.published_at).toLocaleDateString('en-US');
                         this.post = post;
@@ -129,6 +128,7 @@
 
     main.post p {
         word-break: break-word;
+        text-align: left;
     }
 
     main.post a {

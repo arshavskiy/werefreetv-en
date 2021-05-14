@@ -36,11 +36,8 @@ export default {
     },
   },
   watch: {
-    loaded(newNavData, old) {
-      // Our fancy notification (2).
+    loaded(newNavData) {
       this.notLoaded = !newNavData;
-      console.log(`loaded ${old} state now, yay!`)
-      console.log(`loaded ${newNavData} state now, yay!`)
     }
   },
   methods: {},

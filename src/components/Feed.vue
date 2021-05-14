@@ -2,7 +2,7 @@
 
     <section class="en">
 
-        <div class="post" v-for="post in posts" :key="post.id">
+        <div v-for="post in posts" :key="post.id" class="post">
             <router-link :to="{ 
                 name: 'post', 
                 params: { 
@@ -11,9 +11,9 @@
                 title: post.title,
                 published_at: post.published_at }}">
 
-                <img class="main_image" :src="post.feature_image" loading="lazy" />
-                <h3>{{post.title}}</h3>
-                <p>{{post.excerpt}}</p>
+                <img :src="post.feature_image" class="main_image" loading="lazy"/>
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.excerpt }}</p>
             </router-link>
 
             <!-- <PostMeta/> -->
@@ -23,30 +23,33 @@
 
                     <span class="data post-card-byline-date flex">
                         <time datetime="2021-05-05">{{ dateForamt(post.published_at) }} </time>
-                        <span> / </span>
+                        <img alt="views"
+                             class="byline-meta-views-img" loading="lazy"
+                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png">
                         <span class="bull">
-                            <span class="bull-views" :data-post-url="post.slug"></span>
+                            <span :data-post-url="post.slug" class="bull-views"></span>
                         </span>
                     </span>
 
                     <span class="likes flex">
+                        <img alt="views"
+                             class="byline-like"
+                             loading="lazy" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg">
                         <span class="byline-meta-like"></span>
-                        <img class="byline-like" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg"
-                            alt="views" loading="lazy">
                     </span>
 
                 </div>
             </div>
 
         </div>
-        <div id="loadMore" v-on:click="shout($event)" />
+        <div id="loadMore" v-on:click="shout($event)"/>
 
 
     </section>
 </template>
 
 <script lang="js">
-    // import PostMeta from './PostMeta.vue'
+// import PostMeta from './PostMeta.vue'
 
 
 export default {
@@ -63,7 +66,6 @@ export default {
     },
     renderTriggered() {
         this.loadTrigger();
-        this.$store.commit('pageLoaded', true);
 
     },
     updated: function () {
@@ -122,13 +124,16 @@ export default {
 
             const api = 'https://data.wearefree.tv/views';
 
-            fetch(api, {cache: "force-cache"}).then(response => {
+            fetch(api, {
+                cache: "force-cache",
+                cacheControl: "max-age=1500"
+            }).then(response => {
                 return response.json();
             }).then(function (data) {
 
                 let views = {};
                 const spanList = document.querySelectorAll('.bull-views');
-                data.views = data.views.filter(v=>v.like);
+                data.views = data.views.filter(v => v.like);
 
                 const feedItemsList = postUrls.toString();
 
@@ -209,129 +214,130 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-section {
-    display: flex;
-    flex-wrap: wrap;
-}
+    section {
+        display: flex;
+        flex-wrap: wrap;
+    }
 
-.post {
-    width: 85vw;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin: 0 auto;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 30px;
-    padding: 15px;
-}
+    .post {
+        width: 85vw;
+        max-width: 360px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 0 auto;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 30px;
+        padding: 15px;
+    }
 
-.post a {
-    text-decoration: none;
-    color: #101010;
-}
+    .post a {
+        text-decoration: none;
+        color: #101010;
+    }
 
-img.main_image {
-    width: 100%;
-    height: 195px;
+    img.main_image {
+        width: 100%;
+        height: 195px;
 
-    border-radius: 5px;
-    padding: 4px;
-    border: 1px solid;
-    box-shadow: 6px 6px 3px #101060;
-    left: -10px;
-    position: relative;
-    filter: brightness(0.8);
+        border-radius: 5px;
+        padding: 4px;
+        border: 1px solid;
+        box-shadow: 6px 6px 3px #101060;
+        left: -10px;
+        position: relative;
+        filter: brightness(0.8);
 
-}
+    }
 
-h3 {
-    margin: 10px 0 0;
-}
+    h3 {
+        margin: 10px 0 0;
+    }
 
-ul {
-    list-style-type: none;
-    padding: 0;
-}
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
 
-li {
-    display: inline-block;
-    margin: 0 10px;
-}
+    li {
+        display: inline-block;
+        margin: 0 10px;
+    }
 
-a {
-    color: #42b983;
-}
+    a {
+        color: #42b983;
+    }
 
-#loadMore {
-    height: 1px;
-    width: 100%;
-}
+    #loadMore {
+        height: 1px;
+        width: 100%;
+    }
 
-.post-card-meta {
-    display: flex;
-    align-items: flex-start;
-    padding: 0;
+    .post-card-meta {
+        display: flex;
+        align-items: flex-start;
+        padding: 0;
 
-}
+    }
 
-.post {
-    text-align: left;
-}
+    .post {
+        text-align: left;
+    }
 
-.post footer {
-    font-size: .8rem;
-}
+    .post footer {
+        font-size: .8rem;
+    }
 
-.post h3 {
-    text-align: left;
-}
-
-
-footer {
-    font-size: .8rem;
-}
-
-.flex {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .post h3 {
+        text-align: left;
+    }
 
 
-.byline-meta-views-img {
-    margin: 0 10px;
-    height: 20px;
-}
+    footer {
+        font-size: .8rem;
+    }
 
-.byline-like {
-    height: 20px;
-    padding: 0 5px;
-    position: relative;
-    top: -5px;
-}
+    .flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-.post-card-byline-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin: 2px 0 0 6px;
-    color: #90a2aa;
-    font-weight: 400;
-    font-size: 14px;
-    letter-spacing: .2px;
-    text-transform: uppercase;
-}
 
-.post-card-byline-date .bull {
-    display: inline-block;
-    margin: 0 4px;
-    opacity: .6;
-}
+    .byline-meta-views-img {
+        margin: 0 10px;
+        height: 20px;
+    }
 
-.post-card-byline-content span {
-    margin: 0;
-}
+    .byline-like {
+        height: 20px;
+        padding: 0 5px;
+        position: relative;
+        top: -5px;
+    }
+
+    .post-card-byline-content {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin: 2px 0 0 6px;
+        color: #90a2aa;
+        font-weight: 400;
+        font-size: 14px;
+        letter-spacing: .2px;
+        text-transform: uppercase;
+    }
+
+    .post-card-byline-date .bull {
+        display: inline-block;
+        margin: 0 4px;
+        opacity: .6;
+    }
+
+    .post-card-byline-content span {
+        margin: 0;
+        min-width: 20px;
+    }
 
 </style>

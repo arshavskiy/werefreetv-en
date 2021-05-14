@@ -3,14 +3,17 @@
     <section class="post-card-meta">
         <div class="post-card-byline-content">
             <span class="data post-card-byline-date flex">
-                <time> {{date}} </time>
-                <img class="byline-meta-views-img" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png" alt="views" loading="lazy">
-                <span class="bull-views">{{views.count}}</span>
+                <time> {{ date }} </time>
+                <img class="byline-meta-views-img"
+                     src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png" alt="views"
+                     loading="lazy">
+                <span class="bull-views">{{ views.count }}</span>
             </span>
 
             <span class="likes flex" v-on:click.once="setLike($event)">
-                <img class="byline-like" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg" alt="views" loading="lazy">
-                <span class="byline-meta-like">{{views.like}}</span>
+                <img class="byline-like" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg"
+                     alt="views" loading="lazy">
+                <span class="byline-meta-like">{{ views.like }}</span>
             </span>
 
         </div>
@@ -20,44 +23,47 @@
 
 <script lang="js">
 
-  export default  {
+export default {
     name: 'PostMeta',
     props: {
         date: String,
         propTest: String
     },
-      data() {
-      return {
-        params: {},
-        views: {},
-        newViews: {},
-      }
+    data() {
+        return {
+            params: {},
+            views: {},
+            newViews: {},
+        }
     },
     beforeMount() {
-       this.params = this.$route.params;
+        this.params = this.$route.params;
     },
     mounted() {
-       this.getPostMeta();
+        this.getPostMeta();
     },
     methods: {
 
-      setLike(event) {
+        setLike(event) {
 
-        const path = event.path || (event.composedPath && event.composedPath());
-        let type = path[0].className.includes('dislike') ? 'dislike' : 'like';
-        let dynamicPath = '/' + this.params.postId;
+            const path = event.path || (event.composedPath && event.composedPath());
+            let type = path[0].className.includes('dislike') ? 'dislike' : 'like';
+            let dynamicPath = '/' + this.params.postId;
 
-        fetch('https://data.wearefree.tv/' + type + dynamicPath)
-            .then(response => response.json())
-            .then(json => {
-                console.log(json);
-                this.views.like = json.views.like;
+            fetch('https://data.wearefree.tv/' + type + dynamicPath, {
+                cache: "force-cache",
+                cacheControl: "max-age=1500"
+            })
+                .then(response => response.json())
+                .then(json => {
+                    console.debug("PostMeta fetchData: ", json);
+                    this.views.like = json.views.like;
 
-          });
+                });
 
-      },
+        },
 
-      async getPostMeta(){
+        async getPostMeta() {
             fetch('https://data.wearefree.tv/counter/' + this.params.postId)
                 .then(response => response.json())
                 .then(data => {
@@ -65,65 +71,64 @@
                 });
         }
     },
-    computed: {
-
-    }
+    computed: {}
 }
 </script>
 
 <style scoped>
 
-    section {
-        font-size: .8rem;
-    }
+section {
+    font-size: .8rem;
+}
 
-    .flex {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    .post-card-meta{
-        width: calc(100vw - 40px);
-        margin: 6px auto;
-    }
+.post-card-meta {
+    width: calc(100vw - 40px);
+    margin: 6px auto;
+}
 
-    .byline-meta-views-img {
-        margin: 0 10px;
-        height: 20px;
-    }
+.byline-meta-views-img {
+    margin: 0 10px;
+    height: 20px;
+}
 
-    .byline-like {
-      height: 20px;
-      padding: 0 5px;
-      position: relative;
-      top: -5px;
-    }
+.byline-like {
+    height: 20px;
+    padding: 0 5px;
+    position: relative;
+    top: -5px;
+}
 
-    .post-card-byline-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 800px;
-        color: #000;
-        font-weight: 400;
-        font-size: 14px;
-        letter-spacing: .2px;
-        text-transform: uppercase;
-    }
+.post-card-byline-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 800px;
+    color: #000;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: .2px;
+    text-transform: uppercase;
+}
 
-    .post-card-byline-date .bull {
-        display: inline-block;
-        margin: 0 4px;
-        opacity: .6;
-    }
+.post-card-byline-date .bull {
+    display: inline-block;
+    margin: 0 4px;
+    opacity: .6;
+}
 
-    .post-card-byline-content span {
-        margin: 0;
-    }
-    .byline-meta-views-img {
-        margin: 0 10px;
-        height: 20px;
-    }
+.post-card-byline-content span {
+    margin: 0;
+}
+
+.byline-meta-views-img {
+    margin: 0 10px;
+    height: 20px;
+}
 
 </style>
