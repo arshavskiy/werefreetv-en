@@ -11,6 +11,11 @@
             </span>
 
             <span class="likes flex" v-on:click.once="setLike($event)">
+
+                 <img class="share_btn" loading="lazy" v-on:click="sharePost" :class="{ hide: !show }"
+                      src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/assets/share_64x64.png"
+                      alt="Share us">
+
                 <img class="byline-like" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg"
                      alt="views" loading="lazy">
                 <span class="byline-meta-like">{{ views.like }}</span>
@@ -27,7 +32,14 @@ export default {
     name: 'PostMeta',
     props: {
         date: String,
-        propTest: String
+        propTest: String,
+        title: String,
+        image: String,
+        text: String,
+        published: String,
+        updated: String,
+        tags: Object,
+
     },
     data() {
         return {
@@ -36,14 +48,42 @@ export default {
             newViews: {},
         }
     },
+    created() {
+      console.debug('created:', this);
+    },
     beforeMount() {
         this.params = this.$route.params;
     },
     mounted() {
         this.getPostMeta();
+        console.debug('mounted:', this);
+
+    },
+    computed: {
+        show() {
+            console.debug('share ', navigator.share);
+            return navigator.share;
+        }
+
+    },
+    renderTriggered() {
     },
     methods: {
 
+        sharePost() {
+            if (navigator.share) {
+                navigator.share({
+                    title: this.title,
+                    text: this.text,
+                    url: document.location.href + '?referral=site'
+                }).then(function () {
+                    return console.log('Successful share');
+                }).catch(function (error) {
+                    return console.log('Error sharing', error);
+                });
+            }
+
+        },
         setLike(event) {
 
             const path = event.path || (event.composedPath && event.composedPath());
@@ -58,7 +98,6 @@ export default {
                 .then(json => {
                     console.debug("PostMeta fetchData: ", json);
                     this.views.like = json.views.like;
-
                 });
 
         },
@@ -71,11 +110,15 @@ export default {
                 });
         }
     },
-    computed: {}
+
 }
 </script>
 
 <style scoped>
+
+.hide {
+    display: none;
+}
 
 section {
     font-size: .8rem;
@@ -128,6 +171,10 @@ section {
 
 .byline-meta-views-img {
     margin: 0 10px;
+    height: 20px;
+}
+
+.share_btn {
     height: 20px;
 }
 

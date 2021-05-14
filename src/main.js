@@ -1,13 +1,9 @@
-import {
-    createApp
-} from 'vue'
-import {
-    createStore
-} from 'vuex'
+import {createApp} from 'vue'
+import {createStore} from 'vuex'
 import App from './App.vue'
 import router from './router'
 
-const vm = createApp(App).use(router)
+const vm = createApp(App);
 
 const store = createStore({
     state: {
@@ -52,7 +48,8 @@ const store = createStore({
     }
 })
 
+// vm.use(VueMeta);
+vm.use(router);
 vm.use(store);
-// app.use(router);
 
 vm.mount('#app');

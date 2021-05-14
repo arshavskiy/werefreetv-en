@@ -126,7 +126,6 @@ nav .nav-links a {
     left: 0;
     z-index: 1000;
     height: 64px;
-    width: 100%;
 }
 
 .nav-live {
@@ -252,6 +251,11 @@ social-link-fb svg, .social-link-wb svg {
 
 /******************************** MOBILE SCREEN ***************************************/
 @media (max-width: 768px) {
+
+    .site-nav-main {
+        width: auto;
+    }
+
     nav .inner {
         position: absolute;
         top: 64px;
