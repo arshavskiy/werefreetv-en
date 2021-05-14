@@ -143,6 +143,7 @@ section {
 .byline-like {
     height: 20px;
     padding: 0 5px;
+    margin-left: 10px;
     position: relative;
     top: -5px;
 }
