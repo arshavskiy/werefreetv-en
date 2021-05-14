@@ -12,6 +12,9 @@
                 <div class="nav-links">
                     <router-link to="/">Home</router-link>
                 </div>
+              <div class="nav-links">
+                <a href="https://broadcast.wearefree.tv/en.html">Live</a>
+              </div>
                 <div class="nav-links" v-for="page in pages" :key="page.id">
                     <router-link :to="{
                         name: page.url.split('.tv')[1].split('/')[1], 

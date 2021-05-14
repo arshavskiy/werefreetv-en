@@ -6,7 +6,7 @@
             <router-link :to="{ 
                 name: 'post', 
                 params: { 
-                postId: post.slug, 
+                postId: post.slug,
                 html: post.html,
                 title: post.title,
                 published_at: post.published_at }}">
@@ -49,297 +49,289 @@
     // import PostMeta from './PostMeta.vue'
 
 
-    export default {
-        name: 'Feed',
-        props: {
-            msg: String,
-        },
-        beforeMount() {
-            this.fetchData();
-        },
-        mounted() {
-          
-        },
-        renderTriggered() {
-            this.loadTrigger();
-            this.$store.commit('pageLoaded', true);
-            
-        },
-        updated: function () {
-            this.$nextTick(function () {
-                // Code that will run only after the
-                // entire view has been re-rendered
-                this.getViews();
+export default {
+    name: 'Feed',
+    props: {
+        msg: String,
+    },
+    beforeMount() {
+        this.fetchData();
+        this.$store.commit('initLoader', false);
+    },
+    mounted() {
+
+    },
+    renderTriggered() {
+        this.loadTrigger();
+        this.$store.commit('pageLoaded', true);
+
+    },
+    updated: function () {
+        this.$nextTick(function () {
+            this.getViews();
+        })
+    },
+
+    data() {
+        return {
+            posts: [],
+            views: [],
+            viewsDataSets: [],
+            error: null,
+            intersepted: false,
+            loading: true,
+            page: 1,
+            pages: 1
+        }
+    },
+    methods: {
+
+        async fetchData() {
+
+            console.log('posts 1', this.posts);
+
+            let api = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=86ada218ec30f07f1f44985d57&&filter=tag:en&page=${this.page}&limit=10&include=tags`;
+
+            fetch(api, {cache: "force-cache"})
+                .then(response => response.json())
+                .then(data => {
+
+                    this.posts = this.posts.concat(data.posts);
+                    this.pages = data.meta.pagination.pages;
+                    this.loading = false;
+                    this.$store.commit('pageLoaded', true);
+                    this.page++;
+
+                }).catch(e => {
+                console.log(e);
+                this.error = true;
             })
         },
+        async getViews() {
 
-        data() {
-            return {
-                posts: [],
-                views: [],
-                viewsDataSets: [],
-                error: null,
-                intersepted: false,
-                loading: true,
-                page: 1,
-                pages: 1
-            }
-        },
-        methods: {
+            this.viewsDataSets = document.querySelectorAll("span[data-post-url]");
+            let postUrls = [];
 
-            async fetchData() {
+            // English posts
+            this.viewsDataSets.forEach(function (set) {
+                postUrls.push(set.dataset.postUrl);
+            });
 
-                console.log('posts 1', this.posts);
+            let dataObjRaw = {};
+            let dataObjLike = {};
 
-                let api = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=86ada218ec30f07f1f44985d57&&filter=tag:en&page=${this.page}&limit=10&include=tags`;
-                
-                fetch(api, {cache: "force-cache"})
-                    .then(response => response.json())
-                    .then(data => {
-                        
-                        this.posts = this.posts.concat(data.posts);
-                        this.pages = data.meta.pagination.pages;
-                        this.loading = false;
+            const api = 'https://data.wearefree.tv/views';
 
-                        this.page++;
+            fetch(api, {cache: "force-cache"}).then(response => {
+                return response.json();
+            }).then(function (data) {
 
-                    }).catch(e => {
-                        console.log(e);
-                        this.error = true;
-                    })
-            },
+                let views = {};
+                const spanList = document.querySelectorAll('.bull-views');
+                data.views = data.views.filter(v=>v.like);
 
-            //
-            async getViews() {
+                const feedItemsList = postUrls.toString();
 
-
-                this.viewsDataSets = document.querySelectorAll("span[data-post-url]");
-                let postUrls = [];
-
-                // English posts
-                this.viewsDataSets.forEach(function (set) {
-                    postUrls.push(set.dataset.postUrl);
+                views = data.views.filter(function (d) {
+                    return feedItemsList.includes(d.id);
                 });
 
-                let dataObjRaw = {};
-                let dataObjLike = {};
+                views.forEach(function (item) {
+                    dataObjRaw[item.id] = item.count;
+                    dataObjLike[item.id] = item.like || 0;
+                });
 
-                const api =    'https://data.wearefree.tv/views';
+                function addData(span, url) {
+                    if (!span.innerText) {
+                        span.innerText = dataObjRaw[url];
 
-                fetch(api, {cache: "force-cache"}).then(response => {
-                    return response.json();
-                    }).then(function (data) {
+                        const like = span.parentElement.parentElement.parentElement.querySelector('.byline-meta-like');
 
-                    const spanList = document.querySelectorAll('.bull-views');
+                        if (dataObjLike[url] > 0) {
+                            like.innerText = dataObjLike[url];
+                        }
 
-                    data.views = data.views.filter(function (d) {
-                        return !d.id.includes('wearefree.tv');
-                    });
+                    }
+                }
 
-                    data.views.forEach(function (item) {
-                        dataObjRaw[item.id] = item.count;
-                        dataObjLike[item.id] = item.like || 0;
-                    });
+                postUrls.forEach(function (url) {
+                    if (dataObjRaw[url]) {
 
-                    function addData(span, url) {
-                        if (!span.innerText) {
-                            span.innerText = dataObjRaw[url];
+                        spanList.forEach(function (span) {
+                            let spansUrl = span.getAttribute('data-post-url');
 
-                            const like = span.parentElement.parentElement.parentElement.querySelector('.byline-meta-like');
-
-                            if (dataObjLike[url] > 0) {
-                                like.innerText = dataObjLike[url];
+                            if (spansUrl == url) {
+                                addData(span, url);
                             }
 
-                        }
+                        });
                     }
-
-                    postUrls.forEach(function (url) {
-                        if (dataObjRaw[url]) {
-
-                            spanList.forEach(function (span) {
-                                let spansUrl = span.getAttribute('data-post-url');
-
-                                if (spansUrl == url) {
-                                    addData(span, url);
-                                }
-
-                            });
-                        }
-                    });
                 });
-            },
+            });
+        },
 
-
-            dateForamt(data) {
-                const options = {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric'
-                };
-                const formatted = new Date(data).toLocaleDateString('en-US', options);
-                return formatted
-
-            },
-
-            loadTrigger() {
-
-                let options = {
-                    rootMargin: '0px',
-                    threshold: 1.0
-                }
-
-                function handleIntersection(entries) {
-
-                    if (entries[0].isIntersecting && !this.intersepted) {
-                        console.log('Log event and unobserve', entries[0]);
-                        if (this.pages >= this.page) {
-                            this.fetchData();
-                            this.intersepted = true;
-                        }
-
-                        // observer.unobserve(entry.target);
-                    }
-
-                }
-
-                let observer = new IntersectionObserver(handleIntersection.bind(this), options);
-
-                observer.observe(document.querySelector('#loadMore'));
-            }
+        dateForamt(data) {
+            const options = {
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric'
+            };
+            return new Date(data).toLocaleDateString('en-US', options);
 
         },
-        computed: {
 
+        loadTrigger() {
+
+            let options = {
+                rootMargin: '0px',
+                threshold: 1.0
+            }
+
+            function handleIntersection(entries) {
+                if (entries[0].isIntersecting && !this.intersepted) {
+                    console.log('Log event and unobserve', entries[0]);
+                    if (this.pages >= this.page) {
+                        this.fetchData();
+                        this.intersepted = true;
+                    }
+                }
+            }
+
+            let observer = new IntersectionObserver(handleIntersection.bind(this), options);
+
+            observer.observe(document.querySelector('#loadMore'));
         }
-    }
+
+    },
+    computed: {}
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    section {
-        display: flex;
-        flex-wrap: wrap;
-    }
+section {
+    display: flex;
+    flex-wrap: wrap;
+}
 
-    .post {
-        width: 85vw;
-        max-width: 360px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        margin: 0 auto;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 30px;
-        padding: 15px;
-    }
+.post {
+    width: 85vw;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 30px;
+    padding: 15px;
+}
 
-    .post a {
-        text-decoration: none;
-        color: #101010;
-    }
+.post a {
+    text-decoration: none;
+    color: #101010;
+}
 
-    img.main_image {
-        width: 100%;
-        height: 195px;
+img.main_image {
+    width: 100%;
+    height: 195px;
 
-        border-radius: 5px;
-        padding: 4px;
-        border: 1px solid;
-        box-shadow: 6px 6px 3px #101060;
-        left: -10px;
-        position: relative;
-        filter: brightness(0.8);
+    border-radius: 5px;
+    padding: 4px;
+    border: 1px solid;
+    box-shadow: 6px 6px 3px #101060;
+    left: -10px;
+    position: relative;
+    filter: brightness(0.8);
 
-    }
+}
 
-    h3 {
-        margin: 10px 0 0;
-    }
+h3 {
+    margin: 10px 0 0;
+}
 
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
+ul {
+    list-style-type: none;
+    padding: 0;
+}
 
-    li {
-        display: inline-block;
-        margin: 0 10px;
-    }
+li {
+    display: inline-block;
+    margin: 0 10px;
+}
 
-    a {
-        color: #42b983;
-    }
+a {
+    color: #42b983;
+}
 
-    #loadMore {
-        height: 1px;
-        width: 100%;
-    }
+#loadMore {
+    height: 1px;
+    width: 100%;
+}
 
-    .post-card-meta {
-        display: flex;
-        align-items: flex-start;
-        padding: 0;
+.post-card-meta {
+    display: flex;
+    align-items: flex-start;
+    padding: 0;
 
-    }
+}
 
-    .post {
-        text-align: left;
-    }
+.post {
+    text-align: left;
+}
 
-    .post footer {
-        font-size: .8rem;
-    }
+.post footer {
+    font-size: .8rem;
+}
 
-    .post h3 {
-        text-align: left;
-    }
-
-    
-    footer {
-        font-size: .8rem;
-    }
-
-    .flex {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+.post h3 {
+    text-align: left;
+}
 
 
-    .byline-meta-views-img {
-        margin: 0 10px;
-        height: 20px;
-    }
+footer {
+    font-size: .8rem;
+}
 
-    .byline-like {
-        height: 20px;
-        padding: 0 5px;
-        position: relative;
-        top: -5px;
-    }
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    .post-card-byline-content {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        margin: 2px 0 0 6px;
-        color: #90a2aa;
-        font-weight: 400;
-        font-size: 14px;
-        letter-spacing: .2px;
-        text-transform: uppercase;
-    }
 
-    .post-card-byline-date .bull {
-        display: inline-block;
-        margin: 0 4px;
-        opacity: .6;
-    }
+.byline-meta-views-img {
+    margin: 0 10px;
+    height: 20px;
+}
 
-    .post-card-byline-content span {
-        margin: 0;
-    }
+.byline-like {
+    height: 20px;
+    padding: 0 5px;
+    position: relative;
+    top: -5px;
+}
+
+.post-card-byline-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 2px 0 0 6px;
+    color: #90a2aa;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: .2px;
+    text-transform: uppercase;
+}
+
+.post-card-byline-date .bull {
+    display: inline-block;
+    margin: 0 4px;
+    opacity: .6;
+}
+
+.post-card-byline-content span {
+    margin: 0;
+}
 
 </style>

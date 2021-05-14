@@ -25,6 +25,9 @@ const store = createStore({
         },
         pageLoaded (state){
             state.loaded = true;
+        },
+        initLoader (state){
+            state.loaded = false;
         }
 
     },
@@ -43,6 +46,7 @@ const store = createStore({
             }
         },
         loaded(state){
+            console.debug('loaded: ', state.loaded);
             return state.loaded;
         }
     }

@@ -8,7 +8,7 @@
                 <span class="bull-views">{{views.count}}</span>
             </span>
 
-            <span class="likes flex" v-on:click="setLike($event)">
+            <span class="likes flex" v-on:click.once="setLike($event)">
                 <img class="byline-like" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg" alt="views" loading="lazy">
                 <span class="byline-meta-like">{{views.like}}</span>
             </span>

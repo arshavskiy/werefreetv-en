@@ -1,20 +1,17 @@
 <template>
-  <div class="home">
-    <!-- <Nav/> -->
-    <Feed/>
-  </div>
+    <div class="home">
+        <Feed/>
+    </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import Feed from '../components/Feed.vue'
-// import Nav from '../components/Nav.vue'
 
 export default {
-  name: 'Home',
-  components: {
-    Feed,
-    // Nav
-  }
+    name: 'Home',
+    components: {
+        Feed,
+    }
 }
 </script>

@@ -9,8 +9,6 @@
 
         <Comments/>
 
-
-
     </main>
 </template>
 
@@ -27,6 +25,8 @@
             Comments
         },
         beforeMount() {
+
+            this.$store.commit('initLoader', true);
             this.post = this.$route.params;
             this.post.dateForamted = new Date(this.post.published_at).toLocaleDateString('en-US');
             // this.post.gotContentFromFeed = true;
@@ -38,6 +38,10 @@
             // if (!params.gotContentFromFeed) {
                 this.fetchData(params.postId);
             // }
+
+        },
+        renderTriggered() {
+
 
         },
         computed: {
@@ -73,8 +77,8 @@
 
                         post.dateForamted = new Date(post.published_at).toLocaleDateString('en-US');
                         this.post = post;
-
                         this.loading = false;
+                        this.$store.commit('pageLoaded', true);
 
                     }).catch(e => {
                         console.log(e);

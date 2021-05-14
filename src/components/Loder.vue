@@ -1,7 +1,7 @@
 <template lang="html">
 
   <transition name="fade">
-    <section id="loader" v-if="notLoaded">
+    <section id="loader" v-show="notLoaded">
 
       <div class="lds-ring">
         <div></div>
