@@ -44,8 +44,7 @@ export default {
 
     },
     renderTriggered() {
-
-
+        window.scrollTo(0,0);
     },
     computed: {},
     data() {
@@ -93,7 +92,7 @@ export default {
 
         },
 
-        fetchData(postId) {
+        async fetchData(postId) {
 
             let api =
                 `https://www.wearefree.tv/ghost/api/v3/content/posts/slug/${postId}/?key=86ada218ec30f07f1f44985d57&include=tags`;
