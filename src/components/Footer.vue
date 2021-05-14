@@ -59,6 +59,18 @@ export default {
       font-size: 1.3rem;
     }
 
+    @media screen and (min-width: 800px){
+        .site-footer {
+            background: none;
+        }
+        .site-footer .site-footer-content {
+            justify-content: center;
+        }
+        .site-footer-content a{
+            color: #101010;
+        }
+    }
+
     .site-footer .inner{
       margin: 0 auto;
       width: 100%;

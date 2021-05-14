@@ -126,6 +126,7 @@ nav .nav-links a {
     left: 0;
     z-index: 1000;
     height: 64px;
+    width: 100%;
 }
 
 .nav-live {
