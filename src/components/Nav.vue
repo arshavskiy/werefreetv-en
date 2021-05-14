@@ -13,7 +13,7 @@
                     <router-link to="/">Home</router-link>
                 </div>
                 <div class="nav-links nav-live">
-                    <a href="https://broadcast.wearefree.tv/en.html">Live</a>
+                    <a href="https://broadcast.wearefree.tv/he.html">Live</a>
                 </div>
                 <div class="nav-links" v-for="page in pages" :key="page.id">
                     <router-link :to="{
@@ -182,7 +182,7 @@ nav a.lang_url {
 /******************************** NAV LEFT SIDE ***************************************/
 .site-nav-left {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
 }
 
 .site-nav-logo {
@@ -275,6 +275,7 @@ social-link-fb svg, .social-link-wb svg {
 
     .site-nav-left {
         flex-direction: column;
+        align-items: flex-start;
     }
 
     .site-nav-left > div {
