@@ -91,7 +91,6 @@ export default {
             let dynamicPath = '/' + this.params.postId;
 
             fetch('https://data.wearefree.tv/' + type + dynamicPath, {
-                cache: "force-cache",
                 cacheControl: "max-age=1500"
             })
                 .then(response => response.json())

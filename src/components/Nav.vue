@@ -15,6 +15,10 @@
                 <div class="nav-links nav-live">
                     <a href="https://broadcast.wearefree.tv/he.html">Live</a>
                 </div>
+                <!-- <div class="nav-links">
+                    <router-link to="/survey">Survey</router-link>
+                </div> -->
+
                 <div class="nav-links" v-for="page in pages" :key="page.id">
                     <router-link :to="{
                         name: page.url.split('.tv')[1].split('/')[1], 
@@ -79,7 +83,6 @@ export default {
             let api = `https://www.wearefree.tv/ghost/api/v3/content/pages/?key=86ada218ec30f07f1f44985d57`;
 
             fetch(api, {
-                cache: "force-cache",
                 referrer: ""
             })
                 .then(response => response.json())

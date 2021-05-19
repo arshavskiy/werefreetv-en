@@ -6,10 +6,14 @@
             <router-link :to="{ 
                 name: 'post', 
                 params: { 
-                postId: post.slug,
-                html: post.html,
-                title: post.title,
-                published_at: post.published_at }}">
+                    post:post,
+                    postId: post.slug,
+                    tags: post.tags,
+                    html: post.html,
+                    title: post.title,
+                    custom_excerpt: post.custom_excerpt,
+                    published_at: post.published_at
+                     }}">
 
                 <img :src="post.feature_image" class="main_image" loading="lazy"/>
                 <h3>{{ post.title }}</h3>
@@ -90,7 +94,7 @@ export default {
 
         async fetchData() {
 
-            console.log('posts 1', this.posts);
+            console.log('posts ',this.page +':' , this.posts);
 
             let api = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=86ada218ec30f07f1f44985d57&&filter=tag:en&page=${this.page}&limit=10&include=tags`;
 
@@ -99,6 +103,11 @@ export default {
                 .then(data => {
 
                     this.posts = this.posts.concat(data.posts);
+                    
+                    data.posts.forEach(post => {
+                        localStorage.setItem(post.slug, JSON.stringify(post));
+                    });
+
                     this.pages = data.meta.pagination.pages;
                     this.loading = false;
                     this.$store.commit('pageLoaded', true);
@@ -109,6 +118,7 @@ export default {
                 this.error = true;
             })
         },
+
         async getViews() {
 
             this.viewsDataSets = document.querySelectorAll("span[data-post-url]");
@@ -125,7 +135,6 @@ export default {
             const api = 'https://data.wearefree.tv/views';
 
             fetch(api, {
-                cache: "force-cache",
                 cacheControl: "max-age=1500"
             }).then(response => {
                 return response.json();

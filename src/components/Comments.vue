@@ -9,13 +9,14 @@
       <div id="comments_holder">
         <div id="comments_section">
           <span id="comments_section_line" v-for="comment in allComments" :key="comment.date">
-              <p class="message_name">{{ comment.comment.name }} :</p>
-              <p class="message_text">{{ comment.comment.value }}</p>
+            <p class="message_name">{{ comment.comment.name }} :</p>
+            <p class="message_text">{{ comment.comment.value }}</p>
           </span>
         </div>
         <input id="comments_name" v-model="userName" placeholder="name" required name="name" type="text">
         <input id="comments_input" v-model="userComment" placeholder="comment" required name="comment" type="text">
-        <button id="send" @click="sendMessage">Send</button>
+        <button id="send" :class="{ enable: (userName && userComment) }"
+          @click="sendMessage">Send</button>
       </div>
     </div>
 
@@ -24,89 +25,88 @@
 </template>
 
 <script lang="js">
-export default {
-  name: 'Comments',
-  props: {},
-  data() {
-    return {
-      allComments: [],
-      params: {},
-      userComment: '',
-      userName: '',
-    }
-  },
-  beforeMount() {
-    this.params = this.$route.params;
-  },
-  mounted() {
-    this.getComments();
-  },
-  computes() {
-
-  },
-  methods: {
-
-    setComments(commets){
-      commets = commets.filter(function (json) {
-        return json.date;
-      });
-
-      this.allComments = commets.sort(function (a, b) {
-        if (a.date && b.date) {
-          return a.date - b.date;
-        }
-      });
-    },
-
-    async getComments() {
-
-      fetch('https://data.wearefree.tv/post/' + this.params.postId, {
-        referrer: "https://en.wearefree.tv",
-        referrerPolicy: "no-referrer-when-downgrade",
-        accessControlAllowOrigin: "https://en.wearefree.tv",
-      }).then(response => response.json())
-        .then(data => {
-          // this.allComments = data.body;
-          this.setComments(data.body);
-          console.log('comments: ', this.allComments);
-
-        });
-    },
-
-    sendMessage() {
-
-
-
-      if (this.userComment && this.userName) {
-
-        const name = encodeURIComponent(this.userName);
-        const comment = encodeURIComponent(this.userComment);
-
-        const data = this.params.postId + '/who/' + name + '/comment/' + comment;
-
-        fetch('https://data.wearefree.tv/post/' + data, {
-          referrer: "https://en.wearefree.tv",
-          referrerPolicy: "no-referrer-when-downgrade",
-          accessControlAllowOrigin: "https://en.wearefree.tv",
-        }).then(response => response.json())
-          .then(data => {
-            this.setComments(data.body);
-            console.log('comments 2: ', this.allComments);
-
-        })
-      } else {
-        if (!this.userName) {
-          this.userName = 'required';
-        }
-        if (!this.userComment) {
-          this.userComment = 'required';
-        }
+  export default {
+    name: 'Comments',
+    props: {},
+    data() {
+      return {
+        allComments: [],
+        params: {},
+        userComment: '',
+        userName: ''
       }
+    },
+    beforeMount() {
+      this.params = this.$route.params;
+    },
+    mounted() {
+      this.getComments();
+    },
+    computed() {
+      // this.isDataSet = ()=> this.userName.lenght && this.userComment.lenght
+    },
+    methods: {
 
+      setComments(commets) {
+        commets = commets.filter(function (json) {
+          return json.date;
+        });
+
+        this.allComments = commets.sort(function (a, b) {
+          if (a.date && b.date) {
+            return a.date - b.date;
+          }
+        });
+      },
+
+      async getComments() {
+
+        fetch('https://data.wearefree.tv/post/' + this.params.postId, {
+            referrer: "https://en.wearefree.tv",
+            referrerPolicy: "no-referrer-when-downgrade",
+            accessControlAllowOrigin: "https://en.wearefree.tv",
+          }).then(response => response.json())
+          .then(data => {
+            // this.allComments = data.body;
+            this.setComments(data.body);
+            console.log('comments: ', this.allComments);
+
+          });
+      },
+
+      sendMessage() {
+
+        if (this.userComment && this.userName) {
+          this.isDataSet = true;
+
+          const name = encodeURIComponent(this.userName);
+          const comment = encodeURIComponent(this.userComment);
+
+          const data = this.params.postId + '/who/' + name + '/comment/' + comment;
+
+          fetch('https://data.wearefree.tv/post/' + data, {
+              referrer: "https://en.wearefree.tv",
+              referrerPolicy: "no-referrer-when-downgrade",
+              accessControlAllowOrigin: "https://en.wearefree.tv",
+            }).then(response => response.json())
+            .then(data => {
+              this.userComment = this.userName = '';
+              this.setComments(data.body);
+              console.log('comments 2: ', this.allComments);
+
+            })
+        } else {
+          // if (!this.userName) {
+          //   this.userName = 'required';
+          // }
+          // if (!this.userComment) {
+          //   this.userComment = 'required';
+          // }
+        }
+
+      }
     }
-  },
-  computed: {}
-}
+  }
 </script>
 
 <style scoped>
@@ -201,5 +201,22 @@ export default {
   .message_text {
     font-size: .8rem;
     color: initial;
+  }
+
+  #send {
+    width: 100%;
+    border: 1px solid;
+    background: #6495ed;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: 900;
+    pointer-events: none;
+    background: #eee;
+  }
+
+  .enable {
+    pointer-events: all !important;
+    background: #6495ed;
   }
 </style>

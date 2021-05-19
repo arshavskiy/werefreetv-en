@@ -5,7 +5,8 @@ import Post from '../views/Post.vue'
 import Support from '../views/Support.vue'
 // import Page from '../views/Page.vue'
 import Register from "../views/Register";
-import Contact from '../views/Contact.vue'
+import Contact from '../views/Contact.vue';
+import Survey from '../views/Survey.vue';
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     component: Contact
   },
   {
+    path: '/survey',
+    name: 'survey',
+    component: Survey
+  },
+   {
     path: '/supportus-en',
     name: 'supportus-en',
     component: Support
