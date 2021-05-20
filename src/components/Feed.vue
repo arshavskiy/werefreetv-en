@@ -75,7 +75,6 @@ export default {
             // this.getViews();
         })
     },
-
     data() {
         return {
             posts: [],
@@ -94,7 +93,6 @@ export default {
 
     },
     methods: {
-
         setViews(id) {
             console.debug('setViews id', id);
             console.debug('setViews this.dataObjRaw[id]', this.dataObjRaw[id]);
@@ -114,7 +112,6 @@ export default {
             return new Date(data).toLocaleDateString('en-US', options);
 
         },
-
         loadTrigger() {
 
             let options = {
@@ -136,7 +133,6 @@ export default {
 
             observer.observe(document.querySelector('#loadMore'));
         },
-
         fetchData() {
 
             console.log('posts ', this.page + ':', this.posts);
@@ -163,8 +159,6 @@ export default {
                 this.error = true;
             })
         },
-
-
         getViews() {
 
             // this.viewsDataSets = document.querySelectorAll("span[data-post-url]");
@@ -195,8 +189,6 @@ export default {
                 });
             });
         },
-
-
     },
 
 }
