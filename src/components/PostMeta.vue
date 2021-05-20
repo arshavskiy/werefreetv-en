@@ -72,10 +72,13 @@ export default {
 
         sharePost() {
             if (navigator.share) {
+                const title = this.title || document.title;
+                const url = document.querySelector('link[rel=canonical]') ? document.querySelector('link[rel=canonical]').href : document.location.href;
+
                 navigator.share({
-                    title: this.title,
+                    title: title,
                     text: this.text,
-                    url: document.location.href + '?referral=site'
+                    url: url + '?referral=site'
                 }).then(function () {
                     return console.log('Successful share');
                 }).catch(function (error) {
