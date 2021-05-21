@@ -11,6 +11,8 @@
 
             <ol>
                 <li v-for="(item, index) in surveys" :key="index">
+                    <span class="surveys-select" v-on:click.once="sendSurvey(item)"> + </span>
+<!--                    <input type="checkbox" class="surveys-select" id="checkbox" value=item.name v-model="checkedNames" @change="sendSurvey(item)" />-->
                     <span class="surveys-name">{{ item.name }}</span>
                     <span class="surveys-weight">{{ item.weight }}</span>
                     <span class="surveys-liner" :style="{ width: graph(item.weight) + 'px' }"></span>
@@ -32,7 +34,8 @@ export default {
             page: {},
             message: '',
             data: '',
-            surveys: {}
+            surveys: {},
+            checkedNames : []
         }
     },
     beforeMount() {
@@ -45,10 +48,10 @@ export default {
     computed: {},
 
     methods: {
-        graph(weight){
-            const max = window.innerWidth > 800 ? 500 : 270;
+        graph(weight) {
+            const max = window.innerWidth > 800 ? 500 : 260;
             let lineLength = max / 20;
-            return weight * lineLength;
+            return weight * lineLength > max ? max: weight * lineLength;
         },
         time(timeStamp) {
             const time = new Date(timeStamp);
@@ -68,7 +71,6 @@ export default {
             });
 
 
-
             temp.forEach(item => {
                 item.weight = 1;
             })
@@ -76,7 +78,7 @@ export default {
             temp.forEach(item => {
                 if (item.name) {
                     temp.forEach(set => {
-                        if (item.weight > 0 && (item.date != set.date ) && item.name.includes(set.name)) {
+                        if (item.weight > 0 && (item.date != set.date) && item.name.includes(set.name)) {
                             item.weight++;
                             set.weight = -1;
                         }
@@ -85,7 +87,7 @@ export default {
             })
 
             temp = raw.sort((a, b) => {
-               return b.weight - a.weight;
+                return b.weight - a.weight;
             });
 
 
@@ -93,7 +95,10 @@ export default {
         },
 
         getSurvey() {
-            fetch('https://data.wearefree.tv/get-survey', {
+            // let api_qa = 'http://localhost:3999/';
+            let api = 'https://data.wearefree.tv/get-survey';
+
+            fetch(api, {
                 referrer: "https://en.wearefree.tv",
                 referrerPolicy: "no-referrer-when-downgrade",
                 accessControlAllowOrigin: "https://en.wearefree.tv",
@@ -104,19 +109,26 @@ export default {
                 });
 
         },
-        sendSurvey() {
-            if (this.message && this.data) {
-                fetch('https://data.wearefree.tv/survey/' + this.message + '/' + this.data, {
-                    referrer: "https://en.wearefree.tv",
-                    referrerPolicy: "no-referrer-when-downgrade",
-                    accessControlAllowOrigin: "https://en.wearefree.tv",
-                }).then(response => response.json())
-                    .then(data => {
-                        this.message = this.data = '';
-                        console.log('suveys: ', data);
-                        this.surveys = this.filterRaw(data);
-                    });
-            }
+        sendSurvey(item) {
+
+            console.debug(this.checkedNames);
+            let name =  this.message || item.name ;
+            let data = this.data || '+';
+
+            let api = `https://data.wearefree.tv/survey/${name}/${data}`;
+            // let api_qa = `http://localhost:3999/${name}/${data}`;
+
+
+            fetch(api, {
+                referrer: "https://en.wearefree.tv",
+                referrerPolicy: "no-referrer-when-downgrade",
+                accessControlAllowOrigin: "https://en.wearefree.tv",
+            }).then(response => response.json())
+                .then(data => {
+                    this.message = this.data = '';
+                    console.log('suveys: ', data);
+                    this.surveys = this.filterRaw(data);
+                });
         }
 
 
@@ -129,7 +141,6 @@ export default {
 .question_app {
     direction: rtl;
     font-family: sans-serif;
-    border-radius: 2px;
     padding: 20px 30px;
     margin-top: 1em;
     margin-bottom: 40px;
@@ -137,7 +148,7 @@ export default {
     overflow-x: auto;
 }
 
-@media screen and (min-width: 800px){
+@media screen and (min-width: 800px) {
     .question_app {
         width: 800px;
     }
@@ -182,15 +193,14 @@ ol li {
     position: relative;
 }
 
-.surveys-name{
+.surveys-name {
     position: relative;
 }
 
-.surveys-liner{
+.surveys-liner {
     position: absolute;
     background: lightskyblue;
     height: 3px;
-    /*z-index: -1;*/
     bottom: -1px;
     left: 0px;
 }
@@ -200,4 +210,27 @@ ol li {
     font-size: 14px;
     line-height: 18px;
 }
+
+.surveys-select {
+    padding: 0 5px;
+    line-height: 10px;
+    /* border: 1px solid; */
+    border-radius: 22px;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    align-items: center;
+    /* width: 20px; */
+    /* min-width: 20px; */
+    background: darksalmon;
+    color: #fff;
+    box-shadow: 1px 1px 2px #101060;
+}
+
+.surveys-select:active {
+    border-color: lightcoral;
+    color: lightcoral;
+}
+
 </style>
