@@ -38,7 +38,8 @@
                 data: '',
                 surveys: {},
                 checkedNames: [],
-                cookies: {}
+                cookies: {},
+                maxGraph: Number
             }
         },
         beforeMount() {
@@ -62,9 +63,16 @@
                 return tmpCookies;
             },
             graph(weight) {
-                const max = window.innerWidth > 800 ? 500 : 260;
-                let lineLength = max / 20;
-                return weight * lineLength > max ? max : weight * lineLength;
+                const max = window.innerWidth > 800 ? 800 : 260;
+                const maxLineLength = max / 2;
+                let lineLength;
+                let multiplayer = maxLineLength / this.maxGraph;
+                if (weight === this.maxGraph){
+                    lineLength = maxLineLength;
+                } else {
+                    lineLength = weight * multiplayer;
+                }
+                return lineLength;
             },
             time(timeStamp) {
                 const time = new Date(timeStamp);
@@ -118,6 +126,7 @@
                     .then(data => {
                         console.log('suveys: ', data);
                         this.surveys = this.filterRaw(data);
+                        this.maxGraph = this.surveys[0].weight;
                         this.cookies = this.setCookies();
                     });
 
