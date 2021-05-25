@@ -50,7 +50,7 @@
 
 <script lang="js">
 // import PostMeta from './PostMeta.vue'
-
+import {utils} from '../utils';
 
 export default {
     name: 'Feed',
@@ -103,14 +103,8 @@ export default {
             console.debug('setLikes this.dataObjRaw[id]', this.dataObjLike[id]);
             return this.dataObjLike[id];
         },
-        dateForamt(data) {
-            const options = {
-                year: 'numeric',
-                month: 'numeric',
-                day: 'numeric'
-            };
-            return new Date(data).toLocaleDateString('en-US', options);
-
+        dateForamt(date) {
+            return utils.dateForamt(date);
         },
         loadTrigger() {
 
