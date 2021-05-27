@@ -17,6 +17,7 @@
     // @ is an alias to /src
     import PostMeta from '../components/PostMeta.vue'
     import Comments from '../components/Comments.vue'
+import { utils } from '../utils'
 
 
     export default {
@@ -38,40 +39,26 @@
         },
         beforeMount() {
             this.post = this.$route.params;
-            this.post.dateForamted = new Date(this.post.published_at).toLocaleDateString('en-US');
+            let date = utils.dateForamt(new Date(this.post.published_at));
+            this.post.dateForamted = date;
         },
         mounted() {
-            // let params = this.post;
             console.debug('mounted()');
 
             window.scrollTo(0, 0);
             this.postId = this.post.postId;
 
-            // let localPost = localStorage.getItem(this.postId);
-            // localPost = JSON.parse(localPost);
-            // this.post = localPost;
+            this.fetchData(this.postId).then(post => {
+                this.post = post;
+                let date = utils.dateForamt(new Date(this.post.published_at));
+                this.post.dateForamted = date;
 
-            // if (!this.post) {
-                // if (!this.post.custom_excerpt) {
-                    this.fetchData(this.postId).then(post => {
-                        this.post = post;
-                        this.$store.commit('pageLoaded', true);
-                        localStorage.setItem(this.postId, JSON.stringify(this.post));
-                                    
-                        this.$store.commit('pageLoaded', true);
+                this.$store.commit('pageLoaded', true);
+                localStorage.setItem(this.postId, JSON.stringify(this.post));
+                this.$store.commit('pageLoaded', true);
 
-                        this.addMeta();
-                        
-                    });
-                // }
-            // } else {
-
-            //     this.addMeta();
-            // }
-
-
-
-
+                this.addMeta();
+            });
         },
         renderTriggered() {
             console.debug('renderTriggered()');
@@ -86,7 +73,7 @@
                     .custom_excerpt);
                 document.querySelector('meta[property="og:url"]').setAttribute("content", window.location.href);
                 document.querySelector('meta[property="og:image"]').setAttribute("content", this.post
-                .feature_image);
+                    .feature_image);
                 document.querySelector('meta[property="article:published_time"]').setAttribute("content", this.post
                     .published_at);
                 document.querySelector('meta[property="article:modified_time"]').setAttribute("content", this.post
@@ -97,11 +84,11 @@
                 document.querySelector('meta[name="twitter:description"]').setAttribute("content", this.post
                     .custom_excerpt);
                 document.querySelector('meta[property="twitter:url"]').setAttribute("content", window.location
-                .href);
+                    .href);
                 document.querySelector('meta[name="twitter:image"]').setAttribute("content", this.post
                     .feature_image);
                 document.querySelector('meta[name="description"]').setAttribute("content", this.post
-                .custom_excerpt);
+                    .custom_excerpt);
                 document.querySelector('title').innerText = this.post.title;
 
             },

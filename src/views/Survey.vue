@@ -13,7 +13,6 @@
                 <li v-for="(item, index) in surveys" :key="index">
                     <span v-if="!canVote(item.name)" class="surveys-selected"> </span>
                     <span v-if="canVote(item.name)" class="surveys-select" v-on:click.once="sendSurvey(item)"> + </span>
-                    <!--                    <input type="checkbox" class="surveys-select" id="checkbox" value=item.name v-model="checkedNames" @change="sendSurvey(item)" />-->
                     <span class="surveys-name">{{ item.name }}</span>
                     <span class="surveys-weight">{{ item.weight }}</span>
                     <span class="surveys-liner" :style="{ width: graph(item.weight) + 'px' }"></span>
@@ -47,18 +46,20 @@
             this.getSurvey();
         },
         mounted() {
-            console.log('Register get page: ', this.page);
+          console.log('mounted survey: ', this.page);
         },
         computed: {},
 
         methods: {
-            canVote(name){
+            canVote(name) {
                 return !utils.canIsue(this.cookies, name);
             },
-            setCookies(){
+            setCookies() {
                 let tmpCookies = {};
-                this.surveys.forEach( item => {
-                    tmpCookies[item.name] = utils.cookieParser(item.name) ? true : false;
+                this.surveys.forEach(item => {
+                    let incoded = utils.stringToUTF16(item.name)
+                    let cookies = document.cookie.split('; ').find(row => row.startsWith(incoded+'='))
+                    tmpCookies[item.name] = cookies;
                 })
                 return tmpCookies;
             },
@@ -67,7 +68,7 @@
                 const maxLineLength = max / 2;
                 let lineLength;
                 let multiplayer = maxLineLength / this.maxGraph;
-                if (weight === this.maxGraph){
+                if (weight === this.maxGraph) {
                     lineLength = maxLineLength;
                 } else {
                     lineLength = weight * multiplayer;
@@ -111,10 +112,9 @@
                 temp = raw.sort((a, b) => {
                     return b.weight - a.weight;
                 });
-                
+
                 return temp.filter(item => item.weight > 0);
             },
-
             getSurvey() {
                 let api = 'https://data.wearefree.tv/get-survey';
 
@@ -132,33 +132,33 @@
 
             },
             sendSurvey(item) {
-
                 console.debug(this.checkedNames);
                 let name = this.message || item.name;
                 let data = this.data || '+';
                 const canIsue = utils.canIsue(this.cookies, name);
-                if(!canIsue){
-                    document.cookie = name + '='+ true;
-                    this.cookies[name] = true;
 
-                    let api = `https://data.wearefree.tv/survey/${encodeURIComponent(name)}/${encodeURIComponent(data)}`;
-
-                    fetch(api, {
-                            referrer: "https://en.wearefree.tv",
-                            referrerPolicy: "no-referrer-when-downgrade",
-                            accessControlAllowOrigin: "https://en.wearefree.tv",
-                        }).then(response => response.json())
-                        .then(data => {
-                            this.message = this.data = '';
-                            console.log('suveys: ', data);
-                            this.surveys = this.filterRaw(data);
-                        });
-                } else {
-                    return 
+                if (canIsue) {
+                    return
                 }
 
+                // document.cookie = utils.stringToUTF16(name) + '=' + true;
+                // Example of use:
+                utils.setCookie(this.stringToUTF16(name), true, {domain: '.wearefree.tv',secure: true, 'max-age': 31536000});
+                //document.cookie = this.stringToUTF16(name) + '=' + true +';max-age=31536000';
+                this.cookies[name] = true;
 
-                
+                let api = `https://data.wearefree.tv/survey/${encodeURIComponent(name)}/${encodeURIComponent(data)}`;
+
+                fetch(api, {
+                        referrer: "https://en.wearefree.tv",
+                        referrerPolicy: "no-referrer-when-downgrade",
+                        accessControlAllowOrigin: "https://en.wearefree.tv",
+                    }).then(response => response.json())
+                    .then(data => {
+                        this.message = this.data = '';
+                        console.log('suveys: ', data);
+                        this.surveys = this.filterRaw(data);
+                    });
             }
 
 
@@ -241,7 +241,7 @@
         line-height: 18px;
     }
 
-    .surveys-selected{
+    .surveys-selected {
         width: 20px;
     }
 

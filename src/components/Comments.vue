@@ -123,7 +123,7 @@
 
   #comments {
     margin-top: 4rem;
-    font-family: cursive;
+    font-family: sans-serif;
     background: #eee;
   }
 
