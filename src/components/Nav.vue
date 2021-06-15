@@ -12,9 +12,9 @@
                 <div class="nav-links">
                     <router-link to="/">Home</router-link>
                 </div>
-                <div class="nav-links nav-live">
+                <!-- <div class="nav-links nav-live">
                     <a href="https://broadcast.wearefree.tv/he.html">Live</a>
-                </div>
+                </div> -->
                 <!-- <div class="nav-links">
                     <router-link to="/survey">Survey</router-link>
                 </div> -->
@@ -33,22 +33,9 @@
             </div>
 
             <div class="site-nav-right">
-                <a href="https://t.me./wearefreetv" class="social-link" target="_blank">
+                <a href="https://t.me/nocensorshiptv" class="social-link" target="_blank">
                     <img src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/t_logo.png"
-                         alt="Telegram account https://t.me./wearefreetv" height="30"/>
-                </a>
-                <a class="social-link social-link-fb" href="https://www.facebook.com/NoCensorshipHere"
-                   title="הקבוצה שלנו בפייסבוק" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M16 0c8.837 0 16 7.163 16 16s-7.163 16-16 16S0 24.837 0 16 7.163 0 16 0zm5.204 4.911h-3.546c-2.103 0-4.443.885-4.443 3.934.01 1.062 0 2.08 0 3.225h-2.433v3.872h2.509v11.147h4.61v-11.22h3.042l.275-3.81h-3.397s.007-1.695 0-2.187c0-1.205 1.253-1.136 1.329-1.136h2.054V4.911z">
-                        </path>
-                    </svg>
-                </a>
-                <a class="social-link" href="https://www.patreon.com/wearefreetv" title="לתמוך בנו בפטריון"
-                   target="_blank" rel="noopener">
-                    <img alt="לתמוך בנו בפטריון"
-                         src="https://static.wixstatic.com/media/414bba_8c8c95d099d34ffeaf0a2750255613f9~mv2.png/v1/fill/w_30,h_30,al_c,q_85,usm_0.66_1.00_0.01/414bba_8c8c95d099d34ffeaf0a2750255613f9~mv2.webp"/>
+                         alt="Telegram account  https://t.me/nocensorshiptv" height="30"/>
                 </a>
                 <a href="https://www.wearefree.tv" class="lang_url">HE</a>
             </div>
@@ -127,7 +114,7 @@ nav .nav-links a {
     top: 0;
     right: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 2;
     height: 64px;
 }
 

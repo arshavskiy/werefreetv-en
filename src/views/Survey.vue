@@ -26,10 +26,12 @@
 <script>
     // @ is an alias to /src
     // import Nav from '../components/Nav.vue'
-    import {utils} from '../utils';
+    import {
+        utils
+    } from '../utils';
 
     export default {
-        name: 'Survey',
+        name: 'Surveys',
         data() {
             return {
                 page: {},
@@ -46,7 +48,7 @@
             this.getSurvey();
         },
         mounted() {
-          console.log('mounted survey: ', this.page);
+            console.log('mounted survey: ', this.page);
         },
         computed: {},
 
@@ -58,7 +60,7 @@
                 let tmpCookies = {};
                 this.surveys.forEach(item => {
                     let incoded = utils.stringToUTF16(item.name)
-                    let cookies = document.cookie.split('; ').find(row => row.startsWith(incoded+'='))
+                    let cookies = document.cookie.split('; ').find(row => row.startsWith(incoded + '='))
                     tmpCookies[item.name] = cookies;
                 })
                 return tmpCookies;
@@ -100,10 +102,11 @@
                 temp.forEach(item => {
                     if (item.name) {
                         temp.forEach(set => {
-                            if (item.weight > 0 && (item.date != set.date) && item.name.includes(set
-                                    .name)) {
-                                item.weight++;
-                                set.weight = -1;
+                            if (item.weight > 0 && (item.date != set.date)) {
+                                if (item.name.includes(set.name)) {
+                                    item.weight++;
+                                    set.weight = -1;
+                                }
                             }
                         })
                     }
@@ -134,20 +137,24 @@
             sendSurvey(item) {
                 console.debug(this.checkedNames);
                 let name = this.message || item.name;
-                let data = this.data || '+';
-                const canIsue = utils.canIsue(this.cookies, name);
+                let data = this.data || '';
+                const cantIsue = utils.canIsue(this.cookies, name);
 
-                if (canIsue) {
+                if (cantIsue) {
                     return
                 }
 
-                // document.cookie = utils.stringToUTF16(name) + '=' + true;
-                // Example of use:
-                utils.setCookie(this.stringToUTF16(name), true, {domain: '.wearefree.tv',secure: true, 'max-age': 31536000});
                 //document.cookie = this.stringToUTF16(name) + '=' + true +';max-age=31536000';
+
+                // Example of use:
+                utils.setCookie(this.stringToUTF16(name), true, {
+                    domain: '.wearefree.tv',
+                    secure: true,
+                    'max-age': 31536000
+                });
                 this.cookies[name] = true;
 
-                let api = `https://data.wearefree.tv/survey/${encodeURIComponent(name)}/${encodeURIComponent(data)}`;
+                let api = `https://data.wearefree.tv/ad-survey/${encodeURIComponent(name)}/${encodeURIComponent(data)}`;
 
                 fetch(api, {
                         referrer: "https://en.wearefree.tv",

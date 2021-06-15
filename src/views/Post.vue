@@ -17,7 +17,9 @@
     // @ is an alias to /src
     import PostMeta from '../components/PostMeta.vue'
     import Comments from '../components/Comments.vue'
-import { utils } from '../utils'
+    import {
+        utils
+    } from '../utils'
 
 
     export default {
@@ -68,6 +70,8 @@ import { utils } from '../utils'
 
             async addMeta() {
                 console.debug('addMeta published_at:  ', this.post.published_at)
+                document.querySelector('[rel="canonical"]').setAttribute("href", window.location
+                    .href);
                 document.querySelector('meta[property="og:title"]').setAttribute("content", this.post.title);
                 document.querySelector('meta[property="og:description"]').setAttribute("content", this.post
                     .custom_excerpt);

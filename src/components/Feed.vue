@@ -66,12 +66,15 @@ export default {
 
     },
     renderTriggered() {
-        this.loadTrigger();
+        // console.debug('$renderTriggered');
+        // this.loadTrigger();
 
     },
     updated: function () {
         this.$nextTick(function () {
             console.debug('$nextTick');
+            this.loadTrigger();
+
             // this.getViews();
         })
     },
@@ -219,11 +222,10 @@ img.main_image {
     border-radius: 5px;
     padding: 4px;
     border: 1px solid;
-    box-shadow: 6px 6px 3px #101060;
+    /* box-shadow: 6px 6px 3px #101060; */
     left: -10px;
     position: relative;
-    filter: brightness(0.8);
-
+    /* filter: brightness(0.8); */
 }
 
 h3 {

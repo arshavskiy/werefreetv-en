@@ -73,7 +73,7 @@ export default {
         sharePost() {
             if (navigator.share) {
                 const title = this.title || document.title;
-                const url = document.querySelector('link[rel=canonical]') ? document.querySelector('link[rel=canonical]').href : document.location.href;
+                const url = 'https://www.wearefree.tv/tag/' + document.location.pathname.replace('/post/','');
 
                 navigator.share({
                     title: title,
