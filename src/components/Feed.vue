@@ -97,13 +97,13 @@ export default {
     },
     methods: {
         setViews(id) {
-            console.debug('setViews id', id);
-            console.debug('setViews this.dataObjRaw[id]', this.dataObjRaw[id]);
+            // console.debug('setViews id', id);
+            // console.debug('setViews this.dataObjRaw[id]', this.dataObjRaw[id]);
             return this.dataObjRaw[id];
         },
         setLikes(id) {
-            console.debug('setLikes id', id);
-            console.debug('setLikes this.dataObjRaw[id]', this.dataObjLike[id]);
+            // console.debug('setLikes id', id);
+            // console.debug('setLikes this.dataObjRaw[id]', this.dataObjLike[id]);
             return this.dataObjLike[id];
         },
         dateForamt(date) {
@@ -121,7 +121,7 @@ export default {
                     console.log('Log event and unobserve', entries[0]);
                     if (this.pages >= this.page) {
                         this.fetchData();
-                        this.intersepted = true;
+                        // this.intersepted = true;
                     }
                 }
             }
@@ -131,9 +131,6 @@ export default {
             observer.observe(document.querySelector('#loadMore'));
         },
         fetchData() {
-
-            console.log('posts ', this.page + ':', this.posts);
-
             let api = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=86ada218ec30f07f1f44985d57&&filter=tag:en&page=${this.page}&limit=10&include=tags`;
 
             fetch(api, {cache: "force-cache"})
@@ -149,7 +146,7 @@ export default {
                     this.pages = data.meta.pagination.pages;
                     this.loading = false;
                     this.$store.commit('pageLoaded', true);
-                    this.page++;
+                    this.page = data.meta.pagination.next; 
 
                 }).catch(e => {
                 console.log(e);
