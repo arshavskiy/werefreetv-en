@@ -63,7 +63,8 @@ export default {
         this.$store.commit('initLoader', false);
     },
     mounted() {
-
+        // console.debug('$renderTriggered');
+        this.loadTrigger();
     },
     renderTriggered() {
         // console.debug('$renderTriggered');
@@ -72,9 +73,7 @@ export default {
     },
     updated: function () {
         this.$nextTick(function () {
-            console.debug('$nextTick');
-            this.loadTrigger();
-
+            // console.debug('$nextTick');
             // this.getViews();
         })
     },
@@ -84,7 +83,7 @@ export default {
             views: [],
             viewsDataSets: [],
             error: null,
-            intersepted: false,
+            // intersepted: false,
             loading: true,
             page: 1,
             pages: 1,
@@ -109,27 +108,7 @@ export default {
         dateForamt(date) {
             return utils.dateForamt(date);
         },
-        loadTrigger() {
 
-            let options = {
-                rootMargin: '0px',
-                threshold: 1.0
-            }
-
-            function handleIntersection(entries) {
-                if (entries[0].isIntersecting && !this.intersepted) {
-                    console.log('Log event and unobserve', entries[0]);
-                    if (this.pages >= this.page) {
-                        this.fetchData();
-                        // this.intersepted = true;
-                    }
-                }
-            }
-
-            let observer = new IntersectionObserver(handleIntersection.bind(this), options);
-
-            observer.observe(document.querySelector('#loadMore'));
-        },
         fetchData() {
             let api = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=86ada218ec30f07f1f44985d57&&filter=tag:en&page=${this.page}&limit=10&include=tags`;
 
@@ -153,6 +132,37 @@ export default {
                 this.error = true;
             })
         },
+
+        debounce(func, timeout = 300){
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+        },
+
+        loadTrigger() {
+
+            let options = {
+                rootMargin: '0px',
+                threshold: 1.0
+            }
+
+            function handleIntersection(entries) {
+                if (entries[0].isIntersecting && this.page) {
+                    console.log('Log event and unobserve', entries[0]);
+                    if (this.page <= this.pages) {
+                        this.fetchData();
+                    }
+                }
+            }
+
+            let observer = new IntersectionObserver(handleIntersection.bind(this), options);
+            const processChange = this.debounce(() => observer.observe(document.querySelector('#loadMore')));
+            processChange();
+            
+        },
+
         getViews() {
 
             // this.viewsDataSets = document.querySelectorAll("span[data-post-url]");
