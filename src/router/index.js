@@ -15,13 +15,13 @@ const routes = [
     component: Home
   },
   {
-    path: '/register-en',
-    name: 'register-en',
+    path: '/register-ru',
+    name: 'register-ru',
     component: Register,
   },
   {
-    path: '/contact-en',
-    name: 'contact-en',
+    path: '/contact-ru',
+    name: 'contact-ru',
     component: Contact
   },
   {
@@ -30,8 +30,8 @@ const routes = [
     component: Survey
   },
    {
-    path: '/supportus-en',
-    name: 'supportus-en',
+    path: '/supportus-ru',
+    name: 'supportus-ru',
     component: Support
   },
   {

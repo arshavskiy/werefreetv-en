@@ -10,7 +10,7 @@
             <div class="site-nav-left">
 
                 <div class="nav-links">
-                    <router-link to="/">Home</router-link>
+                    <router-link to="/">главная</router-link>
                 </div>
                 <!-- <div class="nav-links nav-live">
                     <a href="https://broadcast.wearefree.tv/he.html">Live</a>
@@ -37,6 +37,7 @@
                     <img src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/t_logo.png"
                          alt="Telegram account  https://t.me/nocensorshiptv" height="30"/>
                 </a>
+                <a href="https://ru.wearefree.tv" class="lang_url">EN</a>
                 <a href="https://www.wearefree.tv" class="lang_url">HE</a>
             </div>
         </div>
@@ -58,7 +59,8 @@ export default {
     data() {
         return {
             nav: [],
-            pages: []
+            pages: [],
+            key: '86ada218ec30f07f1f44985d57',
         }
     },
     computed: {},
@@ -67,7 +69,7 @@ export default {
         async fetchNav() {
             console.log('pages: ', this.pages);
 
-            let api = `https://www.wearefree.tv/ghost/api/v3/content/pages/?key=86ada218ec30f07f1f44985d57`;
+            let api = `https://www.wearefree.tv/ghost/api/v3/content/pages/?key=${this.key}`;
 
             fetch(api, {
                 referrer: ""
@@ -76,7 +78,7 @@ export default {
                 .then(data => {
                     console.log(data);
 
-                    this.pages = data.pages.filter(p => p.slug.includes('-en'));
+                    this.pages = data.pages.filter(p => p.slug.includes('-ru'));
                     this.$store.commit('pushData', this.pages);
                     this.$store.commit('pageLoaded', true);
                     this.loading = false;
@@ -166,7 +168,7 @@ nav a.lang_url {
     padding: 10px;
     color: #fff;
     font-size: 12px;
-
+    margin: 0 5px;
 }
 
 /******************************** NAV LEFT SIDE ***************************************/

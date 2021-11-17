@@ -62,9 +62,9 @@
       async getComments() {
 
         fetch('https://data.wearefree.tv/post/' + this.params.postId, {
-            referrer: "https://en.wearefree.tv",
+            referrer: "https://ru.wearefree.tv",
             referrerPolicy: "no-referrer-when-downgrade",
-            accessControlAllowOrigin: "https://en.wearefree.tv",
+            accessControlAllowOrigin: "https://ru.wearefree.tv",
           }).then(response => response.json())
           .then(data => {
             // this.allComments = data.body;
@@ -85,9 +85,9 @@
           const data = this.params.postId + '/who/' + name + '/comment/' + comment;
 
           fetch('https://data.wearefree.tv/post/' + data, {
-              referrer: "https://en.wearefree.tv",
+              referrer: "https://ru.wearefree.tv",
               referrerPolicy: "no-referrer-when-downgrade",
-              accessControlAllowOrigin: "https://en.wearefree.tv",
+              accessControlAllowOrigin: "https://ru.wearefree.tv",
             }).then(response => response.json())
             .then(data => {
               this.userComment = this.userName = '';

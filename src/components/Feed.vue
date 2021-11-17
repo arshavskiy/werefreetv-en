@@ -63,19 +63,16 @@ export default {
         this.$store.commit('initLoader', false);
     },
     mounted() {
-
+        // console.debug('$renderTriggered');
+        window.addEventListener('scroll', this.loadTrigger);
+        
     },
     renderTriggered() {
         // console.debug('$renderTriggered');
-        // this.loadTrigger();
-
     },
     updated: function () {
         this.$nextTick(function () {
-            console.debug('$nextTick');
-            this.loadTrigger();
-
-            // this.getViews();
+            // console.debug('$nextTick');
         })
     },
     data() {
@@ -84,7 +81,7 @@ export default {
             views: [],
             viewsDataSets: [],
             error: null,
-            intersepted: false,
+            // intersepted: false,
             loading: true,
             page: 1,
             pages: 1,
@@ -109,6 +106,45 @@ export default {
         dateForamt(date) {
             return utils.dateForamt(date);
         },
+
+        fetchData() {
+            let api = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=86ada218ec30f07f1f44985d57&&filter=tag:ru&page=${this.page}&limit=10&include=tags`;
+
+            fetch(api, {cache: "force-cache"})
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.posts);
+                    data.posts = data.posts.filter(p => {
+                        if (/[A-Za-z]/.test(p.title)){
+                            return null
+                        } else {
+                            return p;
+                        }
+                    });
+                    this.posts = this.posts.concat(data.posts);
+                   
+                    data.posts.forEach(post => {
+                        localStorage.setItem(post.slug, JSON.stringify(post));
+                    });
+                    this.pages = data.meta.pagination.pages;
+                    this.loading = false;
+                    this.$store.commit('pageLoaded', true);
+                    this.page = data.meta.pagination.next || 1; 
+
+                }).catch(e => {
+                console.log(e);
+                this.error = true;
+            })
+        },
+
+        debounce(func, timeout = 300){
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+        },
+
         loadTrigger() {
 
             let options = {
@@ -117,42 +153,19 @@ export default {
             }
 
             function handleIntersection(entries) {
-                if (entries[0].isIntersecting && !this.intersepted) {
-                    console.log('Log event and unobserve', entries[0]);
-                    if (this.pages >= this.page) {
+                if (entries[0].isIntersecting && this.page) {
+                    if (this.page < this.pages) {
                         this.fetchData();
-                        // this.intersepted = true;
                     }
                 }
             }
 
             let observer = new IntersectionObserver(handleIntersection.bind(this), options);
-
-            observer.observe(document.querySelector('#loadMore'));
+            const processChange = this.debounce(() => observer.observe(document.querySelector('#loadMore')));
+            processChange();
+            
         },
-        fetchData() {
-            let api = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=86ada218ec30f07f1f44985d57&&filter=tag:en&page=${this.page}&limit=10&include=tags`;
 
-            fetch(api, {cache: "force-cache"})
-                .then(response => response.json())
-                .then(data => {
-
-                    this.posts = this.posts.concat(data.posts);
-
-                    data.posts.forEach(post => {
-                        localStorage.setItem(post.slug, JSON.stringify(post));
-                    });
-
-                    this.pages = data.meta.pagination.pages;
-                    this.loading = false;
-                    this.$store.commit('pageLoaded', true);
-                    this.page = data.meta.pagination.next; 
-
-                }).catch(e => {
-                console.log(e);
-                this.error = true;
-            })
-        },
         getViews() {
 
             // this.viewsDataSets = document.querySelectorAll("span[data-post-url]");

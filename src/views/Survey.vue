@@ -122,9 +122,9 @@
                 let api = 'https://data.wearefree.tv/get-survey';
 
                 fetch(api, {
-                        referrer: "https://en.wearefree.tv",
+                        referrer: "https://ru.wearefree.tv",
                         referrerPolicy: "no-referrer-when-downgrade",
-                        accessControlAllowOrigin: "https://en.wearefree.tv",
+                        accessControlAllowOrigin: "https://ru.wearefree.tv",
                     }).then(response => response.json())
                     .then(data => {
                         console.log('suveys: ', data);
@@ -157,9 +157,9 @@
                 let api = `https://data.wearefree.tv/ad-survey/${encodeURIComponent(name)}/${encodeURIComponent(data)}`;
 
                 fetch(api, {
-                        referrer: "https://en.wearefree.tv",
+                        referrer: "https://ru.wearefree.tv",
                         referrerPolicy: "no-referrer-when-downgrade",
-                        accessControlAllowOrigin: "https://en.wearefree.tv",
+                        accessControlAllowOrigin: "https://ru.wearefree.tv",
                     }).then(response => response.json())
                     .then(data => {
                         this.message = this.data = '';
