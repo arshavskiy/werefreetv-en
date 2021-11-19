@@ -1,7 +1,7 @@
 <template>
     <main class="post">
 
-        <h1>{{ post.title }}</h1>
+        <h2>{{ post.title }}</h2>
         <p>{{ post.custom_excerpt }}</p>
 
         <PostMeta :date="post.dateForamted" :title="post.title">
@@ -17,9 +17,7 @@
     // @ is an alias to /src
     import PostMeta from '../components/PostMeta.vue'
     import Comments from '../components/Comments.vue'
-    import {
-        utils
-    } from '../utils'
+    import {utils, contnet} from '../utils'
 
 
     export default {
@@ -69,38 +67,33 @@
         methods: {
 
             async addMeta() {
-                console.debug('addMeta published_at:  ', this.post.published_at)
-                document.querySelector('[rel="canonical"]').setAttribute("href", window.location
-                    .href);
-                document.querySelector('meta[property="og:title"]').setAttribute("content", this.post.title);
-                document.querySelector('meta[property="og:description"]').setAttribute("content", this.post
-                    .custom_excerpt);
-                document.querySelector('meta[property="og:url"]').setAttribute("content", window.location.href);
-                document.querySelector('meta[property="og:image"]').setAttribute("content", this.post
-                    .feature_image);
-                document.querySelector('meta[property="article:published_time"]').setAttribute("content", this.post
-                    .published_at);
-                document.querySelector('meta[property="article:modified_time"]').setAttribute("content", this.post
-                    .updated_at);
-                document.querySelector('meta[property="article:tag"]').setAttribute("content", this.post.tags[2]
-                    .name);
-                document.querySelector('meta[name="twitter:title"]').setAttribute("content", this.post.title);
-                document.querySelector('meta[name="twitter:description"]').setAttribute("content", this.post
-                    .custom_excerpt);
-                document.querySelector('meta[property="twitter:url"]').setAttribute("content", window.location
-                    .href);
-                document.querySelector('meta[name="twitter:image"]').setAttribute("content", this.post
-                    .feature_image);
-                document.querySelector('meta[name="description"]').setAttribute("content", this.post
-                    .custom_excerpt);
-                document.querySelector('title').innerText = this.post.title;
 
+                try {
+                     console.debug('addMeta published_at:  ', this.post.published_at)
+                    document.querySelector('[rel="canonical"]').setAttribute("href", window.location.href);
+                    document.querySelector('meta[property="og:title"]').setAttribute("content", this.post.title);
+                    document.querySelector('meta[property="og:description"]').setAttribute("content", this.post.custom_excerpt);
+                    document.querySelector('meta[property="og:url"]').setAttribute("content", window.location.href);
+                    document.querySelector('meta[property="og:image"]').setAttribute("content", this.post.feature_image);
+                    document.querySelector('meta[property="article:published_time"]').setAttribute("content", this.post.published_at);
+                    document.querySelector('meta[property="article:modified_time"]').setAttribute("content", this.post.updated_at);
+                    document.querySelector('meta[property="article:tag"]').setAttribute("content", this.post.tags[2].name);
+                    document.querySelector('meta[name="twitter:title"]').setAttribute("content", this.post.title);
+                    document.querySelector('meta[name="twitter:description"]').setAttribute("content", this.post.custom_excerpt);
+                    document.querySelector('meta[property="twitter:url"]').setAttribute("content", window.location.href);
+                    document.querySelector('meta[name="twitter:image"]').setAttribute("content", this.post.feature_image);
+                    document.querySelector('meta[name="description"]').setAttribute("content", this.post.custom_excerpt);
+                    document.querySelector('title').innerText = this.post.title;
+                } catch (error) {
+                    console.debug(error);
+                }
+
+            
             },
 
             fetchData(postId) {
                 return new Promise((resolve, reject) => {
-                    let api =
-                        `https://www.wearefree.tv/ghost/api/v3/content/posts/slug/${postId}/?key=86ada218ec30f07f1f44985d57&include=tags`;
+                    let api = contnet.postAPI + `${postId}/?key=86ada218ec30f07f1f44985d57&include=tags`;
 
                     fetch(api, {
                             cacheControl: "max-age=1500"
@@ -128,24 +121,30 @@
 </script>
 
 <style>
+
+    iframe {
+        max-width: 100%;
+        height: auto;
+    }
+
     main.post {
         max-width: 800px;
         margin: 0 auto;
         font-family: sans-serif;
     }
 
-    main.post h1 {
+    main.post h2 {
         color: #000;
         text-align: left;
     }
 
     @media screen and (min-width: 800px) {
-        main.post h1 {
-            font-size: 3rem;
+        main.post h2 {
+            font-size: 2rem;
         }
     }
 
-    main.post>p {
+    main.post > p {
         text-align: left;
         overflow-wrap: break-word;
         font-size: 14px;
@@ -155,9 +154,13 @@
         border-bottom: 1px solid #ddd;
     }
 
+     .post #page p {
+        font-size: 12px;
+    }
+
     @media screen and (min-width: 800px) {
         main.post>p {
-            font-size: 24px;
+            font-size: 1rem;
         }
     }
 
@@ -170,15 +173,15 @@
         color: #000;
     }
 
-    main.post iframe.sproutvideo-player {
+    main.post iframe {
         width: 100%;
-        height: calc(100vw / 1.7);
+        height: calc(100vw / 1.85);
     }
 
     @media screen and (min-width: 800px) {
-        main.post iframe.sproutvideo-player {
+        main.post iframe {
             width: 100%;
-            height: 377px;
+            height: 450px;
         }
     }
 

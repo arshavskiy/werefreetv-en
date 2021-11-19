@@ -6,40 +6,43 @@
             <router-link :to="{ 
                 name: 'post', 
                 params: { 
-                    post:post,
-                    postId: post.slug,
-                    tags: post.tags,
-                    html: post.html,
-                    title: post.title,
-                    custom_excerpt: post.custom_excerpt,
-                    published_at: post.published_at
+                            post:post,
+                            postId: post.slug,
+                            tags: post.tags,
+                            html: post.html,
+                            title: post.title,
+                            custom_excerpt: post.custom_excerpt,
+                            published_at: post.published_at
                      }}">
 
-                <img :src="post.feature_image" class="main_image" loading="lazy"/>
-                <h3>{{ post.title }}</h3>
-                <p>{{ post.excerpt }}</p>
-            </router-link>
-
-            <div class="post-card-meta">
-                <div class="post-card-byline-content flex">
-                    <span class="data post-card-byline-date flex">
-                        <time datetime="2021-05-05">{{ dateForamt(post.published_at) }} </time>
-                        <img alt="views"
-                             class="byline-meta-views-img" loading="lazy"
-                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png">
-                        <span class="bull">
-                            <span :data-post-url="post.slug" class="bull-views">{{ setViews(post.slug) }}</span>
-                        </span>
-                    </span>
-                    <span class="likes flex">
-                        <img alt="views"
-                             class="byline-like"
-                             loading="lazy"
-                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg">
-                        <span class="byline-meta-like">{{ setLikes(post.slug) }}</span>
-                    </span>
-                </div>
-            </div>
+                <img :src="post.feature_image" class="main_image" loading="lazy"/>  
+                <section class="post_data">
+                    <div>  
+                        <h2>{{ post.title }}</h2>
+                        <p class="post_subtitle">{{ post.excerpt }}</p>
+                    </div>
+                    <div class="post-card-meta">
+                            <div class="post-card-byline-content flex">
+                                <span class="data post-card-byline-date flex">
+                                    <time datetime="2021-05-05">{{ dateForamt(post.published_at) }} </time>
+                                    <img alt="views"
+                                        class="byline-meta-views-img" loading="lazy"
+                                        src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png">
+                                    <span class="bull">
+                                        <span :data-post-url="post.slug" class="bull-views">{{ setViews(post.slug) }}</span>
+                                    </span>
+                                </span>
+                                <span class="likes flex">
+                                    <img alt="views"
+                                        class="byline-like"
+                                        loading="lazy"
+                                        src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg">
+                                    <span class="byline-meta-like">{{ setLikes(post.slug) }}</span>
+                                </span>
+                            </div>
+                        </div>
+                </section>                
+                </router-link>
 
         </div>
         <div id="loadMore"/>
@@ -50,7 +53,7 @@
 
 <script lang="js">
 // import PostMeta from './PostMeta.vue'
-import {utils} from '../utils';
+import {utils,contnet} from '../utils';
 
 export default {
     name: 'Feed',
@@ -60,12 +63,14 @@ export default {
     beforeMount() {
         this.getViews();
         this.fetchData();
+        this.fetchTags();
         this.$store.commit('initLoader', false);
     },
     mounted() {
         // console.debug('$renderTriggered');
         window.addEventListener('scroll', this.loadTrigger);
-        
+        this.loadTrigger();
+
     },
     renderTriggered() {
         // console.debug('$renderTriggered');
@@ -73,12 +78,14 @@ export default {
     updated: function () {
         this.$nextTick(function () {
             // console.debug('$nextTick');
+            // this.getViews();
         })
     },
     data() {
         return {
             posts: [],
             views: [],
+            tags:[],
             viewsDataSets: [],
             error: null,
             // intersepted: false,
@@ -107,8 +114,23 @@ export default {
             return utils.dateForamt(date);
         },
 
+        fetchTags(){
+            let api = contnet.tagsAPI;
+
+            fetch(api, {cache: "force-cache"})
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.tags);
+                    this.tags = data.tags;
+                }).catch(e => {
+                console.log(e);
+                this.error = true;
+            })
+        },
+
         fetchData() {
-            let api = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=86ada218ec30f07f1f44985d57&&filter=tag:ru&page=${this.page}&limit=10&include=tags`;
+            
+            let api = contnet.postsAPI + `page=${this.page}`;
 
             fetch(api, {cache: "force-cache"})
                 .then(response => response.json())
@@ -147,6 +169,7 @@ export default {
 
         loadTrigger() {
 
+
             let options = {
                 rootMargin: '0px',
                 threshold: 1.0
@@ -155,9 +178,12 @@ export default {
             function handleIntersection(entries) {
                 if (entries[0].isIntersecting && this.page) {
                     if (this.page < this.pages) {
+                    console.log('Log event and unobserve', entries[0]);
+                    if (this.page <= this.pages) {
                         this.fetchData();
                     }
                 }
+            }
             }
 
             let observer = new IntersectionObserver(handleIntersection.bind(this), options);
@@ -195,6 +221,7 @@ export default {
                     this.dataObjLike[item.id] = item.like || 0;
                 });
             });
+        
         },
     },
 
@@ -215,9 +242,13 @@ section {
     justify-content: space-between;
     margin: 0 auto;
     margin-bottom: 20px;
-    border-bottom: 1px solid #ccc;
+    /* border-bottom: 1px solid #ccc; */
     padding-bottom: 30px;
     padding: 15px;
+}
+
+.post_data {
+    display: flex;
 }
 
 .post a {
@@ -225,13 +256,20 @@ section {
     color: #101010;
 }
 
+h2{
+    font-size: 1.3rem;
+}
+
+p.post_subtitle{
+    font-size: 14px;
+    color: #444;
+}
 img.main_image {
     width: 100%;
     height: 195px;
-
     border-radius: 5px;
     padding: 4px;
-    border: 1px solid;
+    /* border: 1px solid; */
     /* box-shadow: 6px 6px 3px #101060; */
     left: -10px;
     position: relative;
@@ -308,10 +346,9 @@ footer {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin: 2px 0 0 6px;
-    color: #90a2aa;
+    margin: 5px 0;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: .2px;
     text-transform: uppercase;
 }
@@ -320,6 +357,7 @@ footer {
     display: inline-block;
     margin: 0 4px;
     opacity: .6;
+    color: #555;
 }
 
 .post-card-byline-content span {
@@ -327,4 +365,39 @@ footer {
     min-width: 20px;
 }
 
+@media screen and (orientation: portrait){
+
+}
+
+@media only screen and (min-width: 768px) and (orientation: landscape){
+
+    .post_data {
+        height: 220px;
+        display: flex;
+        align-content: space-between;
+    }
+    .post:first-child {
+        width: 100%;
+        max-width: 1200px;
+    }
+
+    .post:first-child .post-card-meta {
+        width: 400px;
+    }
+    .post:first-child section {
+        width: 440px;
+        display: block;
+        margin-top: 80px;
+    }
+
+    .post:first-child img.main_image {
+        width: 600px;
+        height: auto;
+    }
+
+    .post:first-child a{
+        display: flex;
+        justify-content: space-around;
+    }
+}
 </style>

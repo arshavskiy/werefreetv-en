@@ -157,7 +157,7 @@ section {
     max-width: 800px;
     color: #000;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 10px;
     letter-spacing: .2px;
     text-transform: uppercase;
 }

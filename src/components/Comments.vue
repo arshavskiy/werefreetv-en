@@ -13,10 +13,10 @@
             <p class="message_text">{{ comment.comment.value }}</p>
           </span>
         </div>
-        <input id="comments_name" v-model="userName" placeholder="name" required name="name" type="text">
-        <input id="comments_input" v-model="userComment" placeholder="comment" required name="comment" type="text">
+        <input id="comments_name" v-model="userName" placeholder="имя: " required name="name" type="text">
+        <input id="comments_input" v-model="userComment" placeholder="комментарий :" required name="comment" type="text">
         <button id="send" :class="{ enable: (userName && userComment) }"
-          @click="sendMessage">Send</button>
+          @click="sendMessage">отправить</button>
       </div>
     </div>
 
@@ -147,7 +147,9 @@
     display: flex;
     flex-direction: column;
     background: #eee;
-    border: 1px solid;
+    border-left: 1px solid #777;
+    border-top: 1px solid #777;
+    box-shadow: 7px 9px 8px 0px;
     border-radius: 5px;
   }
 
@@ -201,18 +203,6 @@
   .message_text {
     font-size: .8rem;
     color: initial;
-  }
-
-  #send {
-    width: 100%;
-    border: 1px solid;
-    background: #6495ed;
-    color: #fff;
-    border-radius: 5px;
-    padding: 5px;
-    font-weight: 900;
-    pointer-events: none;
-    background: #eee;
   }
 
   .enable {

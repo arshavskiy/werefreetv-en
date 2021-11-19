@@ -67,8 +67,7 @@
             async getPage(pageName) {
                 console.log('Register page: ', this.pages);
 
-                let api =
-                    `https://www.wearefree.tv/ghost/api/v3/content/page/slug/${pageName}?key=86ada218ec30f07f1f44985d57`;
+                let api =`https://www.wearefree.tv/ghost/api/v3/content/page/slug/${pageName}?key=86ada218ec30f07f1f44985d57`;
 
                 fetch(api, {
                         cache: "force-cache"

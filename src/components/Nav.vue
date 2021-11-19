@@ -12,6 +12,30 @@
                 <div class="nav-links">
                     <router-link to="/">главная</router-link>
                 </div>
+                <div class="nav-links mobile" v-for="page in pages" :key="page.id">
+                        <router-link :to="{
+                            name: page.url.split('.tv')[1].split('/')[1], 
+                            params: { 
+                                pageName: page.slug, 
+                                html: page.html 
+                                }
+                            }">{{ page.title }}
+                        </router-link>
+
+                </div>
+                <section class="desktop">
+                    <div class="nav-links " v-for="page in pages" :key="page.id">
+                        <router-link :to="{
+                            name: page.url.split('.tv')[1].split('/')[1], 
+                            params: { 
+                                pageName: page.slug, 
+                                html: page.html 
+                                }
+                            }">{{ page.title }}
+                        </router-link>
+
+                    </div>
+                </section>
                 <!-- <div class="nav-links nav-live">
                     <a href="https://broadcast.wearefree.tv/he.html">Live</a>
                 </div> -->
@@ -19,26 +43,23 @@
                     <router-link to="/survey">Survey</router-link>
                 </div> -->
 
-                <div class="nav-links" v-for="page in pages" :key="page.id">
-                    <router-link :to="{
-                        name: page.url.split('.tv')[1].split('/')[1], 
-                        params: { 
-                            pageName: page.slug, 
-                            html: page.html 
-                            }
-                        }">{{ page.title }}
-                    </router-link>
-
-                </div>
+                
             </div>
 
             <div class="site-nav-right">
-                <a href="https://t.me/nocensorshiptv" class="social-link" target="_blank">
-                    <img src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/t_logo.png"
-                         alt="Telegram account  https://t.me/nocensorshiptv" height="30"/>
-                </a>
-                <a href="https://ru.wearefree.tv" class="lang_url">EN</a>
-                <a href="https://www.wearefree.tv" class="lang_url">HE</a>
+                 <section class="nav_languages">
+                        <!-- <a href="https://t.me/nocensorshiptv" class="social-link" target="_blank">
+                            <img src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/t_logo.png"
+                                alt="Telegram account  https://t.me/nocensorshiptv" height="30"/>
+                        </a> -->
+                        <a href="https://en.wearefree.tv" class="lang_url">EN</a>
+                        <a href="https://ru.wearefree.tv" class="lang_url">РУ</a>
+                        <a href="https://www.wearefree.tv" class="lang_url">עב</a>
+                </section>
+
+                
+               
+               
             </div>
         </div>
 
@@ -46,6 +67,7 @@
 </template>
 
 <script lang="js">
+import {contnet} from '../utils';
 
 export default {
     name: 'home',
@@ -54,7 +76,7 @@ export default {
         this.fetchNav();
     },
     mounted() {
-        console.debug('nav:', this.$store);
+        // console.debug('nav:', this.$store);
     },
     data() {
         return {
@@ -67,10 +89,9 @@ export default {
     methods: {
 
         async fetchNav() {
-            console.log('pages: ', this.pages);
+            // console.log('pages: ', this.pages);
 
-            let api = `https://www.wearefree.tv/ghost/api/v3/content/pages/?key=${this.key}`;
-
+            let api = contnet.navAPI;
             fetch(api, {
                 referrer: ""
             })
@@ -104,20 +125,31 @@ a {
 
 .outer {
     padding: 0 5vw;
+    
 }
 
-nav .nav-links a {
-    text-align: left;
+.nav-links{
+    position: relative; 
+    top: 19px;
 }
+
+
 
 .site-nav-main {
     position: fixed;
+    
     background: #0a0b0c;
     top: 0;
     right: 0;
     left: 0;
     z-index: 2;
-    height: 64px;
+    height: 80px;
+}
+
+@media screen and (max-width:768px) {
+    .site-nav-main {
+        height: 64px;
+    }
 }
 
 .nav-live {
@@ -153,6 +185,7 @@ nav span {
 }
 
 nav .inner {
+    background: url('/images/nav_logo.png') left center no-repeat #0a0b0c;
     margin: 0 auto;
     max-width: 1000px;
     width: 100%;
@@ -163,11 +196,12 @@ nav .inner {
 }
 
 nav a.lang_url {
-    line-height: 1.6em;
+    /* line-height: 1.6em; */
     border: 1px solid #fff;
-    padding: 10px;
+    border-radius: 50%;
+    padding: 5px;
     color: #fff;
-    font-size: 12px;
+    font-size: 10px;
     margin: 0 5px;
 }
 
@@ -175,6 +209,7 @@ nav a.lang_url {
 .site-nav-left {
     display: flex;
     align-items: center;
+    margin-left: 190px;
 }
 
 .site-nav-logo {
@@ -191,12 +226,12 @@ nav a.lang_url {
     position: relative;
 }
 
-.site-nav-left div a {
-    padding: 12px;
+.nav-links a {
+    text-align: left;
+    padding: 5px 12px;
     color: #fff;
-    opacity: 0.8;
     transition: opacity 0.35s ease-in-out;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 800;
 }
 
@@ -205,12 +240,19 @@ nav a.lang_url {
 
 .site-nav-right {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    /* height: 70px; */
+    justify-content: space-between;
 }
 
 .site-nav-right > a {
     padding: 0 10px;
     color: #fff;
+}
+
+.site-nav-right .nav-links a{
+    position: relative;
+    top: -10px;
 }
 
 
@@ -245,18 +287,21 @@ social-link-fb svg, .social-link-wb svg {
 @media (max-width: 768px) {
 
     .site-nav-main {
+        background: url('/images/nav_logo_small.png') center no-repeat #0a0b0c;
         width: auto;
+        height: 64px;
     }
 
     nav .inner {
         position: absolute;
-        top: 64px;
+        top: 60px;
         left: -100%;
         flex-direction: column;
         width: inherit;
         background: #0a0b0c;
-        height: calc(100vh - 120px);
+        height: calc(100vh - 130px);
         padding: 10px;
+        padding-bottom: 20px;
         align-items: baseline;
         transition: 0.5s;
     }
@@ -273,6 +318,7 @@ social-link-fb svg, .social-link-wb svg {
     .site-nav-left {
         flex-direction: column;
         align-items: flex-start;
+        margin: 0;
     }
 
     .site-nav-left > div {
@@ -343,6 +389,26 @@ social-link-fb svg, .social-link-wb svg {
 
     input:checked ~ .inner {
         left: 0;
+    }
+}
+
+.desktop {
+    display: none;
+}
+.mobile {
+    display: initial;
+}
+
+@media only screen and (min-width: 768px) and (orientation: landscape){
+    .nav-links .router-link-active{
+        border-bottom: solid 7px #fff;
+    }
+
+    .mobile {
+        display: none;
+    }
+    .desktop {
+        display: initial;
     }
 }
 </style>

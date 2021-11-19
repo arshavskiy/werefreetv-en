@@ -40,8 +40,8 @@ export default {
     text-align: center;
     color: #2c3e50;
     position: relative;
-    top: 64px;
-    max-width: 1000px;
+    top: 80px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -56,5 +56,26 @@ export default {
 
 #nav a.router-link-exact-active {
     color: #42b983;
+}
+
+#mailFormPopUp {
+    border:2px solid;
+    display: none;
+    position: absolute;
+    top: calc(50vh - 140px);
+    left: calc(50vw - 153px);
+    z-index: 10;
+    width: 300px;
+    background: #fff;
+}
+
+#mailFormPopUp #af-form-1679204634 {
+    border-top: none;
+}
+
+.mailFormPopUp_header{
+    background: #fff;
+        text-align: center;
+        padding: 0;
 }
 </style>

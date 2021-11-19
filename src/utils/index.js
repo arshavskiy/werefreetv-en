@@ -322,7 +322,17 @@ utils.slugify = text => {
 
 }
 
+const contnet = {};
+const key = '86ada218ec30f07f1f44985d57';
+
+contnet.postsAPI = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=${key}&filter=tag:ru&limit=10&include=tags`;
+contnet.postAPI = `https://www.wearefree.tv/ghost/api/v3/content/posts/slug/`;
+contnet.tagsAPI = `https://www.wearefree.tv/ghost/api/v3/content/tags/?key=${key}`;
+contnet.navAPI = `https://www.wearefree.tv/ghost/api/v3/content/pages/?key=${key}`
+
+
 
 export {
-  utils as utils
+  utils as utils,
+  contnet as contnet
 };
