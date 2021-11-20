@@ -1,6 +1,6 @@
 <template lang="html">
 
-    <nav class="outer site-nav-main">
+    <nav class="outer site-nav-main ">
         <input type="checkbox"/>
         <span></span>
         <span></span>
@@ -97,9 +97,9 @@ export default {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
-
+                    // console.log(data);
                     this.pages = data.pages.filter(p => p.slug.includes('-ru'));
+                    // console.log('this.pages:', this.pages);
                     this.$store.commit('pushData', this.pages);
                     this.$store.commit('pageLoaded', true);
                     this.loading = false;
@@ -408,7 +408,7 @@ social-link-fb svg, .social-link-wb svg {
         display: none;
     }
     .desktop {
-        display: initial;
+        display: flex;
     }
 }
 </style>

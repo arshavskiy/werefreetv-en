@@ -74,7 +74,7 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
+                        // console.log(data);
                         this.page = data.pages;
 
                         console.debug('register 2 getters:', this.$store.getters.getData);

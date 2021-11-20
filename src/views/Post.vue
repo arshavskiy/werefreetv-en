@@ -4,8 +4,8 @@
         <h2>{{ post.title }}</h2>
         <p>{{ post.custom_excerpt }}</p>
 
-        <PostMeta :date="post.dateForamted" :title="post.title">
-        </PostMeta>
+        <PostMeta :date="post.dateForamted" :title="post.title" :tags="post.tags"/>
+        
         <article id="page" v-html="post.html"></article>
 
         <Comments />
@@ -34,7 +34,6 @@
                 views: {},
                 params: {},
                 postId: String,
-                tags: []
             }
         },
         beforeMount() {
@@ -57,7 +56,7 @@
                 localStorage.setItem(this.postId, JSON.stringify(this.post));
                 this.$store.commit('pageLoaded', true);
 
-                this.addMeta();
+                this.addMeta(post);
             });
         },
         renderTriggered() {
@@ -66,24 +65,23 @@
         computed: {},
         methods: {
 
-            async addMeta() {
+            addMeta(post) {
 
                 try {
-                     console.debug('addMeta published_at:  ', this.post.published_at)
                     document.querySelector('[rel="canonical"]').setAttribute("href", window.location.href);
-                    document.querySelector('meta[property="og:title"]').setAttribute("content", this.post.title);
-                    document.querySelector('meta[property="og:description"]').setAttribute("content", this.post.custom_excerpt);
+                    document.querySelector('meta[property="og:title"]').setAttribute("content", post.title);
+                    document.querySelector('meta[property="og:description"]').setAttribute("content", post.custom_excerpt);
                     document.querySelector('meta[property="og:url"]').setAttribute("content", window.location.href);
-                    document.querySelector('meta[property="og:image"]').setAttribute("content", this.post.feature_image);
-                    document.querySelector('meta[property="article:published_time"]').setAttribute("content", this.post.published_at);
-                    document.querySelector('meta[property="article:modified_time"]').setAttribute("content", this.post.updated_at);
-                    document.querySelector('meta[property="article:tag"]').setAttribute("content", this.post.tags[2].name);
-                    document.querySelector('meta[name="twitter:title"]').setAttribute("content", this.post.title);
-                    document.querySelector('meta[name="twitter:description"]').setAttribute("content", this.post.custom_excerpt);
+                    document.querySelector('meta[property="og:image"]').setAttribute("content", post.feature_image);
+                    document.querySelector('meta[property="article:published_time"]').setAttribute("content", post.published_at);
+                    document.querySelector('meta[property="article:modified_time"]').setAttribute("content", post.updated_at);
+                    document.querySelector('meta[property="article:tag"]').setAttribute("content", post.tags[2].name);
+                    document.querySelector('meta[name="twitter:title"]').setAttribute("content", post.title);
+                    document.querySelector('meta[name="twitter:description"]').setAttribute("content", post.custom_excerpt);
                     document.querySelector('meta[property="twitter:url"]').setAttribute("content", window.location.href);
-                    document.querySelector('meta[name="twitter:image"]').setAttribute("content", this.post.feature_image);
-                    document.querySelector('meta[name="description"]').setAttribute("content", this.post.custom_excerpt);
-                    document.querySelector('title').innerText = this.post.title;
+                    document.querySelector('meta[name="twitter:image"]').setAttribute("content", post.feature_image);
+                    document.querySelector('meta[name="description"]').setAttribute("content", post.custom_excerpt);
+                    document.title = post.title;
                 } catch (error) {
                     console.debug(error);
                 }

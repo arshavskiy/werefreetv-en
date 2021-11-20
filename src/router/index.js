@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Post from '../views/Post.vue'
+import Tags from '../views/Tags.vue'
 // import Register from '../views/Register.vue'
 import Support from '../views/Support.vue'
 // import Page from '../views/Page.vue'
@@ -25,8 +26,8 @@ const routes = [
     component: Contact
   },
   {
-    path: '/survey',
-    name: 'survey',
+    path: '/survey-ru',
+    name: 'survey-ru',
     component: Survey
   },
    {
@@ -46,6 +47,11 @@ const routes = [
     path: '/post/:postId',
     name: 'post',
     component: Post
+  },
+  {
+    path: '/tag/:tagName',
+    name: 'tag',
+    component: Tags
   }
   
 ]

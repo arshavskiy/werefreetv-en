@@ -1,9 +1,7 @@
 <template>
-
+    <h1>#{{tag}}</h1>
     <section class="en">
-
         <div v-for="post in posts" :key="post.id" class="post">
-
             <router-link :to="{ 
                 name: 'post', 
                 params: { 
@@ -23,10 +21,8 @@
                         <p class="post_subtitle">{{ post.excerpt }}</p>
                         
                     </div>
-                    
                 </section>                
                 </router-link>
-
             <div class="post-card-meta">
                 <div class="post-card-byline-content flex">
                     <span class="data post-card-byline-date flex">
@@ -48,17 +44,13 @@
                             
                 </div>
             </div>
-
             <div class="tags flex">
                 <span v-for="(t, index) in post.tags" :key="index">
-                    <router-link :to="{ name: 'tag', params: { tagName: t.name }}">{{filterTags(t.name)}}</router-link>
+                    <router-link :to="{ name: 'tag', params: { tagName: t.name }}">{{t.name}}</router-link>
                 </span>
             </div>
-
         </div>
-        <div id="loadMore"/>
-
-
+        <div id="loadMore2"/>
     </section>
 </template>
 
@@ -72,6 +64,7 @@ export default {
         msg: String,
     },
     beforeMount() {
+        this.tag = this.$route.params.tagName;
         this.getViews();
         this.fetchData();
         this.fetchTags();
@@ -97,10 +90,12 @@ export default {
             posts: [],
             views: [],
             tags:[],
+            tag:[],
             viewsDataSets: [],
             error: null,
             // intersepted: false,
             loading: true,
+            params: {},
             page: 1,
             pages: 1,
             dataObjRaw: {},
@@ -111,12 +106,6 @@ export default {
 
     },
     methods: {
-        filterTags (tagName){
-            if (tagName.includes('ru')) return null
-            if (tagName.includes('en')) return null
-            else return tagName;
-
-        },  
         setViews(id) {
             // console.debug('setViews id', id);
             // console.debug('setViews this.dataObjRaw[id]', this.dataObjRaw[id]);
@@ -132,7 +121,8 @@ export default {
         },
 
         fetchTags(){
-            let api = contnet.tagsAPI;
+            let decodedTag = decodeURIComponent(encodeURIComponent(this.tag));
+            let api = contnet.tagsAPI + `&${decodedTag}`;
 
             fetch(api, {cache: "force-cache"})
                 .then(response => response.json())
@@ -147,12 +137,14 @@ export default {
 
         fetchData() {
             
-            let api = contnet.postsAPI + `page=${this.page}`;
+            let decodedTag = decodeURIComponent(encodeURIComponent(this.tag));
+            let api = contnet.postByTagAPI + `&filter=tag:${decodedTag}&page=${this.page}`;
 
             fetch(api, {cache: "force-cache"})
                 .then(response => response.json())
                 .then(data => {
                     // console.log(data.posts);
+                    if (data.posts.length === 0) this.$router.push({ path: '/' });
                     data.posts = data.posts.filter(p => {
                         if (/[A-Za-z]/.test(p.title)){
                             return null
@@ -204,7 +196,7 @@ export default {
             }
 
             let observer = new IntersectionObserver(handleIntersection.bind(this), options);
-            const triggerElm = document.querySelector('#loadMore');
+            const triggerElm = document.querySelector('#loadMore2');
             if (triggerElm){
                 const processChange = this.debounce(() => observer.observe(triggerElm));
                 processChange();
@@ -214,13 +206,6 @@ export default {
 
         getViews() {
 
-            // this.viewsDataSets = document.querySelectorAll("span[data-post-url]");
-            // let postUrls = [];
-            //
-            // this.viewsDataSets.forEach(function (set) {
-            //     postUrls.push(set.dataset.postUrl);
-            // });
-
             const api = 'https://data.wearefree.tv/views';
 
             fetch(api, {
@@ -228,12 +213,6 @@ export default {
             }).then(response => {
                 return response.json();
             }).then(data => {
-
-                // const feedItemsList = postUrls.toString();
-                //
-                // this.views = data.views.filter(function (d) {
-                //     return feedItemsList.includes(d.id);
-                // });
 
                 this.views = data.views;
                 this.views.forEach(item => {
@@ -255,15 +234,13 @@ section {
 }
 
 .post {
-    position: relative;
-    text-align: left;
     width: 85vw;
     max-width: 360px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin: 0 auto;
-    margin-bottom: 0;
+    margin-bottom: 20px;
     /* border-bottom: 1px solid #ccc; */
     padding-bottom: 30px;
     padding: 15px;
@@ -316,7 +293,7 @@ a {
     color: #42b983;
 }
 
-#loadMore {
+#loadMore2 {
     height: 1px;
     width: 100%;
 }
@@ -329,7 +306,7 @@ a {
 }
 
 .post {
-    
+    text-align: left;
 }
 
 .post footer {
@@ -386,6 +363,7 @@ footer {
     margin: 0;
     min-width: 20px;
 }
+
 .tags {
     position: relative;
     top: -24px;
@@ -408,12 +386,9 @@ footer {
 
 @media only screen and (min-width: 768px) and (orientation: landscape){
 
-    .post{
-        margin-bottom: 20px;
-    }
     .tags {
-        /* justify-content: flex-start; */
-        /* top: 0; */
+        /* justify-content: flex-start;
+        top: 0; */
     }
 
     .post_data {
@@ -426,7 +401,7 @@ footer {
         max-width: 1200px;
     }
 
-    .post:first-child .tags {
+  .post:first-child .tags {
         justify-content: flex-end;
         top: -29px;
         /* right: 514px;    */

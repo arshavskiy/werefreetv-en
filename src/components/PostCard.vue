@@ -1,6 +1,6 @@
 <template lang="html">
   <section class="home">
-    <h1>post Component</h1>
+    <h1>Post Component</h1>
     
   </section>
 </template>

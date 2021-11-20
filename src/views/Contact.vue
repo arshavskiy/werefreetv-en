@@ -2,7 +2,8 @@
   <!-- <Nav /> -->
   <section class="register">
     <h2>{{getTitle}}</h2>
-    <article v-html="getHTMLFromNav"></article>
+    <!-- <article v-html="getHTMLFromNav"></article> -->
+    <p><a href="nocensorshiptv@gmail.com">nocensorshiptv@gmail.com</a></p>
   </section>
 </template>
 

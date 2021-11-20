@@ -7,7 +7,16 @@
                 <img class="byline-meta-views-img"
                      src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png" alt="views"
                      loading="lazy">
+
+                     
                 <span class="bull-views">{{ views.count }}</span>
+
+                <div class="tags flex">
+                    <span v-for="(t, index) in tags" :key="index">
+                        <router-link :to="{ name: 'tag', params: { tagName: t.name }}">{{filterTags(t.name)}}</router-link>
+                    </span>
+                </div>
+
             </span>
 
             <span class="likes flex" v-on:click.once="setLike($event)">
@@ -38,9 +47,9 @@ export default {
         text: String,
         published: String,
         updated: String,
-        tags: Object,
-
+        tags: [],
     },
+
     data() {
         return {
             params: {},
@@ -69,11 +78,15 @@ export default {
     renderTriggered() {
     },
     methods: {
-
+        filterTags (tagName){
+            if (tagName && tagName.includes('ru')) return null
+            else if (tagName && tagName.includes('en')) return null
+            else return tagName;
+        },
         sharePost() {
             if (navigator.share) {
                 const title = this.title || document.title;
-                const url = 'https://www.wearefree.tv/tag/' + document.location.pathname.replace('/post/','');
+                const url = 'https://ru.wearefree.tv/tag/' + document.location.pathname.replace('/post/','');
 
                 navigator.share({
                     title: title,
@@ -181,4 +194,11 @@ section {
     height: 20px;
 }
 
+.tags {
+    margin: 0 20px;
+}
+
+.tags span{
+    padding: 0 5px;
+}
 </style>

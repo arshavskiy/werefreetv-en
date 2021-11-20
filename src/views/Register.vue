@@ -55,4 +55,8 @@ export default {
   main{
     min-height: 77vh;
   }
+
+  .register iframe{
+    height: 500px;
+  }
 </style>
