@@ -1,5 +1,5 @@
-const utils = {};
 
+const utils = {};
 utils.canIsue = (obj, name) => {
   return obj[name];
 }
@@ -322,26 +322,20 @@ utils.slugify = text => {
 
 }
 
-utils.filterTags = tagName => {
-  console.log('tagName:', tagName);
-  if (tagName && tagName.includes('ru')) return null
-
-}
-
 const contnet = {};
 const key = '86ada218ec30f07f1f44985d57';
-
 contnet.postsAPI = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=${key}&filter=tag:ru&limit=10&include=tags&version=v3`;
 contnet.postByTagAPI = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=${key}&limit=10&include=tags&version=v3`;
 contnet.tagsAPI = `https://www.wearefree.tv/ghost/api/v3/content/tags/?key=${key}`;
 contnet.navAPI = `https://www.wearefree.tv/ghost/api/v3/content/pages/?key=${key}`
 
 // for (const property in contnet) {
-//   contnet[property] = contnet[property] + '&version=v3'
-// }
+  //   contnet[property] = contnet[property] + '&version=v3'
+  // }
 
 contnet.postAPI = `https://www.wearefree.tv/ghost/api/v3/content/posts/slug/`;
-
+contnet.surveyRuPostAPI = `https://data.wearefree.tv/survey-ru`;
+contnet.surveyRuAPI = 'https://data.wearefree.tv/get-survey-ru';
 
 export {
   utils as utils,
