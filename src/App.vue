@@ -41,8 +41,8 @@ export default {
     color: #2c3e50;
     position: relative;
     top: 80px;
-    max-width: 1200px;
-    margin: 0 auto;
+    /* max-width: 1200px; */
+    /* margin: 0 auto; */
 }
 
 #nav {

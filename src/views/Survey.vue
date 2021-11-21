@@ -180,17 +180,24 @@
     }
 </script>
 
+
 <style>
 
-    #app { 
+    section.main_app { 
         width: 100%;
         max-width: initial;
     }
 
-    main {
-        width: 100% !important;
+    section.main_app main {
+        width: 100%;
     }
 
+
+</style>
+
+<style scoped>
+
+    
     .survey-sum {
         background: #eee;
         min-height: 30vh;
@@ -241,7 +248,7 @@
     .arrow-down {
         position: relative;
         right: -17px;
-        top: 43px;
+        top: 40px;
         width: 0; 
         height: 0; 
         border-left: 18px solid transparent;
@@ -251,7 +258,7 @@
 
     .arrow-inner {
         position: relative;
-        top: 42px;
+        top: 38px;
         left: -18px;
         width: 0; 
         height: 0; 

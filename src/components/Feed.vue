@@ -1,6 +1,6 @@
 <template>
 
-    <section class="en">
+    <section class="feed ru">
 
         <div v-for="post in posts" :key="post.id" class="post">
 
@@ -249,6 +249,12 @@ export default {
 </script>
 
 <style scoped>
+
+section.feed {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 section {
     display: flex;
     flex-wrap: wrap;
@@ -434,6 +440,9 @@ footer {
 
     .post:first-child .post-card-meta {
         width: 400px;
+        position: absolute;
+        bottom: 30px;
+        right: 178px;
     }
     .post:first-child section {
         width: 440px;
