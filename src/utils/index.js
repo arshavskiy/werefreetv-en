@@ -329,12 +329,8 @@ contnet.postByTagAPI = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key
 contnet.tagsAPI = `https://www.wearefree.tv/ghost/api/v3/content/tags/?key=${key}`;
 contnet.navAPI = `https://www.wearefree.tv/ghost/api/v3/content/pages/?key=${key}`
 
-// for (const property in contnet) {
-  //   contnet[property] = contnet[property] + '&version=v3'
-  // }
-
 contnet.postAPI = `https://www.wearefree.tv/ghost/api/v3/content/posts/slug/`;
-contnet.surveyRuPostAPI = `https://data.wearefree.tv/survey-ru`;
+contnet.surveyRuPostAPI = `https://data.wearefree.tv/survey-ru/`;
 contnet.surveyRuAPI = 'https://data.wearefree.tv/get-survey-ru';
 
 export {

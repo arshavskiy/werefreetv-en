@@ -7,8 +7,10 @@
                 <div>
                     <input v-model="message" minlength="3" required placeholder="имя: " />
                     <input v-model="data" minlength="3" required placeholder="как связаться: " />
+                    <!-- <input v-model="questions" minlength="3" placeholder="ваши вопросы: " /> -->
+                    <textarea v-model="questions" rows="4" cols="50" placeholder="ваши вопросы: " name="questions"></textarea>
                     <!-- <button id="send" :class="{ enable: (message && data) }" @click="sendSurvey()">отправить</button> -->
-                    <button id="send" @click="sendSurvey()">отправить</button>
+                    <button id="send" :class="{ enable: (message && data) }" @click="sendSurvey()">отправить</button>
                 </div>
             </div>           
         </div>
@@ -21,15 +23,24 @@
         <h2>
             вы выбрали:
         </h2>
-        <ol>
-            <li v-for="(item, index) in surveys" :key="index">
-                <span class="surveys-name">{{ item.name }}</span>
-                <span v-if="!canVote(item.name)" class="surveys-selected"> </span>
-                <span v-if="canVote(item.name)" class="surveys-select" v-on:click.once="sendSurvey(item)"> + </span>
-                <span class="surveys-liner" :style="{ width: graph(item.weight) + 'px' }"></span>
-                <span class="surveys-weight">{{ item.weight }}</span>
-            </li>
-        </ol>
+        <section id="survey_data">
+            <div v-for="(item, index) in surveys" :key="index" style="    display: flex; margin: 10px 0;">
+
+                <span class="survey_data_names">
+                    <span class="surveys-name">{{ item.name }}</span>
+                    <span v-if="!canVote(item.name)" class="surveys-selected"> </span>
+                    <span v-if="canVote(item.name)" class="surveys-select" v-on:click.once="sendSurvey(item, true)"> + </span>
+
+                </span>
+
+                <span class="survey_data_bars">
+                    <span class="surveys-liner" :style="{ width: graph(item.weight) + 'px' }"></span>
+                    <span class="surveys-weight">{{ item.weight }}</span>
+
+                </span>
+
+            </div>
+        </section>
     </section>
 </template>
 
@@ -48,6 +59,7 @@
                 surveys: {},
                 checkedNames: [],
                 cookies: {},
+                questions: '',
                 maxGraph: Number
             }
         },
@@ -132,7 +144,8 @@
                 fetch(contnet.surveyRuAPI, {
                         referrer: "ru.wearefree.tv",
                         referrerPolicy: "no-referrer-when-downgrade",
-                        accessControlAllowOrigin: "ru.wearefree.tv"
+                        accessControlAllowOrigin: "ru.wearefree.tv",
+                        // mode: 'cors', // no-cors
                     }).then(response => response.json())
                     .then(data => {
                         console.log('suveys: ', data);
@@ -142,10 +155,11 @@
                     });
 
             },
-            sendSurvey(item) {
+            sendSurvey(item, plus) {
                 console.debug(this.checkedNames);
                 let name = this.message || item.name;
-                let data = this.data || '';
+                let data = this.data;
+                let questions = this.questions || '';
                 const cantIsue = utils.canIsue(this.cookies, name);
 
                 if (cantIsue) {
@@ -160,18 +174,23 @@
                 });
                 this.cookies[name] = true;
 
-                let api = `${contnet.surveyRuPostAPI}${encodeURIComponent(name)}/${encodeURIComponent(data)}`;
+                let api = `${contnet.surveyRuPostAPI}${encodeURIComponent(name)}/${encodeURIComponent(data)}/${encodeURIComponent(questions)}`;
+
+                if (plus){
+                    data = '+';
+                    api = `${contnet.surveyRuPostAPI}${encodeURIComponent(name)}/${encodeURIComponent(data)}`;
+                }
 
                 fetch(api, {
                         referrer: "ru.wearefree.tv",
                         referrerPolicy: "no-referrer-when-downgrade",
-                        accessControlAllowOrigin: "ru.wearefree.tv"
+                        accessControlAllowOrigin: "ru.wearefree.tv",
                     }).then(response => response.json())
-                    .then(data => {
-                        this.message = this.data = '';
-                        console.log('suveys: ', data);
-                        this.surveys = this.filterRaw(data);
-                    });
+                .then(data => {
+                    this.message = this.data = '';
+                    console.log('suveys: ', data);
+                    this.surveys = this.filterRaw(data);
+                });
             }
 
 
@@ -192,57 +211,13 @@
         width: 100%;
     }
 
-
-</style>
-
-<style scoped>
-
-    
-    .survey-sum {
-        background: #eee;
-        min-height: 30vh;
-        max-height: 700px;
-        padding: 30px;
-        border-top: 1px solid rgb(185, 185, 185);
-        margin: 0 -8px;
-    }
-
-    .survey-sum ol {
-        max-width: 700px;
-        margin: 0 auto;
-    }
-    
     .question_app {
         /* direction: rtl; */
         font-family: sans-serif;
         padding: 20px 30px;
-        margin-top: 1em;
         margin-bottom: 20px;
         user-select: none;
         overflow-x: auto;
-    }
-
-
-    .question_app .survey_holder {
-        display: flex;
-        justify-content: center;
-    }
-
-    h1,h2 {
-        color: #000;
-    }
-
-    .survey_holder>div{
-        width: 400px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .question_app button,
-    .question_app input {
-        padding: 10px;
     }
 
     .arrow-down {
@@ -267,6 +242,59 @@
         border-top: 20px solid #fff;
     }
 
+
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 40px;
+    }
+
+    h1,h2 {
+        color: #000;
+    }
+
+    h2{
+        font-size: 1.4rem;
+    }
+
+</style>
+
+<style scoped>
+
+    .survey-sum {
+        background: #eee;
+        min-height: 30vh;
+        max-height: 700px;
+        padding: 30px;
+        border-top: 1px solid rgb(185, 185, 185);
+        margin: 0 -8px;
+    }
+
+    .survey-sum section#survey_data {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .question_app .survey_holder {
+        display: flex;
+        justify-content: center;
+    }
+
+    .survey_holder>div,
+    .survey_holder>form{
+        width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .question_app button,
+    .question_app input {
+        padding: 10px;
+    }
+
+    .question_app textarea,
     .question_app input {
         min-width: 200px;
         border: none;
@@ -275,12 +303,15 @@
         border-radius: 3px;
     }
 
+   .question_app textarea{
+       width: 216px;
+   }
     .question_app button {
         pointer-events: none;
         margin-top: 20px;
         padding: 10px 20px;
         font-size: 16px;
-        background: #f00;
+        background: red;
         color: #fff;
         border: none;
         font-weight: bold;
@@ -293,22 +324,33 @@
         color: #fff !important;
     }
 
-    ol {
-        text-align: right;
+    section#survey_data{
+        text-align: left;
         margin: 0;
         padding: 20px;
     }
 
-    ol li {
+    section#survey_data .survey_data_names,
+    section#survey_data .survey_data_bars {
         display: flex;
         justify-content: space-between;
         position: relative;
         color:rgb(61, 137, 184);
         font-weight: bold;
         height: 18px;
-        margin:7px 0;
     }
 
+    section#survey_data .survey_data_names{
+        justify-content: flex-end;
+        display: inline-flex;
+        width: 300px;
+    }
+
+    section#survey_data .survey_data_bars{
+        justify-content: flex-start;
+        display: inline-flex;
+      
+    }
     .survey_sum {
         background: #eee;
         height: 700px;
@@ -318,12 +360,20 @@
     .surveys-name {
         position: relative;
         color: rgb(61, 137, 184);
+        font-weight: 500;
+        font-size: 12px;
+        overflow: hidden;
     }
 
     .surveys-liner {
         background: rgb(61, 137, 184);
         bottom: -1px;
         border-radius: 3px;
+    }
+
+    .surveys-name,
+    .surveys-weight{
+       padding-left: 10px;
     }
 
     .question_app_time {
@@ -334,12 +384,14 @@
 
     .surveys-selected {
         width: 20px;
+        margin: 0 15px;
+        
     }
 
     .surveys-select {
+        margin: 0 15px;
         padding: 0 4px;
         border-radius: 50%;
-        margin: 0;
         display: flex;
         justify-content: space-between;
         position: relative;
@@ -360,11 +412,12 @@
             padding: 30px 0;
           
         }
-        .survey-sum ol {
+        .survey-sum section#survey_data {
             font-size: 12px;
         }
 
-        ol li {
+        section#survey_data .survey_data_bars ,
+        section#survey_data .survey_data_names {
             height: 14px;
         }
     }

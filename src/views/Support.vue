@@ -1,9 +1,16 @@
 <template>
   <!-- <Nav /> -->
-  <section class="register">
+  <section class="register question_app">
     <h2>{{getTitle}}</h2>
+  </section>
+
+  <span class="arrow-down"/>
+  <span class="arrow-inner"/>
+
+  <section class="page_holder">
     <article v-html="getDataFromNav"></article>
   </section>
+
 </template>
 
 <script>
@@ -55,3 +62,32 @@ export default {
 
 }
 </script>
+
+
+<style>
+
+.page_holder {
+   
+    background: #eee;
+    min-height: 30vh;
+    max-height: 700px;
+    padding: 30px;
+    margin: 0 -8px;
+    padding-top: 30px;
+    border-top: 1px solid rgb(185, 185, 185);
+
+}
+
+.register {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+</style>
+<style scoped>
+
+
+
+</style>

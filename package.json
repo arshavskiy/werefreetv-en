@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "vue-cli-service build && scp -r ./dist root@data.wearefree.tv:/var/www/wearefreetv-ru/ &&  ssh root@data.wearefree.tv"
+    "deploy": "vue-cli-service build && scp -r ./dist root@data.wearefree.tv:/var/www/wearefreetv-ru/ &&  ssh root@data.wearefree.tv && systemctl reload nginx"
   },
   "dependencies": {
     "@tryghost/content-api": "^1.5.16",

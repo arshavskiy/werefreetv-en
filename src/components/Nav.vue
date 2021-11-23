@@ -400,7 +400,7 @@ social-link-fb svg, .social-link-wb svg {
 }
 
 @media only screen and (min-width: 768px) and (orientation: landscape){
-    .nav-links .router-link-active{
+    .router-link-active{
         border-bottom: solid 7px #fff;
     }
 
