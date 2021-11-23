@@ -35,8 +35,8 @@ export default {
   },
   mounted() {
 
-    let params = this.page;
-    console.debug("Register params:", params);
+      let params = this.page;
+      console.debug("Register params:", params);
     console.debug('register 1 getters:', this.$store.getters.getData);
     console.log('Register get page: ', this.page);
 

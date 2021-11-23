@@ -1,15 +1,15 @@
 <template>
-  <!-- <Nav /> -->
-  <section class="register question_app">
-    <h2>{{getTitle}}</h2>
-  </section>
+    <!-- <Nav /> -->
+    <section class="register question_app">
+        <h2>{{ getTitle }}</h2>
+    </section>
 
-  <span class="arrow-down"/>
-  <span class="arrow-inner"/>
+    <span class="arrow-down"/>
+    <span class="arrow-inner"/>
 
-  <section class="page_holder">
-    <article v-html="getDataFromNav"></article>
-  </section>
+    <section class="page_holder">
+        <article v-html="getDataFromNav"></article>
+    </section>
 
 </template>
 
@@ -19,46 +19,44 @@
 
 
 export default {
-  name: 'Support',
-  components: {
-    // Nav,
-  },
-  data() {
-    return {
-      page: {}
-    }
-  },
-  beforeMount() {
-    this.page = this.$route.params;
-    this.page.gotContentFromFeed = true;
-  },
-  mounted() {
-
-    let params = this.page;
-    console.debug("Register params:", params);
-    console.debug('register 1 getters:', this.$store.getters.getData);
-    console.log('Register get page: ', this.page);
-
-  },
-  computed: {
-    getDataFromNav () {
-      return this.$store.getters.getData.html;
+    name: 'Support',
+    components: {
+        // Nav,
     },
-    getTitle () {
-      return this.$store.getters.getData.title;
-    }
-  },
-  watch: {
-    getDataFromNav (newNavData, old) {
-      // Our fancy notification (2).
-      this.page = newNavData;
-      console.log(`We have ${old} state now, yay!`)
-      console.log(`We have ${newNavData} state now, yay!`)
-    }
-  },
-  methods: {
+    data() {
+        return {
+            page: {}
+        }
+    },
+    beforeMount() {
+        this.page = this.$route.params;
+        this.page.gotContentFromFeed = true;
+    },
+    mounted() {
 
-  },
+        let params = this.page;
+        console.debug("Register params:", params);
+        console.debug('register 1 getters:', this.$store.getters.getData);
+        console.log('Register get page: ', this.page);
+
+    },
+    computed: {
+        getDataFromNav() {
+            return this.$store.getters.getData.html;
+        },
+        getTitle() {
+            return this.$store.getters.getData.title;
+        }
+    },
+    watch: {
+        getDataFromNav(newNavData, old) {
+            // Our fancy notification (2).
+            this.page = newNavData;
+            console.log(`We have ${old} state now, yay!`)
+            console.log(`We have ${newNavData} state now, yay!`)
+        }
+    },
+    methods: {},
 
 }
 </script>
@@ -67,7 +65,7 @@ export default {
 <style>
 
 .page_holder {
-   
+
     background: #eee;
     min-height: 30vh;
     max-height: 700px;
@@ -87,7 +85,6 @@ export default {
 
 </style>
 <style scoped>
-
 
 
 </style>

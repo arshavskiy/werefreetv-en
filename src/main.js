@@ -16,13 +16,13 @@ const store = createStore({
         minusOne(state) {
             state.count--
         },
-        pushData (state, n) {
+        pushData(state, n) {
             state.route.html = n;
         },
-        pageLoaded (state){
+        pageLoaded(state) {
             state.loaded = true;
         },
-        initLoader (state){
+        initLoader(state) {
             state.loaded = false;
         }
 
@@ -41,7 +41,7 @@ const store = createStore({
                 title: page.title
             }
         },
-        loaded(state){
+        loaded(state) {
             console.debug('loaded: ', state.loaded);
             return state.loaded;
         }

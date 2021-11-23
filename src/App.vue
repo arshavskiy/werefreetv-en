@@ -59,7 +59,7 @@ export default {
 }
 
 #mailFormPopUp {
-    border:2px solid;
+    border: 2px solid;
     display: none;
     position: absolute;
     top: calc(50vh - 140px);
@@ -73,9 +73,9 @@ export default {
     border-top: none;
 }
 
-.mailFormPopUp_header{
+.mailFormPopUp_header {
     background: #fff;
-        text-align: center;
-        padding: 0;
+    text-align: center;
+    padding: 0;
 }
 </style>

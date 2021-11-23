@@ -16,42 +16,43 @@
                             published_at: post.published_at
                      }}">
 
-                <img :src="post.feature_image" class="main_image" loading="lazy"/>  
+                <img :src="post.feature_image" class="main_image" loading="lazy"/>
                 <section class="post_data">
-                    <div>  
+                    <div>
                         <h2>{{ post.title }}</h2>
                         <p class="post_subtitle">{{ post.excerpt }}</p>
-                        
+
                     </div>
-                    
-                </section>                
-                </router-link>
+
+                </section>
+            </router-link>
 
             <div class="post-card-meta">
                 <div class="post-card-byline-content flex">
                     <span class="data post-card-byline-date flex">
                         <time datetime="2021-05-05">{{ dateForamt(post.published_at) }} </time>
                         <img alt="views"
-                            class="byline-meta-views-img" loading="lazy"
-                            src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png">
+                             class="byline-meta-views-img" loading="lazy"
+                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png">
                         <span class="bull">
                             <span :data-post-url="post.slug" class="bull-views">{{ setViews(post.slug) }}</span>
                         </span>
                     </span>
                     <span class="likes flex">
                         <img alt="views"
-                            class="byline-like"
-                            loading="lazy"
-                            src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg">
+                             class="byline-like"
+                             loading="lazy"
+                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg">
                         <span class="byline-meta-like">{{ setLikes(post.slug) }}</span>
                     </span>
-                            
+
                 </div>
             </div>
 
             <div class="tags flex">
                 <span v-for="(t, index) in post.tags" :key="index">
-                    <router-link :to="{ name: 'tag', params: { tagName: t.name }}">{{filterTags(t.name)}}</router-link>
+                    <router-link
+                        :to="{ name: 'tag', params: { tagName: t.name }}">{{ filterTags(t.name) }}</router-link>
                 </span>
             </div>
 
@@ -64,7 +65,7 @@
 
 <script lang="js">
 // import PostMeta from './PostMeta.vue'
-import {utils,contnet} from '../utils';
+import {contnet, utils} from '../utils';
 
 export default {
     name: 'Feed',
@@ -96,7 +97,7 @@ export default {
         return {
             posts: [],
             views: [],
-            tags:[],
+            tags: [],
             viewsDataSets: [],
             error: null,
             // intersepted: false,
@@ -107,16 +108,14 @@ export default {
             dataObjLike: {}
         }
     },
-    computed: {
-
-    },
+    computed: {},
     methods: {
-        filterTags (tagName){
+        filterTags(tagName) {
             if (tagName.includes('ru')) return null
             if (tagName.includes('en')) return null
             else return tagName;
 
-        },  
+        },
         setViews(id) {
             // console.debug('setViews id', id);
             // console.debug('setViews this.dataObjRaw[id]', this.dataObjRaw[id]);
@@ -131,7 +130,7 @@ export default {
             return utils.dateForamt(date);
         },
 
-        fetchTags(){
+        fetchTags() {
             let api = contnet.tagsAPI;
 
             fetch(api, {cache: "force-cache"})
@@ -146,7 +145,7 @@ export default {
         },
 
         fetchData() {
-            
+
             let api = contnet.postsAPI + `page=${this.page}`;
 
             fetch(api, {cache: "force-cache"})
@@ -154,21 +153,21 @@ export default {
                 .then(data => {
                     // console.log(data.posts);
                     data.posts = data.posts.filter(p => {
-                        if (/[A-Za-z]/.test(p.title)){
+                        if (/[A-Za-z]/.test(p.title)) {
                             return null
                         } else {
                             return p;
                         }
                     });
                     this.posts = this.posts.concat(data.posts);
-                   
+
                     data.posts.forEach(post => {
                         localStorage.setItem(post.slug, JSON.stringify(post));
                     });
                     this.pages = data.meta.pagination.pages;
                     this.loading = false;
                     this.$store.commit('pageLoaded', true);
-                    this.page = data.meta.pagination.next || 1; 
+                    this.page = data.meta.pagination.next || 1;
 
                 }).catch(e => {
                 console.log(e);
@@ -176,11 +175,13 @@ export default {
             })
         },
 
-        debounce(func, timeout = 300){
+        debounce(func, timeout = 300) {
             let timer;
             return (...args) => {
                 clearTimeout(timer);
-                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+                timer = setTimeout(() => {
+                    func.apply(this, args);
+                }, timeout);
             };
         },
 
@@ -195,21 +196,21 @@ export default {
             function handleIntersection(entries) {
                 if (entries[0].isIntersecting && this.page) {
                     if (this.page < this.pages) {
-                    console.log('Log event and unobserve', entries[0]);
-                    if (this.page <= this.pages) {
-                        this.fetchData();
+                        console.log('Log event and unobserve', entries[0]);
+                        if (this.page <= this.pages) {
+                            this.fetchData();
+                        }
                     }
                 }
-            }
             }
 
             let observer = new IntersectionObserver(handleIntersection.bind(this), options);
             const triggerElm = document.querySelector('#loadMore');
-            if (triggerElm){
+            if (triggerElm) {
                 const processChange = this.debounce(() => observer.observe(triggerElm));
                 processChange();
-            } 
-            
+            }
+
         },
 
         getViews() {
@@ -241,7 +242,7 @@ export default {
                     this.dataObjLike[item.id] = item.like || 0;
                 });
             });
-        
+
         },
     },
 
@@ -284,14 +285,15 @@ section {
     color: #101010;
 }
 
-h2{
+h2 {
     font-size: 1.3rem;
 }
 
-p.post_subtitle{
+p.post_subtitle {
     font-size: 14px;
     color: #444;
 }
+
 img.main_image {
     width: 100%;
     height: 195px;
@@ -335,7 +337,7 @@ a {
 }
 
 .post {
-    
+
 }
 
 .post footer {
@@ -392,6 +394,7 @@ footer {
     margin: 0;
     min-width: 20px;
 }
+
 .tags {
     position: relative;
     top: -24px;
@@ -404,19 +407,20 @@ footer {
     flex-wrap: wrap;
 }
 
-.tags span{
+.tags span {
     margin-right: 10px;
 }
 
-@media screen and (orientation: portrait){
+@media screen and (orientation: portrait) {
 
 }
 
-@media only screen and (min-width: 768px) and (orientation: landscape){
+@media only screen and (min-width: 768px) and (orientation: landscape) {
 
-    .post{
+    .post {
         margin-bottom: 20px;
     }
+
     .tags {
         /* justify-content: flex-start; */
         /* top: 0; */
@@ -427,6 +431,7 @@ footer {
         display: flex;
         align-content: space-between;
     }
+
     .post:first-child {
         width: 100%;
         max-width: 1200px;
@@ -444,6 +449,7 @@ footer {
         bottom: 30px;
         right: 178px;
     }
+
     .post:first-child section {
         width: 440px;
         display: block;
@@ -455,11 +461,11 @@ footer {
         height: auto;
     }
 
-    .post:first-child a{
+    .post:first-child a {
         display: flex;
         /* justify-content: space-around; */
     }
 
-    
+
 }
 </style>

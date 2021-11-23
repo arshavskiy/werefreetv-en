@@ -13,14 +13,14 @@
                     <router-link to="/">главная</router-link>
                 </div>
                 <div class="nav-links mobile" v-for="page in pages" :key="page.id">
-                        <router-link :to="{
+                    <router-link :to="{
                             name: page.url.split('.tv')[1].split('/')[1], 
                             params: { 
                                 pageName: page.slug, 
                                 html: page.html 
                                 }
                             }">{{ page.title }}
-                        </router-link>
+                    </router-link>
 
                 </div>
                 <section class="desktop">
@@ -43,23 +43,21 @@
                     <router-link to="/survey">Survey</router-link>
                 </div> -->
 
-                
+
             </div>
 
             <div class="site-nav-right">
-                 <section class="nav_languages">
-                        <!-- <a href="https://t.me/nocensorshiptv" class="social-link" target="_blank">
-                            <img src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/t_logo.png"
-                                alt="Telegram account  https://t.me/nocensorshiptv" height="30"/>
-                        </a> -->
-                        <a href="https://en.wearefree.tv" class="lang_url">EN</a>
-                        <a href="https://ru.wearefree.tv" class="lang_url">РУ</a>
-                        <a href="https://www.wearefree.tv" class="lang_url">עב</a>
+                <section class="nav_languages">
+                    <!-- <a href="https://t.me/nocensorshiptv" class="social-link" target="_blank">
+                        <img src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/t_logo.png"
+                            alt="Telegram account  https://t.me/nocensorshiptv" height="30"/>
+                    </a> -->
+                    <a href="https://en.wearefree.tv" class="lang_url">EN</a>
+                    <a href="https://ru.wearefree.tv" class="lang_url">РУ</a>
+                    <a href="https://www.wearefree.tv" class="lang_url">עב</a>
                 </section>
 
-                
-               
-               
+
             </div>
         </div>
 
@@ -125,19 +123,18 @@ a {
 
 .outer {
     padding: 0 5vw;
-    
+
 }
 
-.nav-links{
-    position: relative; 
+.nav-links {
+    position: relative;
     top: 19px;
 }
 
 
-
 .site-nav-main {
     position: fixed;
-    
+
     background: #0a0b0c;
     top: 0;
     right: 0;
@@ -146,7 +143,7 @@ a {
     height: 80px;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
     .site-nav-main {
         height: 64px;
     }
@@ -250,7 +247,7 @@ nav a.lang_url {
     color: #fff;
 }
 
-.site-nav-right .nav-links a{
+.site-nav-right .nav-links a {
     position: relative;
     top: -10px;
 }
@@ -395,18 +392,20 @@ social-link-fb svg, .social-link-wb svg {
 .desktop {
     display: none;
 }
+
 .mobile {
     display: initial;
 }
 
-@media only screen and (min-width: 768px) and (orientation: landscape){
-    .router-link-active{
+@media only screen and (min-width: 768px) and (orientation: landscape) {
+    .router-link-active {
         border-bottom: solid 7px #fff;
     }
 
     .mobile {
         display: none;
     }
+
     .desktop {
         display: flex;
     }

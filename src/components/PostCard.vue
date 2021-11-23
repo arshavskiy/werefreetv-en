@@ -1,33 +1,27 @@
 <template lang="html">
-  <section class="home">
-    <h1>Post Component</h1>
-    
-  </section>
+    <section class="home">
+        <h1>Post Component</h1>
+
+    </section>
 </template>
- 
+
 <script lang="js">
-  export default  {
+export default {
     name: 'PostCard',
     props: [],
     mounted() {
- 
+
     },
     data() {
-      return {
- 
-      }
+        return {}
     },
-    methods: {
- 
-    },
-    computed: {
- 
-    }
+    methods: {},
+    computed: {}
 }
 </script>
- 
+
 <style scoped>
-  .home {
- 
-  }
+.home {
+
+}
 </style>

@@ -13,7 +13,8 @@
 
                 <div class="tags flex">
                     <span v-for="(t, index) in tags" :key="index">
-                        <router-link :to="{ name: 'tag', params: { tagName: t.name }}">{{filterTags(t.name)}}</router-link>
+                        <router-link
+                            :to="{ name: 'tag', params: { tagName: t.name }}">{{ filterTags(t.name) }}</router-link>
                     </span>
                 </div>
 
@@ -58,7 +59,7 @@ export default {
         }
     },
     created() {
-      console.debug('created:', this);
+        console.debug('created:', this);
     },
     beforeMount() {
         this.params = this.$route.params;
@@ -78,7 +79,7 @@ export default {
     renderTriggered() {
     },
     methods: {
-        filterTags (tagName){
+        filterTags(tagName) {
             if (tagName && tagName.includes('ru')) return null
             else if (tagName && tagName.includes('en')) return null
             else return tagName;
@@ -86,7 +87,7 @@ export default {
         sharePost() {
             if (navigator.share) {
                 const title = this.title || document.title;
-                const url = 'https://ru.wearefree.tv/tag/' + document.location.pathname.replace('/post/','');
+                const url = 'https://ru.wearefree.tv/tag/' + document.location.pathname.replace('/post/', '');
 
                 navigator.share({
                     title: title,
@@ -198,7 +199,7 @@ section {
     margin: 0 20px;
 }
 
-.tags span{
+.tags span {
     padding: 0 5px;
 }
 </style>
