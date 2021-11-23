@@ -424,6 +424,10 @@ section#survey_data .survey_data_bars {
     section#survey_data .survey_data_names {
         height: 14px;
     }
+
+    section#survey_data .survey_data_names{
+        width: 200px;
+    }
 }
 
 </style>
