@@ -37,6 +37,7 @@
                     <img src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/t_logo.png"
                          alt="Telegram account  https://t.me/nocensorshiptv" height="30"/>
                 </a>
+                <a href="https://ru.wearefree.tv" class="lang_url">RU</a>
                 <a href="https://www.wearefree.tv" class="lang_url">HE</a>
             </div>
         </div>
