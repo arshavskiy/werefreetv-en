@@ -299,7 +299,7 @@ social-link-fb svg, .social-link-wb svg {
         flex-direction: column;
         width: inherit;
         background: #0a0b0c;
-        height: calc(100vh - 130px);
+        height: calc(100vh - 250px);
         padding: 10px;
         padding-bottom: 20px;
         align-items: baseline;
