@@ -136,7 +136,7 @@ export default {
             fetch(api, {cache: "force-cache"})
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data.tags);
+                    // console.log(data.tags);
                     this.tags = data.tags;
                 }).catch(e => {
                 console.log(e);
@@ -196,7 +196,7 @@ export default {
             function handleIntersection(entries) {
                 if (entries[0].isIntersecting && this.page) {
                     if (this.page < this.pages) {
-                        console.log('Log event and unobserve', entries[0]);
+                        // console.log('Log event and unobserve', entries[0]);
                         if (this.page <= this.pages) {
                             this.fetchData();
                         }
@@ -222,7 +222,7 @@ export default {
             //     postUrls.push(set.dataset.postUrl);
             // });
 
-            const api = 'https://data.wearefree.tv/views';
+            const api = contnet.dataViews;
 
             fetch(api, {
                 cacheControl: "max-age=1500"

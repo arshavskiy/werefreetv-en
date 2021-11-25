@@ -71,7 +71,7 @@ export default {
         
     },
     mounted() {
-        console.log('mounted survey: ', this.page);
+        // console.log('mounted survey: ', this.page);
         document.querySelector('.site-nav-main>input').checked = false;
     },
     computed: {},
@@ -152,7 +152,7 @@ export default {
                 // mode: 'cors', // no-cors
             }).then(response => response.json())
                 .then(data => {
-                    console.log('suveys: ', data);
+                    // console.log('suveys: ', data);
                     this.surveys = this.filterRaw(data);
                     this.maxGraph = this.surveys[0] && this.surveys[0].weight;
                     this.cookies = this.setCookies();
@@ -192,7 +192,7 @@ export default {
             }).then(response => response.json())
                 .then(data => {
                     this.message = this.data = '';
-                    console.log('suveys: ', data);
+                    // console.log('suveys: ', data);
                     this.surveys = this.filterRaw(data);
                 });
         }

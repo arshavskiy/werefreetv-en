@@ -8,7 +8,7 @@
 <script>
 // @ is an alias to /src
 // import Nav from '../components/Nav.vue'
-
+import {contnet} from '../utils';
 
 export default {
     name: 'Register',
@@ -33,7 +33,7 @@ export default {
         // let debug = this.$store.getters.getData.filter(n=>n.slug.includes(this.$route.name));
         // console.debug('register 1 getData:', debug);
 
-        console.log('Register get page: ', this.page);
+        // console.log('Register get page: ', this.page);
 
         // if (!this.page.gotContentFromFeed) {
         // this.getPage(this.page.pageName);
@@ -48,26 +48,15 @@ export default {
         }
     },
     watch: {
-        getDataFromNav(newNavData, old) {
+        // getDataFromNav(newNavData, old) {
             // Our fancy notification (2).
-            console.log(`We have ${old} state now, yay!`)
-            console.log(`We have ${newNavData} state now, yay!`)
-        }
+            // console.log(`We have ${old} state now, yay!`)
+            // console.log(`We have ${newNavData} state now, yay!`)
+        // }
     },
     methods: {
-
-        // (function(d, s, id) {
-        // var js, fjs = d.getElementsByTagName(s)[0];
-        // if (d.getElementById(id)) return;
-        // js = d.createElement(s); js.id = id;
-        // js.src = "//forms.aweber.com/form/34/1679204634.js";
-        // fjs.parentNode.insertBefore(js, fjs);
-        // }(document, "script", "aweber-wjs-ux2mk7xrx"));
-
         async getPage(pageName) {
-            console.log('Register page: ', this.pages);
-
-            let api = `https://www.wearefree.tv/ghost/api/v3/content/page/slug/${pageName}?key=86ada218ec30f07f1f44985d57`;
+            let api = `${contnet.pageSlug}/${pageName}?key=86ada218ec30f07f1f44985d57`;
 
             fetch(api, {
                 cache: "force-cache"

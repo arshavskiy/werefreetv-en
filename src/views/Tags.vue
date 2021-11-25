@@ -126,7 +126,7 @@ export default {
             fetch(api, {cache: "force-cache"})
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data.tags);
+                    // console.log(data.tags);
                     this.tags = data.tags;
                 }).catch(e => {
                 console.log(e);
@@ -207,7 +207,7 @@ export default {
 
         getViews() {
 
-            const api = 'https://data.wearefree.tv/views';
+            const api = contnet.dataViews;
 
             fetch(api, {
                 cacheControl: "max-age=1500"
