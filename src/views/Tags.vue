@@ -261,8 +261,12 @@ h2 {
 }
 
 p.post_subtitle {
-    font-size: 14px;
+    font-size: 1rem;
     color: #444;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 img.main_image {
@@ -356,7 +360,7 @@ footer {
 
 .post-card-byline-date .bull {
     display: inline-block;
-    margin: 0 4px;
+    margin: 0 7px 0 -3px;
     opacity: .6;
     color: #555;
 }
@@ -394,7 +398,7 @@ footer {
     }
 
     .post_data {
-        height: 200px;
+        height: 177px;
         display: flex;
         align-content: space-between;
     }
@@ -404,6 +408,9 @@ footer {
         max-width: 1200px;
     }
 
+    .post:first-child h2 {
+        font-size: 1.5rem;
+    }
     .post:first-child .tags {
         justify-content: flex-end;
         top: -29px;

@@ -9,7 +9,7 @@
   <span class="arrow-inner"/>
 
   <section class="page_holder">
-    <p><a href="mailto:nocensorshiptv@gmail.com">написать в почту</a></p>
+    <p><a href="mailto:nocensorshiptv@gmail.com">Написать в почту</a></p>
     <p><a href="https://t.me/MiSvobodni" target="_blank"><span class="tgme_logo"/></a></p> 
   </section>
 </template>
@@ -35,10 +35,11 @@ export default {
   },
   mounted() {
 
-      let params = this.page;
-      console.debug("Register params:", params);
+    let params = this.page;
+    console.debug("Register params:", params);
     console.debug('register 1 getters:', this.$store.getters.getData);
     console.log('Register get page: ', this.page);
+    document.querySelector('.site-nav-main>input').checked = false;
 
   },
   computed: {

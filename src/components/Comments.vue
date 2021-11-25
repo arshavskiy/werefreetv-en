@@ -1,28 +1,42 @@
 <template lang="html">
 
-    <section id="comments">
-        <div id="icon_holder">
-            <span id="like"></span>
-            <span id="dislike"></span>
-        </div>
-        <div>
-            <div id="comments_holder">
-                <div id="comments_section">
-          <span id="comments_section_line" v-for="comment in allComments" :key="comment.date">
-            <p class="message_name">{{ comment.comment.name }} :</p>
-            <p class="message_text">{{ comment.comment.value }}</p>
-          </span>
-                </div>
+
+
+ <section id="comments_input_holder">
+    <div>
+        <p id="comments_title"> {{commentsLenght}} комментарии <span> Добавить комментарии </span>  </p>
+            <div id="input_holder">
                 <input id="comments_name" v-model="userName" placeholder="имя: " required name="name" type="text">
                 <input id="comments_input" v-model="userComment" placeholder="комментарий :" required name="comment"
-                       type="text">
+                    type="text">
                 <button id="send" :class="{ enable: (userName && userComment) }"
-                        @click="sendMessage">отправить
+                        @click="sendMessage">Отправить
                 </button>
             </div>
-        </div>
+                
 
-    </section>
+    </div>
+
+
+</section>
+
+<section id="comments">
+    <div id="icon_holder">
+        <span id="like"></span>
+        <span id="dislike"></span>
+    </div>
+    <div>
+        <div id="comments_holder">
+            <div id="comments_section">
+                <span id="comments_section_line" v-for="comment in allComments" :key="comment.date">
+                    <p class="message_name">{{ comment.comment.name }} :</p>
+                    <p class="message_text">{{ comment.comment.value }}</p>
+                </span>
+            </div>
+        </div>
+    </div>
+
+</section>
 
 </template>
 
@@ -35,7 +49,8 @@ export default {
             allComments: [],
             params: {},
             userComment: '',
-            userName: ''
+            userName: '',
+            commentsLenght : 0
         }
     },
     beforeMount() {
@@ -71,7 +86,7 @@ export default {
                 .then(data => {
                     // this.allComments = data.body;
                     this.setComments(data.body);
-                    console.log('comments: ', this.allComments);
+                    this.commentsLenght = data.body.length;
 
                 });
         },
@@ -94,7 +109,7 @@ export default {
                     .then(data => {
                         this.userComment = this.userName = '';
                         this.setComments(data.body);
-                        console.log('comments 2: ', this.allComments);
+                        this.commentsLenght = data.body.length;
 
                     })
             } else {
@@ -112,6 +127,7 @@ export default {
 </script>
 
 <style scoped>
+
 section {
     font-size: .8rem;
 }
@@ -122,9 +138,31 @@ section {
     align-items: center;
 }
 
+#comments_input_holder{
+    padding: 3rem 0;
+    margin-top: 3rem;
+    border-top: 2px solid #ccc;
+}
+
+#input_holder{
+    margin-left: 330px;
+    width: 400px;
+    position: relative;
+    top: -53px;
+}
+
+#comments_title{
+    font-size: 1.1rem;
+}
+#comments_title>span{
+    margin-left: 20px;
+    font-size: .9rem;
+    font-weight: bold;
+}
 
 #comments {
-    margin-top: 4rem;
+    margin-top: -4rem;
+    margin-left: 150px;
     font-family: sans-serif;
     background: #eee;
 }
@@ -138,7 +176,7 @@ section {
     min-height: 200px;
     max-height: 400px;
     border-radius: 5px;
-    padding: 10px;
+    padding: 10px 0;
     overflow-y: scroll;
     font-size: .8rem;
     color: #555;
@@ -148,37 +186,37 @@ section {
 #comments_holder {
     display: flex;
     flex-direction: column;
-    background: #eee;
-    border-left: 1px solid #777;
-    border-top: 1px solid #777;
-    box-shadow: 7px 9px 8px 0px;
-    border-radius: 5px;
+    background: rgb(250, 250, 250);
 }
 
 #comments_name {
-    background: #eee;
+    width: calc(100% - 20px);
+    /* background: #eee; */
     border: 0;
-    border-top: 1px solid;
+    /* border-top: 1px solid; */
     padding: 10px;
+    margin: 10px 0;
     font-size: 1rem;
 }
 
 #comments_input {
+   width: calc(100% - 20px);
     height: 40px;
-    background: #eee;
+    /* background: #eee; */
     border: none;
     padding: 0 10px;
-    border-top: 1px solid;
+    /* border-top: 1px solid; */
     font-size: 1rem;
 }
 
 #send {
-    width: 100%;
+    margin-left: auto;
+    margin-top: 10px;
+    display: flex;
     border: 1px solid;
-    background: cornflowerblue;
+    background: #f00;
     color: #fff;
     border-radius: 5px;
-    padding: 5px;
     font-weight: 900;
     font-size: 1rem;
     padding: 10px;
@@ -186,11 +224,10 @@ section {
 
 
 .message_name {
-    font-size: .8rem;
+    font-size: 0.9rem;
     font-weight: 900;
-    color: darkmagenta;
     margin-bottom: 0 !important;
-
+    color: #000;
 }
 
 .disabled {
@@ -203,12 +240,32 @@ section {
 }
 
 .message_text {
-    font-size: .8rem;
+    font-size: .9rem;
     color: initial;
+    color: #555;
+    margin: 5px 0;
 }
 
 .enable {
     pointer-events: all !important;
     background: #6495ed;
+}
+
+
+@media screen and (max-width: 768px) {
+    #input_holder {
+        margin-left:0;
+        width: auto;
+        top: initial
+    }
+
+    #comments_input_holder{
+        padding: 2rem 0;
+    }
+
+    #comments{
+        margin-left: initial;
+        margin-top: initial;
+    }
 }
 </style>

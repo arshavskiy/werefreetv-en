@@ -6,18 +6,14 @@
                 <time> {{ date }} </time>
                 <img class="byline-meta-views-img"
                      src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png" alt="views"
-                     loading="lazy">
-
-                     
+                     loading="lazy">                  
                 <span class="bull-views">{{ views.count }}</span>
-
                 <div class="tags flex">
                     <span v-for="(t, index) in tags" :key="index">
                         <router-link
                             :to="{ name: 'tag', params: { tagName: t.name }}">{{ filterTags(t.name) }}</router-link>
                     </span>
                 </div>
-
             </span>
 
             <span class="likes flex" v-on:click.once="setLike($event)">
@@ -48,7 +44,7 @@ export default {
         text: String,
         published: String,
         updated: String,
-        tags: [],
+        tags: {},
     },
 
     data() {
@@ -147,7 +143,7 @@ section {
 }
 
 .post-card-meta {
-    width: calc(100vw - 40px);
+    /* width: calc(100vw - 40px); */
     margin: 6px auto;
 }
 
@@ -178,7 +174,7 @@ section {
 
 .post-card-byline-date .bull {
     display: inline-block;
-    margin: 0 4px;
+    margin: 0 7px 0px -1px;
     opacity: .6;
 }
 

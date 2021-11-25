@@ -38,6 +38,7 @@ export default {
         console.debug("Register params:", params);
         console.debug('register 1 getters:', this.$store.getters.getData);
         console.log('Register get page: ', this.page);
+         document.querySelector('.site-nav-main>input').checked = false;
 
     },
     computed: {

@@ -58,6 +58,7 @@ export default {
 
             this.addMeta(post);
         });
+         document.querySelector('.site-nav-main>input').checked = false;
     },
     renderTriggered() {
         console.debug('renderTriggered()');
@@ -75,7 +76,7 @@ export default {
                 document.querySelector('meta[property="og:image"]').setAttribute("content", post.feature_image);
                 document.querySelector('meta[property="article:published_time"]').setAttribute("content", post.published_at);
                 document.querySelector('meta[property="article:modified_time"]').setAttribute("content", post.updated_at);
-                document.querySelector('meta[property="article:tag"]').setAttribute("content", post.tags[2].name);
+                document.querySelector('meta[property="article:tag"]').setAttribute("content", post.tags[0].name);
                 document.querySelector('meta[name="twitter:title"]').setAttribute("content", post.title);
                 document.querySelector('meta[name="twitter:description"]').setAttribute("content", post.custom_excerpt);
                 document.querySelector('meta[property="twitter:url"]').setAttribute("content", window.location.href);
@@ -118,7 +119,11 @@ export default {
 }
 </script>
 
-<style>
+<style >
+
+body {
+    background: rgb(250, 250, 250);
+}
 
 iframe {
     max-width: 100%;
@@ -145,8 +150,8 @@ main.post h2 {
 main.post > p {
     text-align: left;
     overflow-wrap: break-word;
-    font-size: 14px;
-    color: #738a94;
+    font-size: 0.9rem;
+    color: #444;
     font-family: inherit;
     padding-bottom: 20px;
     border-bottom: 1px solid #ddd;

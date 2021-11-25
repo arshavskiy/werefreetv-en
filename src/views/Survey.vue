@@ -1,7 +1,7 @@
 <template>
     <section class="survey">
         <div id="v-model-basic" class="question_app">
-            <h1>добавите своего контингента на интервью</h1>
+            <h1>Добавите своего контингента на интервью</h1>
             <h2></h2>
             <div class="survey_holder">
                 <div>
@@ -11,7 +11,7 @@
                     <textarea v-model="questions" rows="4" cols="50" placeholder="ваши вопросы: "
                               name="questions"></textarea>
                     <!-- <button id="send" :class="{ enable: (message && data) }" @click="sendSurvey()">отправить</button> -->
-                    <button id="send" :class="{ enable: (message && data) }" @click="sendSurvey()">отправить</button>
+                    <button id="send" :class="{ enable: (message && data) }" @click="sendSurvey()">Отправить</button>
                 </div>
             </div>
         </div>
@@ -68,9 +68,11 @@ export default {
     beforeMount() {
         this.page = this.$route.params;
         this.getSurvey();
+        
     },
     mounted() {
         console.log('mounted survey: ', this.page);
+        document.querySelector('.site-nav-main>input').checked = false;
     },
     computed: {},
 

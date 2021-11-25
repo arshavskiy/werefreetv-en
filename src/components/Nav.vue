@@ -10,7 +10,7 @@
             <div class="site-nav-left">
 
                 <div class="nav-links">
-                    <router-link to="/">главная</router-link>
+                    <router-link to="/">Главная</router-link>
                 </div>
                 <div class="nav-links mobile" v-for="page in pages" :key="page.id">
                     <router-link :to="{
@@ -184,7 +184,7 @@ nav span {
 nav .inner {
     background: url('/images/nav_logo.png') left center no-repeat #0a0b0c;
     margin: 0 auto;
-    max-width: 1000px;
+    max-width: 1170px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -194,12 +194,15 @@ nav .inner {
 
 nav a.lang_url {
     /* line-height: 1.6em; */
+    margin: 0 5px;
+    padding: 5px;
+    background: #fff;
+    color: #000;
+    font-size: 10px;
+    font-weight: 700;
     border: 1px solid #fff;
     border-radius: 50%;
-    padding: 5px;
-    color: #fff;
-    font-size: 10px;
-    margin: 0 5px;
+
 }
 
 /******************************** NAV LEFT SIDE ***************************************/
