@@ -83,7 +83,7 @@ export default {
         sharePost() {
             if (navigator.share) {
                 const title = this.title || document.title;
-                const url = 'https://ru.wearefree.tv/tag/' + document.location.pathname.replace('/post/', '');
+                const url = document.location.href;
 
                 navigator.share({
                     title: title,
