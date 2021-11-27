@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint",
     "deploy": "vue-cli-service build && scp -r ./dist root@data.wearefree.tv:/var/www/wearefreetv-ru/ &&  ssh root@data.wearefree.tv && systemctl reload nginx"
   },
+  "proxy": "http://localhost:3999",
   "dependencies": {
     "@tryghost/content-api": "^1.5.16",
     "core-js": "^3.11.0",

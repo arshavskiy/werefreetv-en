@@ -49,12 +49,12 @@
                 </div>
             </div>
 
-            <div class="tags flex">
+            <!-- <div class="tags flex">
                 <span v-for="(t, index) in post.tags" :key="index">
                     <router-link
                         :to="{ name: 'tag', params: { tagName: t.name }}">{{ filterTags(t.name) }}</router-link>
                 </span>
-            </div>
+            </div> -->
 
         </div>
         <div id="loadMore"/>

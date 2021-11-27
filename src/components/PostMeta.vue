@@ -8,17 +8,17 @@
                      src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png" alt="views"
                      loading="lazy">                  
                 <span class="bull-views">{{ views.count }}</span>
-                <div class="tags flex">
+                <!-- <div class="tags flex">
                     <span v-for="(t, index) in tags" :key="index">
                         <router-link
                             :to="{ name: 'tag', params: { tagName: t.name }}">{{ filterTags(t.name) }}</router-link>
                     </span>
-                </div>
+                </div> -->
             </span>
 
             <span class="likes flex" v-on:click.once="setLike($event)">
 
-                 <img class="share_btn" loading="lazy" v-on:click="sharePost" :class="{ hide: !show }"
+                 <img v-if="webShareApiSupported" class="share_btn" loading="lazy" v-on:click="sharePost"
                       src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/assets/share_64x64.png"
                       alt="Share us">
 
@@ -55,22 +55,20 @@ export default {
         }
     },
     created() {
-        console.debug('created:', this);
+        // console.debug('created:', this);
     },
     beforeMount() {
         this.params = this.$route.params;
     },
     mounted() {
         this.getPostMeta();
-        console.debug('mounted:', this);
+        // console.debug('mounted:', this);
 
     },
     computed: {
-        show() {
-            console.debug('share ', navigator.share);
-            return navigator.share;
-        }
-
+        webShareApiSupported() {
+            return navigator.share
+        },
     },
     renderTriggered() {
     },
@@ -83,12 +81,13 @@ export default {
         sharePost() {
             if (navigator.share) {
                 const title = this.title || document.title;
-                const url = document.location.href;
+                let shareUrl = document.location.pathname.replace('/post/','') + '.html';
+                shareUrl = 'https://ru.wearefree.tv/' + shareUrl + '?referral=site'
 
                 navigator.share({
                     title: title,
                     text: this.text,
-                    url: url + '?referral=site'
+                    url: shareUrl
                 }).then(function () {
                     return console.log('Successful share');
                 }).catch(function (error) {

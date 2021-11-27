@@ -34,18 +34,23 @@ export default {
             views: {},
             params: {},
             postId: String,
+            
         }
     },
     beforeMount() {
         this.post = this.$route.params;
         let date = utils.dateForamt(new Date(this.post.published_at));
         this.post.dateForamted = date;
+        this.share_cookie_name = window.location.pathname.replace('/post/','')
     },
     mounted() {
         console.debug('mounted()');
 
         window.scrollTo(0, 0);
         this.postId = this.post.postId;
+            
+        const cookies = document.cookie.split(';');
+        const share_post_send = cookies.find(c=> c.includes(this.share_cookie_name))
 
         this.fetchData(this.postId).then(post => {
             this.post = post;
@@ -57,17 +62,30 @@ export default {
             this.$store.commit('pageLoaded', true);
 
             this.addMeta(post);
+
+
+
+            if (!share_post_send) {
+
+                this.addPostMetaShare(post);
+               
+
+            }
+            
+
         });
+
          document.querySelector('.site-nav-main>input').checked = false;
     },
     renderTriggered() {
         console.debug('renderTriggered()');
     },
-    computed: {},
+    computed: {
+        
+    },
     methods: {
-
+        
         addMeta(post) {
-
             try {
                 document.querySelector('[rel="canonical"]').setAttribute("href", window.location.href);
                 document.querySelector('meta[property="og:title"]').setAttribute("content", post.title);
@@ -86,9 +104,45 @@ export default {
             } catch (error) {
                 console.debug(error);
             }
-
-
         },
+         addPostMetaShare(post) {
+
+            let saveCoockie = () => {
+                const maxAge = 10 * 365 * 24 * 60 * 60;
+                document.cookie = this.share_cookie_name + '=true;max-age=' + maxAge;
+            }
+
+            //  const shareData = {
+            //     postUrl : window.location.pathname,
+            //     og_title: post.title,
+            //     og_description : post.custom_excerpt,
+            //     og_uri : window.location.href,
+            //     og_image : post.feature_image,
+            //     article_published_time : post.published_at,
+            //     article_modified_time : post.updated_at,
+            //     article_tag : post.tags[0].name
+            //  }
+
+             var xhr = new XMLHttpRequest();
+             xhr.open("POST", 'https://data.wearefree.tv/post-ru', true);
+                // xhr.open("POST", 'http://127.0.0.1:3999/post-ru', true);
+
+                //Send the proper header information along with the request
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() { // Call a function when the state changes.
+                    if (this.readyState === XMLHttpRequest.DONE && (this.status === 200 || this.status === 201 || this.status === 204)) {
+                        // Request finished. Do processing here.
+
+                        console.log('POST state added', window.location.pathname)
+                        saveCoockie();
+                    }
+                }
+                const urlencoded = `postUrl=${window.location.pathname}&og_title=${post.title}&og_description=${post.custom_excerpt}&og_uri=${window.location.href}&og_image=${post.feature_image}&article_published_time=${post.published_at}&article_modified_time=${post.updated_at}`
+
+                xhr.send(urlencoded);
+         },
+
+        
 
         fetchData(postId) {
             return new Promise((resolve, reject) => {
@@ -99,9 +153,7 @@ export default {
                 }).then(response => response.json())
                     .then(data => {
                         const post = data.posts[0];
-                        console.debug("Post fetchData: ", post);
-
-                        post.dateForamted = new Date(post.published_at).toLocaleDateString('en-US');
+                        post.dateForamted = new Date(post.published_at).toLocaleDateString('ru');
                         resolve(post);
 
                     }).catch(e => {

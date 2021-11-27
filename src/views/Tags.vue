@@ -162,8 +162,9 @@ export default {
                     this.page = data.meta.pagination.next || 1;
 
                 }).catch(e => {
-                console.log(e);
-                this.error = true;
+                    console.log(e);
+                    this.$router.push({path: '/'});
+                    // this.error = true;
             })
         },
 
