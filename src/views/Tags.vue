@@ -1,9 +1,7 @@
 <template>
-
-    <section class="feed ru">
-
+    <h1>#{{ tag }}</h1>
+    <section class="en">
         <div v-for="post in posts" :key="post.id" class="post">
-
             <router-link :to="{ 
                 name: 'post', 
                 params: { 
@@ -23,7 +21,6 @@
                         <p class="post_subtitle">{{ post.excerpt }}</p>
 
                     </div>
-
                 </section>
             </router-link>
 
@@ -48,26 +45,20 @@
 
                 </div>
             </div>
-
             <!-- <div class="tags flex">
                 <span v-for="(t, index) in post.tags" :key="index">
-                    <router-link
-                        :to="{ name: 'tag', params: { tagName: t.slug, tag: t.name }}">{{ filterTags(t.name) }}</router-link>
+                    <router-link :to="{ name: 'tag', params: { tagName: t.slug, tag: t.name }}">{{ t.name }}</router-link>
                 </span>
             </div> -->
-
         </div>
-        <div id="loadMore"/>
-
-
+        <div id="loadMore2"/>
     </section>
 </template>
 
 <script lang="js">
 // import PostMeta from './PostMeta.vue'
 import {utils} from '../utils';
-import {contentApi} from '../services/contentApi';
-import {dataAPI} from "../services/dataApi";
+import {contentApi} from "../services/contentApi";
 
 export default {
     name: 'Feed',
@@ -75,6 +66,8 @@ export default {
         msg: String,
     },
     beforeMount() {
+        this.tag = this.$route.params.tagName;
+        this.tagName = this.$route.params.tag;
         this.getViews();
         this.fetchData();
         this.fetchTags();
@@ -100,10 +93,12 @@ export default {
             posts: [],
             views: [],
             tags: [],
+            tag: [],
             viewsDataSets: [],
             error: null,
             // intersepted: false,
             loading: true,
+            params: {},
             page: 1,
             pages: 1,
             dataObjRaw: {},
@@ -112,12 +107,6 @@ export default {
     },
     computed: {},
     methods: {
-        filterTags(tagName) {
-            if (tagName.includes('ru')) return null
-            if (tagName.includes('en')) return null
-            else return tagName;
-
-        },
         setViews(id) {
             // console.debug('setViews id', id);
             // console.debug('setViews this.dataObjRaw[id]', this.dataObjRaw[id]);
@@ -133,7 +122,8 @@ export default {
         },
 
         fetchTags() {
-            let api = contentApi.tagsAPI;
+            let decodedTag = decodeURIComponent(encodeURIComponent(this.tag));
+            let api = contentApi.tagsAPI + `&${decodedTag}`;
 
             fetch(api, {cache: "default"})
                 .then(response => response.json())
@@ -148,12 +138,14 @@ export default {
 
         fetchData() {
 
-            let api = contentApi.postsAPI + `page=${this.page}`;
+            let decodedTag = decodeURIComponent(encodeURIComponent(this.tag));
+            let api = contentApi.postByTagAPI + `&filter=tag:${decodedTag}&page=${this.page}`;
 
             fetch(api, {cache: "default"})
                 .then(response => response.json())
                 .then(data => {
                     // console.log(data.posts);
+                    if (data.posts.length === 0) this.$router.push({path: '/'});
                     data.posts = data.posts.filter(p => {
                         if (/[A-Za-z]/.test(p.title)) {
                             return null
@@ -162,6 +154,8 @@ export default {
                         }
                     });
                     this.posts = this.posts.concat(data.posts);
+                    console.info(this.posts);
+                    this.tag = this.$route.params.tag || this.posts[0].primary_tag.name;
 
                     data.posts.forEach(post => {
                         localStorage.setItem(post.slug, JSON.stringify(post));
@@ -173,7 +167,8 @@ export default {
 
                 }).catch(e => {
                 console.log(e);
-                this.error = true;
+                this.$router.push({path: '/'});
+                // this.error = true;
             })
         },
 
@@ -189,7 +184,6 @@ export default {
 
         loadTrigger() {
 
-
             let options = {
                 rootMargin: '0px',
                 threshold: 1.0
@@ -198,7 +192,7 @@ export default {
             function handleIntersection(entries) {
                 if (entries[0].isIntersecting && this.page) {
                     if (this.page < this.pages) {
-                        // console.log('Log event and unobserve', entries[0]);
+                        console.log('Log event and unobserve', entries[0]);
                         if (this.page <= this.pages) {
                             this.fetchData();
                         }
@@ -207,36 +201,22 @@ export default {
             }
 
             let observer = new IntersectionObserver(handleIntersection.bind(this), options);
-            const triggerElm = document.querySelector('#loadMore');
+            const triggerElm = document.querySelector('#loadMore2');
             if (triggerElm) {
                 const processChange = this.debounce(() => observer.observe(triggerElm));
                 processChange();
             }
-
         },
 
         getViews() {
 
-            // this.viewsDataSets = document.querySelectorAll("span[data-post-url]");
-            // let postUrls = [];
-            //
-            // this.viewsDataSets.forEach(function (set) {
-            //     postUrls.push(set.dataset.postUrl);
-            // });
-
-            const api = dataAPI.dataViews;
+            const api = contentApi.dataViews;
 
             fetch(api, {
                 cacheControl: "max-age=1500"
             }).then(response => {
                 return response.json();
             }).then(data => {
-
-                // const feedItemsList = postUrls.toString();
-                //
-                // this.views = data.views.filter(function (d) {
-                //     return feedItemsList.includes(d.id);
-                // });
 
                 this.views = data.views;
                 this.views.forEach(item => {
@@ -252,27 +232,19 @@ export default {
 </script>
 
 <style scoped>
-
-section.feed {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
 section {
     display: flex;
     flex-wrap: wrap;
 }
 
 .post {
-    position: relative;
-    text-align: left;
     width: 85vw;
     max-width: 360px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin: 0 auto;
-    margin-bottom: 0;
+    margin-bottom: 20px;
     /* border-bottom: 1px solid #ccc; */
     padding-bottom: 30px;
     padding: 15px;
@@ -330,7 +302,7 @@ a {
     color: #42b983;
 }
 
-#loadMore {
+#loadMore2 {
     height: 1px;
     width: 100%;
 }
@@ -343,7 +315,7 @@ a {
 }
 
 .post {
-
+    text-align: left;
 }
 
 .post footer {
@@ -423,13 +395,9 @@ footer {
 
 @media only screen and (min-width: 768px) and (orientation: landscape) {
 
-    .post {
-        margin-bottom: 20px;
-    }
-
     .tags {
-        /* justify-content: flex-start; */
-        /* top: 0; */
+        /* justify-content: flex-start;
+        top: 0; */
     }
 
     .post_data {
@@ -455,9 +423,6 @@ footer {
 
     .post:first-child .post-card-meta {
         width: 400px;
-        position: absolute;
-        bottom: 30px;
-        right: 178px;
     }
 
     .post:first-child section {

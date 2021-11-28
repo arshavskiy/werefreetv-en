@@ -6,13 +6,19 @@
                 <time> {{ date }} </time>
                 <img class="byline-meta-views-img"
                      src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png" alt="views"
-                     loading="lazy">
+                     loading="lazy">                  
                 <span class="bull-views">{{ views.count }}</span>
+                <div class="tags flex">
+                    <span v-for="(t, index) in tags" :key="index">
+                        <router-link
+                            :to="{ name: 'tag', params: { tagName: t.slug, tag: t.name }}">{{ filterTags(t.name) }}</router-link>
+                    </span>
+                </div>
             </span>
 
             <span class="likes flex" v-on:click.once="setLike($event)">
 
-                 <img class="share_btn" loading="lazy" v-on:click="sharePost" :class="{ hide: !show }"
+                 <img v-if="webShareApiSupported" class="share_btn" loading="lazy" v-on:click="sharePost"
                       src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/assets/share_64x64.png"
                       alt="Share us">
 
@@ -38,9 +44,9 @@ export default {
         text: String,
         published: String,
         updated: String,
-        tags: Object,
-
+        tags: {},
     },
+
     data() {
         return {
             params: {},
@@ -49,36 +55,39 @@ export default {
         }
     },
     created() {
-      console.debug('created:', this);
+        // console.debug('created:', this);
     },
     beforeMount() {
         this.params = this.$route.params;
     },
     mounted() {
         this.getPostMeta();
-        console.debug('mounted:', this);
+        // console.debug('mounted:', this);
 
     },
     computed: {
-        show() {
-            console.debug('share ', navigator.share);
-            return navigator.share;
-        }
-
+        webShareApiSupported() {
+            return navigator.share
+        },
     },
     renderTriggered() {
     },
     methods: {
-
+        filterTags(tagName) {
+            if (tagName && tagName.includes('ru')) return null
+            else if (tagName && tagName.includes('en')) return null
+            else return tagName;
+        },
         sharePost() {
             if (navigator.share) {
                 const title = this.title || document.title;
-                const url = 'https://www.wearefree.tv/tag/' + document.location.pathname.replace('/post/','');
+                let shareUrl = document.location.pathname.replace('/post/','') + '.html';
+                shareUrl = 'https://ru.wearefree.tv/' + shareUrl + '?referral=site'
 
                 navigator.share({
                     title: title,
                     text: this.text,
-                    url: url + '?referral=site'
+                    url: shareUrl
                 }).then(function () {
                     return console.log('Successful share');
                 }).catch(function (error) {
@@ -133,7 +142,7 @@ section {
 }
 
 .post-card-meta {
-    width: calc(100vw - 40px);
+    /* width: calc(100vw - 40px); */
     margin: 6px auto;
 }
 
@@ -157,14 +166,14 @@ section {
     max-width: 800px;
     color: #000;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 10px;
     letter-spacing: .2px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 }
 
 .post-card-byline-date .bull {
     display: inline-block;
-    margin: 0 4px;
+    margin: 0 7px 0px -1px;
     opacity: .6;
 }
 
@@ -181,4 +190,11 @@ section {
     height: 20px;
 }
 
+.tags {
+    margin: 0 20px;
+}
+
+.tags span {
+    padding: 0 5px;
+}
 </style>

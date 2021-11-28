@@ -16,13 +16,13 @@ const store = createStore({
         minusOne(state) {
             state.count--
         },
-        pushData (state, n) {
+        pushData(state, n) {
             state.route.html = n;
         },
-        pageLoaded (state){
+        pageLoaded(state) {
             state.loaded = true;
         },
-        initLoader (state){
+        initLoader(state) {
             state.loaded = false;
         }
 
@@ -34,21 +34,19 @@ const store = createStore({
             if (state.route.html.length) {
                 page = state.route.html.filter(n => n.slug.includes(route)).pop()
             }
-            console.log('getters state', state);
-            console.log('getters getData', page);
             return {
                 html: page.html,
                 title: page.title
             }
         },
-        loaded(state){
-            console.debug('loaded: ', state.loaded);
+        loaded(state) {
+            // console.debug('loaded: ', state.loaded);
             return state.loaded;
         }
     }
 })
 
-console.log('version 1.0.0');
+console.log('version 1.1.0');
 
 // vm.use(VueMeta);
 vm.use(router);

@@ -12,6 +12,9 @@ export default {
     name: 'Home',
     components: {
         Feed,
+    },
+    mounted(){
+        document.querySelector('.site-nav-main>input').checked = false;
     }
 }
 </script>

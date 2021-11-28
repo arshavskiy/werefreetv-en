@@ -1,6 +1,6 @@
 <template lang="html">
 
-    <nav class="outer site-nav-main">
+    <nav class="outer site-nav-main ">
         <input type="checkbox"/>
         <span></span>
         <span></span>
@@ -10,8 +10,32 @@
             <div class="site-nav-left">
 
                 <div class="nav-links">
-                    <router-link to="/">Home</router-link>
+                    <router-link to="/">Главная</router-link>
                 </div>
+                <div class="nav-links mobile" v-for="page in pages" :key="page.id">
+                    <router-link :to="{
+                            name: page.url.split('.tv')[1].split('/')[1], 
+                            params: { 
+                                pageName: page.slug, 
+                                html: page.html 
+                                }
+                            }">{{ page.title }}
+                    </router-link>
+
+                </div>
+                <section class="desktop">
+                    <div class="nav-links " v-for="page in pages" :key="page.id">
+                        <router-link :to="{
+                            name: page.url.split('.tv')[1].split('/')[1], 
+                            params: { 
+                                pageName: page.slug, 
+                                html: page.html 
+                                }
+                            }">{{ page.title }}
+                        </router-link>
+
+                    </div>
+                </section>
                 <!-- <div class="nav-links nav-live">
                     <a href="https://broadcast.wearefree.tv/he.html">Live</a>
                 </div> -->
@@ -19,26 +43,22 @@
                     <router-link to="/survey">Survey</router-link>
                 </div> -->
 
-                <div class="nav-links" v-for="page in pages" :key="page.id">
-                    <router-link :to="{
-                        name: page.url.split('.tv')[1].split('/')[1], 
-                        params: { 
-                            pageName: page.slug, 
-                            html: page.html 
-                            }
-                        }">{{ page.title }}
-                    </router-link>
 
-                </div>
             </div>
 
             <div class="site-nav-right">
-                <a href="https://t.me/nocensorshiptv" class="social-link" target="_blank">
-                    <img src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/t_logo.png"
-                         alt="Telegram account  https://t.me/nocensorshiptv" height="30"/>
-                </a>
-                <a href="https://ru.wearefree.tv" class="lang_url">RU</a>
-                <a href="https://www.wearefree.tv" class="lang_url">HE</a>
+                <div class="nav_languages">
+                    <!-- <a href="https://t.me/nocensorshiptv" class="social-link" target="_blank">
+                        <img src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/t_logo.png"
+                            alt="Telegram account  https://t.me/nocensorshiptv" height="30"/>
+                    </a> -->
+                    <a href="https://www.wearefree.tv" class="lang_url"><span id="il"></span></a>
+                    <a href="https://en.wearefree.tv" class="lang_url"><span id="un"></span></a>
+                    <a href="https://ru.wearefree.tv" class="lang_url"><span id="ru"></span></a>
+
+                </div>
+
+
             </div>
         </div>
 
@@ -46,6 +66,7 @@
 </template>
 
 <script lang="js">
+import {contentApi} from '../services/contentApi';
 
 export default {
     name: 'home',
@@ -54,30 +75,30 @@ export default {
         this.fetchNav();
     },
     mounted() {
-        console.debug('nav:', this.$store);
+        // console.debug('nav:', this.$store);
     },
     data() {
         return {
             nav: [],
-            pages: []
+            pages: [],
+            key: '86ada218ec30f07f1f44985d57',
         }
     },
     computed: {},
     methods: {
 
         async fetchNav() {
-            console.log('pages: ', this.pages);
+            // console.log('pages: ', this.pages);
 
-            let api = `https://www.wearefree.tv/ghost/api/v3/content/pages/?key=86ada218ec30f07f1f44985d57`;
-
+            let api = contentApi.navAPI;
             fetch(api, {
                 referrer: ""
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
-
-                    this.pages = data.pages.filter(p => p.slug.includes('-en'));
+                    // console.log(data);
+                    this.pages = data.pages.filter(p => p.slug.includes('-ru'));
+                    // console.log('this.pages:', this.pages);
                     this.$store.commit('pushData', this.pages);
                     this.$store.commit('pageLoaded', true);
                     this.loading = false;
@@ -103,20 +124,30 @@ a {
 
 .outer {
     padding: 0 5vw;
+
 }
 
-nav .nav-links a {
-    text-align: left;
+.nav-links {
+    position: relative;
+    top: 19px;
 }
+
 
 .site-nav-main {
     position: fixed;
+
     background: #0a0b0c;
     top: 0;
     right: 0;
     left: 0;
     z-index: 2;
-    height: 64px;
+    height: 80px;
+}
+
+@media screen and (max-width: 768px) {
+    .site-nav-main {
+        height: 64px;
+    }
 }
 
 .nav-live {
@@ -152,8 +183,9 @@ nav span {
 }
 
 nav .inner {
+    background: url('/images/nav_logo.png') left center no-repeat #0a0b0c;
     margin: 0 auto;
-    max-width: 1000px;
+    max-width: 1170px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -161,19 +193,32 @@ nav .inner {
     height: 100%;
 }
 
-nav a.lang_url {
-    line-height: 1.6em;
-    border: 1px solid #fff;
-    padding: 10px;
-    color: #fff;
-    font-size: 12px;
+.nav_languages{
+    display: flex;
+}
 
+#un{
+    background: url('/images/Eng_On.png') center no-repeat;
+}
+#il{
+    background: url('/images/Heb_On.png') center no-repeat;
+}
+#ru{
+    background: url('/images/Rus_On.png') center no-repeat;
+}
+
+nav a.lang_url span{
+    width: 32px;
+    height: 32px;
+    display: block;
+    border-radius: 50%;
 }
 
 /******************************** NAV LEFT SIDE ***************************************/
 .site-nav-left {
     display: flex;
     align-items: center;
+    margin-left: 190px;
 }
 
 .site-nav-logo {
@@ -190,12 +235,12 @@ nav a.lang_url {
     position: relative;
 }
 
-.site-nav-left div a {
-    padding: 12px;
+.nav-links a {
+    text-align: left;
+    padding: 5px 12px;
     color: #fff;
-    opacity: 0.8;
     transition: opacity 0.35s ease-in-out;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 800;
 }
 
@@ -204,12 +249,19 @@ nav a.lang_url {
 
 .site-nav-right {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    /* height: 70px; */
+    justify-content: space-between;
 }
 
 .site-nav-right > a {
     padding: 0 10px;
     color: #fff;
+}
+
+.site-nav-right .nav-links a {
+    position: relative;
+    top: -10px;
 }
 
 
@@ -244,18 +296,21 @@ social-link-fb svg, .social-link-wb svg {
 @media (max-width: 768px) {
 
     .site-nav-main {
+        background: url('/images/nav_logo_small.png') center no-repeat #0a0b0c;
         width: auto;
+        height: 64px;
     }
 
     nav .inner {
         position: absolute;
-        top: 64px;
+        top: 60px;
         left: -100%;
         flex-direction: column;
         width: inherit;
         background: #0a0b0c;
-        height: calc(100vh - 120px);
+        height: calc(100vh - 250px);
         padding: 10px;
+        padding-bottom: 20px;
         align-items: baseline;
         transition: 0.5s;
     }
@@ -272,6 +327,7 @@ social-link-fb svg, .social-link-wb svg {
     .site-nav-left {
         flex-direction: column;
         align-items: flex-start;
+        margin: 0;
     }
 
     .site-nav-left > div {
@@ -342,6 +398,28 @@ social-link-fb svg, .social-link-wb svg {
 
     input:checked ~ .inner {
         left: 0;
+    }
+}
+
+.desktop {
+    display: none;
+}
+
+.mobile {
+    display: initial;
+}
+
+@media only screen and (min-width: 768px) and (orientation: landscape) {
+    .router-link-active {
+        border-bottom: solid 7px #fff;
+    }
+
+    .mobile {
+        display: none;
+    }
+
+    .desktop {
+        display: flex;
     }
 }
 </style>
