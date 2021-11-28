@@ -54,7 +54,7 @@
                     </a> -->
                     <a href="https://www.wearefree.tv" class="lang_url"><span id="il"></span></a>
                     <a href="https://en.wearefree.tv" class="lang_url"><span id="un"></span></a>
-                    <a href="https://ru.wearefree.tv" class="lang_url"><span id="ru"></span></a>
+                    <a href="https://en.wearefree.tv" class="lang_url"><span id="ru"></span></a>
 
                 </div>
 
