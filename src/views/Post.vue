@@ -125,8 +125,8 @@ export default {
             //  }
 
              var xhr = new XMLHttpRequest();
-             xhr.open("POST", 'https://data.wearefree.tv/post', true);
-                // xhr.open("POST", 'http://127.0.0.1:3999/post-ru', true);
+             xhr.open("POST", 'https://data.wearefree.tv/post-en', true);
+                // xhr.open("POST", 'http://127.0.0.1:3999/post-en', true);
 
                 //Send the proper header information along with the request
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

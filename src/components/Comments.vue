@@ -1,13 +1,13 @@
 <template lang="html">
     <section id="comments_input_holder">
         <div>
-            <p id="comments_title"> {{ commentsLength }} комментарии <span> Добавить комментарии </span></p>
+            <p id="comments_title"> {{ commentsLength }} comments <span> Add a comment: </span></p>
             <div id="input_holder">
-                <input id="comments_name" v-model="userName" placeholder="имя: " required name="name" type="text">
-                <input id="comments_input" v-model="userComment" placeholder="комментарий :" required name="comment"
+                <input id="comments_name" v-model="userName" placeholder="name: " required name="name" type="text">
+                <input id="comments_input" v-model="userComment" placeholder="comment :" required name="comment"
                        type="text">
                 <button id="send" :class="{ enable: (userName && userComment) }"
-                        @click="sendMessage">Отправить
+                        @click="sendMessage">Send
                 </button>
             </div>
         </div>
