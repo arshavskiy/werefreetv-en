@@ -46,7 +46,7 @@ const store = createStore({
     }
 })
 
-console.log('version 1.1.0');
+console.log('version 1.0.2');
 
 // vm.use(VueMeta);
 vm.use(router);
