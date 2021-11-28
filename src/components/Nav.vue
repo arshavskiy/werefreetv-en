@@ -47,15 +47,16 @@
             </div>
 
             <div class="site-nav-right">
-                <section class="nav_languages">
+                <div class="nav_languages">
                     <!-- <a href="https://t.me/nocensorshiptv" class="social-link" target="_blank">
                         <img src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/t_logo.png"
                             alt="Telegram account  https://t.me/nocensorshiptv" height="30"/>
                     </a> -->
-                    <a href="https://en.wearefree.tv" class="lang_url">EN</a>
-                    <a href="https://ru.wearefree.tv" class="lang_url">РУ</a>
-                    <a href="https://www.wearefree.tv" class="lang_url">עב</a>
-                </section>
+                    <a href="https://www.wearefree.tv" class="lang_url"><span id="il"></span></a>
+                    <a href="https://en.wearefree.tv" class="lang_url"><span id="un"></span></a>
+                    <a href="https://ru.wearefree.tv" class="lang_url"><span id="ru"></span></a>
+
+                </div>
 
 
             </div>
@@ -192,17 +193,25 @@ nav .inner {
     height: 100%;
 }
 
-nav a.lang_url {
-    /* line-height: 1.6em; */
-    margin: 0 5px;
-    padding: 5px;
-    background: #fff;
-    color: #000;
-    font-size: 10px;
-    font-weight: 700;
-    border: 1px solid #fff;
-    border-radius: 50%;
+.nav_languages{
+    display: flex;
+}
 
+#un{
+    background: url('/images/Eng_On.png') center no-repeat;
+}
+#il{
+    background: url('/images/Heb_On.png') center no-repeat;
+}
+#ru{
+    background: url('/images/Rus_On.png') center no-repeat;
+}
+
+nav a.lang_url span{
+    width: 32px;
+    height: 32px;
+    display: block;
+    border-radius: 50%;
 }
 
 /******************************** NAV LEFT SIDE ***************************************/
