@@ -1,5 +1,5 @@
 <template>
-    <!-- <Nav /> -->
+<!-- <Nav /> -->
     <section class="register">
         <h2>{{ getTitle }}</h2>
         <div class="AW-Form-1679204634"></div>

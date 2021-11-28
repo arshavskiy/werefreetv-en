@@ -49,9 +49,9 @@ export default {
     },
     watch: {
         // getDataFromNav(newNavData, old) {
-            // Our fancy notification (2).
-            // console.log(`We have ${old} state now, yay!`)
-            // console.log(`We have ${newNavData} state now, yay!`)
+        // Our fancy notification (2).
+        // console.log(`We have ${old} state now, yay!`)
+        // console.log(`We have ${newNavData} state now, yay!`)
         // }
     },
     methods: {

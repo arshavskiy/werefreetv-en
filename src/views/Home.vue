@@ -13,7 +13,7 @@ export default {
     components: {
         Feed,
     },
-    mounted(){
+    mounted() {
         document.querySelector('.site-nav-main>input').checked = false;
     }
 }

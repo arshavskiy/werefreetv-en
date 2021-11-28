@@ -114,6 +114,7 @@ export default {
 </script>
 
 <style scoped>
+
 body {
     direction: rtl;
 }
@@ -193,21 +194,23 @@ nav .inner {
     height: 100%;
 }
 
-.nav_languages{
+.nav_languages {
     display: flex;
 }
 
-#un{
+#un {
     background: url('/images/Eng_On.png') center no-repeat;
 }
-#il{
+
+#il {
     background: url('/images/Heb_On.png') center no-repeat;
 }
-#ru{
+
+#ru {
     background: url('/images/Rus_On.png') center no-repeat;
 }
 
-nav a.lang_url span{
+nav a.lang_url span {
     width: 32px;
     height: 32px;
     display: block;

@@ -11,7 +11,9 @@
                 <div class="tags flex">
                     <span v-for="(t, index) in tags" :key="index">
                         <router-link
-                            :to="{ name: 'tag', params: { tagName: t.slug, tag: t.name }}">{{ filterTags(t.name) }}</router-link>
+                            :to="{ name: 'tag', params: { tagName: t.slug, tag: t.name }}">{{
+                                filterTags(t.name)
+                            }}</router-link>
                     </span>
                 </div>
             </span>
@@ -81,7 +83,7 @@ export default {
         sharePost() {
             if (navigator.share) {
                 const title = this.title || document.title;
-                let shareUrl = document.location.pathname.replace('/post/','') + '.html';
+                let shareUrl = document.location.pathname.replace('/post/', '') + '.html';
                 shareUrl = 'https://ru.wearefree.tv/' + shareUrl + '?referral=site'
 
                 navigator.share({
