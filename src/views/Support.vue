@@ -1,6 +1,6 @@
 <template>
     <!-- <Nav /> -->
-    <section class="register question_app">
+    <section class="register">
         <h2>{{ getTitle }}</h2>
     </section>
 

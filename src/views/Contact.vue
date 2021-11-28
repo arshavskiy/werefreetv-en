@@ -2,15 +2,17 @@
     <!-- <Nav /> -->
     <section class="register">
         <h2>{{ getTitle }}</h2>
-
     </section>
 
     <span class="arrow-down"/>
     <span class="arrow-inner"/>
 
-    <article v-html="getHTMLFromNav"></article>
-</template>
+    <section class="page_holder">
+        <p><a href="mailto:nocensorshiptv@gmail.com">Click here to email us (nocensorshiptv@gmail.com)</a></p>
+    </section>
 
+
+</template>
 <script>
 // @ is an alias to /src
 // import Nav from '../components/Nav.vue'
@@ -32,10 +34,6 @@ export default {
     },
     mounted() {
 
-        // let params = this.page;
-        // console.debug("Register params:", params);
-        // console.debug('register 1 getters:', this.$store.getters.getData);
-        // console.log('Register get page: ', this.page);
         document.querySelector('.site-nav-main>input').checked = false;
 
     },
