@@ -125,7 +125,7 @@ export default {
             //  }
 
              var xhr = new XMLHttpRequest();
-             xhr.open("POST", 'https://data.wearefree.tv/post-ru', true);
+             xhr.open("POST", 'https://data.wearefree.tv/post', true);
                 // xhr.open("POST", 'http://127.0.0.1:3999/post-ru', true);
 
                 //Send the proper header information along with the request
@@ -154,7 +154,7 @@ export default {
                 }).then(response => response.json())
                     .then(data => {
                         const post = data.posts[0];
-                        post.dateForamted = new Date(post.published_at).toLocaleDateString('ru');
+                        post.dateForamted = new Date(post.published_at).toLocaleDateString('en');
                         resolve(post);
 
                     }).catch(e => {

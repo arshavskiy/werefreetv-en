@@ -147,9 +147,9 @@ export default {
         getSurvey() {
 
             fetch(dataAPI.surveyRuAPI, {
-                referrer: "ru.wearefree.tv",
+                referrer: "en.wearefree.tv",
                 referrerPolicy: "no-referrer-when-downgrade",
-                accessControlAllowOrigin: "ru.wearefree.tv",
+                accessControlAllowOrigin: "en.wearefree.tv",
                 // mode: 'cors', // no-cors
             }).then(response => response.json())
                 .then(data => {
@@ -173,7 +173,7 @@ export default {
             //document.cookie = utils.stringToUTF16(name) + '=' + true +';max-age=31536000';
             // Example of use:
             utils.setCookie(utils.stringToUTF16(name), true, {
-                domain: 'ru.wearefree.tv',
+                domain: 'en.wearefree.tv',
                 secure: true,
                 'max-age': 31536000
             });
@@ -187,9 +187,9 @@ export default {
             }
 
             fetch(api, {
-                referrer: "ru.wearefree.tv",
+                referrer: "en.wearefree.tv",
                 referrerPolicy: "no-referrer-when-downgrade",
-                accessControlAllowOrigin: "ru.wearefree.tv",
+                accessControlAllowOrigin: "en.wearefree.tv",
             }).then(response => response.json())
                 .then(data => {
                     this.message = this.data = '';

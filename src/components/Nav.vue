@@ -10,7 +10,7 @@
             <div class="site-nav-left">
 
                 <div class="nav-links">
-                    <router-link to="/">Главная</router-link>
+                    <router-link to="/">Home</router-link>
                 </div>
                 <div class="nav-links mobile" v-for="page in pages" :key="page.id">
                     <router-link :to="{
@@ -97,7 +97,7 @@ export default {
                 .then(response => response.json())
                 .then(data => {
                     // console.log(data);
-                    this.pages = data.pages.filter(p => p.slug.includes('-ru'));
+                    this.pages = data.pages.filter(p => p.slug.includes('-en'));
                     // console.log('this.pages:', this.pages);
                     this.$store.commit('pushData', this.pages);
                     this.$store.commit('pageLoaded', true);

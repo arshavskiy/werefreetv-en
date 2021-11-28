@@ -82,7 +82,7 @@ export default {
             if (navigator.share) {
                 const title = this.title || document.title;
                 let shareUrl = document.location.pathname.replace('/post/','') + '.html';
-                shareUrl = 'https://ru.wearefree.tv/' + shareUrl + '?referral=site'
+                shareUrl = 'https://en.wearefree.tv/' + shareUrl + '?referral=site'
 
                 navigator.share({
                     title: title,

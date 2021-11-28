@@ -146,13 +146,6 @@ export default {
                 .then(data => {
                     // console.log(data.posts);
                     if (data.posts.length === 0) this.$router.push({path: '/'});
-                    data.posts = data.posts.filter(p => {
-                        if (/[A-Za-z]/.test(p.title)) {
-                            return null
-                        } else {
-                            return p;
-                        }
-                    });
                     this.posts = this.posts.concat(data.posts);
                     console.info(this.posts);
                     this.tag = this.$route.params.tag || this.posts[0].primary_tag.name;

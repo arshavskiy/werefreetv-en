@@ -7,7 +7,7 @@
             <router-link :to="{ 
                 name: 'post', 
                 params: { 
-                            post:post,
+                            post: post,
                             postId: post.slug,
                             tags: post.tags,
                             html: post.html,
@@ -154,13 +154,6 @@ export default {
                 .then(response => response.json())
                 .then(data => {
                     // console.log(data.posts);
-                    data.posts = data.posts.filter(p => {
-                        if (/[A-Za-z]/.test(p.title)) {
-                            return null
-                        } else {
-                            return p;
-                        }
-                    });
                     this.posts = this.posts.concat(data.posts);
 
                     data.posts.forEach(post => {

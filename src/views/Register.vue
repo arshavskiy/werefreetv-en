@@ -2,8 +2,16 @@
     <!-- <Nav /> -->
     <section class="register">
         <h2>{{ getTitle }}</h2>
+
+    </section>
+
+    <span class="arrow-down"/>
+    <span class="arrow-inner"/>
+
+    <section class="page_holder">
         <div class="AW-Form-1679204634"></div>
     </section>
+
 </template>
 
 <script>
