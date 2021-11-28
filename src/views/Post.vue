@@ -171,7 +171,7 @@ export default {
 
 <style scoped>
 
-iframe {
+.post iframe {
     max-width: 100%;
     height: auto;
 }
