@@ -177,16 +177,6 @@ export default {
             })
         },
 
-        debounce(func, timeout = 300) {
-            let timer;
-            return (...args) => {
-                clearTimeout(timer);
-                timer = setTimeout(() => {
-                    func.apply(this, args);
-                }, timeout);
-            };
-        },
-
         loadTrigger() {
 
 
@@ -198,19 +188,18 @@ export default {
             function handleIntersection(entries) {
                 if (entries[0].isIntersecting && this.page) {
                     if (this.page < this.pages) {
-                        // console.log('Log event and unobserve', entries[0]);
                         if (this.page <= this.pages) {
-                            this.fetchData();
+                            utils.throttle(this.fetchData, 250);
                         }
                     }
                 }
             }
 
             let observer = new IntersectionObserver(handleIntersection.bind(this), options);
+
             const triggerElm = document.querySelector('#loadMore');
             if (triggerElm) {
-                const processChange = this.debounce(() => observer.observe(triggerElm));
-                processChange();
+                observer.observe(triggerElm);
             }
 
         },
