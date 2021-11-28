@@ -8,7 +8,7 @@
     <span class="arrow-inner"/>
 
     <section class="page_holder">
-        <p><a href="mailto:nocensorshiptv@gmail.com">Click here to email us (nocensorshiptv@gmail.com)</a></p>
+        <div v-html="getDataFromNav"></div>
     </section>
 
 
@@ -38,7 +38,7 @@ export default {
 
     },
     computed: {
-        getHTMLFromNav() {
+        getDataFromNav() {
             return this.$store.getters.getData.html;
         },
         getTitle() {
@@ -58,7 +58,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .tgme_logo {
     display: inline-block;
@@ -71,13 +71,6 @@ export default {
 .register iframe {
     max-width: calc(100vw - 20px);
     margin: 0 auto;
-}
-
-</style>
-
-<style scoped>
-.register {
-    min-height: 10vh;
 }
 
 </style>

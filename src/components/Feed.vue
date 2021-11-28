@@ -148,7 +148,7 @@ export default {
 
         fetchData() {
 
-            let api = contentApi.postsAPI + `page=${this.page}`;
+            let api = contentApi.postsAPI + `&page=${this.page}`;
 
             fetch(api, {cache: "default"})
                 .then(response => response.json())
@@ -170,7 +170,7 @@ export default {
             })
         },
 
-        debounce(func, timeout = 300) {
+        debounce(func, timeout = 100) {
             let timer;
             return (...args) => {
                 clearTimeout(timer);
@@ -182,7 +182,6 @@ export default {
 
         loadTrigger() {
 
-
             let options = {
                 rootMargin: '0px',
                 threshold: 1.0
@@ -191,19 +190,18 @@ export default {
             function handleIntersection(entries) {
                 if (entries[0].isIntersecting && this.page) {
                     if (this.page < this.pages) {
-                        // console.log('Log event and unobserve', entries[0]);
                         if (this.page <= this.pages) {
-                            this.fetchData();
+                            utils.throttle(this.fetchData, 250);
                         }
                     }
                 }
             }
 
             let observer = new IntersectionObserver(handleIntersection.bind(this), options);
+
             const triggerElm = document.querySelector('#loadMore');
             if (triggerElm) {
-                const processChange = this.debounce(() => observer.observe(triggerElm));
-                processChange();
+                observer.observe(triggerElm);
             }
 
         },
