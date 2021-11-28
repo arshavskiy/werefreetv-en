@@ -1,46 +1,42 @@
 <template lang="html">
-
-
-
- <section id="comments_input_holder">
-    <div>
-        <p id="comments_title"> {{commentsLenght}} комментарии <span> Добавить комментарии </span>  </p>
+    <section id="comments_input_holder">
+        <div>
+            <p id="comments_title"> {{ commentsLength }} комментарии <span> Добавить комментарии </span></p>
             <div id="input_holder">
                 <input id="comments_name" v-model="userName" placeholder="имя: " required name="name" type="text">
                 <input id="comments_input" v-model="userComment" placeholder="комментарий :" required name="comment"
-                    type="text">
+                       type="text">
                 <button id="send" :class="{ enable: (userName && userComment) }"
                         @click="sendMessage">Отправить
                 </button>
             </div>
-                
+        </div>
+    </section>
 
-    </div>
-
-
-</section>
-
-<section id="comments">
-    <div id="icon_holder">
-        <span id="like"></span>
-        <span id="dislike"></span>
-    </div>
-    <div>
-        <div id="comments_holder">
-            <div id="comments_section">
+    <section id="comments">
+        <div id="icon_holder">
+            <span id="like"></span>
+            <span id="dislike"></span>
+        </div>
+        <div>
+            <div id="comments_holder">
+                <div id="comments_section">
                 <span id="comments_section_line" v-for="comment in allComments" :key="comment.date">
                     <p class="message_name">{{ comment.comment.name }} :</p>
                     <p class="message_text">{{ comment.comment.value }}</p>
                 </span>
+                </div>
             </div>
         </div>
-    </div>
 
-</section>
-
+    </section>
 </template>
 
+
 <script lang="js">
+
+import {dataAPI} from "../services/dataApi";
+
 export default {
     name: 'Comments',
     props: {},
@@ -50,7 +46,7 @@ export default {
             params: {},
             userComment: '',
             userName: '',
-            commentsLenght : 0
+            commentsLength: 0
         }
     },
     beforeMount() {
@@ -78,7 +74,7 @@ export default {
 
         async getComments() {
 
-            fetch('https://data.wearefree.tv/post/' + this.params.postId, {
+            fetch(dataAPI.dataBaseUrl + '/post/' + this.params.postId, {
                 referrer: "https://ru.wearefree.tv",
                 referrerPolicy: "no-referrer-when-downgrade",
                 accessControlAllowOrigin: "https://ru.wearefree.tv",
@@ -86,7 +82,7 @@ export default {
                 .then(data => {
                     // this.allComments = data.body;
                     this.setComments(data.body);
-                    this.commentsLenght = data.body.length;
+                    this.commentsLength = data.body.length;
 
                 });
         },
@@ -101,7 +97,7 @@ export default {
 
                 const data = this.params.postId + '/who/' + name + '/comment/' + comment;
 
-                fetch('https://data.wearefree.tv/post/' + data, {
+                fetch(dataAPI.dataBaseUrl + '/post/' + data, {
                     referrer: "https://ru.wearefree.tv",
                     referrerPolicy: "no-referrer-when-downgrade",
                     accessControlAllowOrigin: "https://ru.wearefree.tv",
@@ -109,7 +105,7 @@ export default {
                     .then(data => {
                         this.userComment = this.userName = '';
                         this.setComments(data.body);
-                        this.commentsLenght = data.body.length;
+                        this.commentsLength = data.body.length;
 
                     })
             } else {
@@ -138,23 +134,24 @@ section {
     align-items: center;
 }
 
-#comments_input_holder{
+#comments_input_holder {
     padding: 3rem 0;
     margin-top: 3rem;
     border-top: 2px solid #ccc;
 }
 
-#input_holder{
+#input_holder {
     margin-left: 330px;
     width: 400px;
     position: relative;
     top: -53px;
 }
 
-#comments_title{
+#comments_title {
     font-size: 1.1rem;
 }
-#comments_title>span{
+
+#comments_title > span {
     margin-left: 20px;
     font-size: .9rem;
     font-weight: bold;
@@ -200,7 +197,7 @@ section {
 }
 
 #comments_input {
-   width: calc(100% - 20px);
+    width: calc(100% - 20px);
     height: 40px;
     /* background: #eee; */
     border: none;
@@ -254,16 +251,16 @@ section {
 
 @media screen and (max-width: 768px) {
     #input_holder {
-        margin-left:0;
+        margin-left: 0;
         width: auto;
         top: initial
     }
 
-    #comments_input_holder{
+    #comments_input_holder {
         padding: 2rem 0;
     }
 
-    #comments{
+    #comments {
         margin-left: initial;
         margin-top: initial;
     }

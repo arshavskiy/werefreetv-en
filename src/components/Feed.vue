@@ -52,7 +52,7 @@
             <!-- <div class="tags flex">
                 <span v-for="(t, index) in post.tags" :key="index">
                     <router-link
-                        :to="{ name: 'tag', params: { tagName: t.name }}">{{ filterTags(t.name) }}</router-link>
+                        :to="{ name: 'tag', params: { tagName: t.slug, tag: t.name }}">{{ filterTags(t.name) }}</router-link>
                 </span>
             </div> -->
 
@@ -65,7 +65,9 @@
 
 <script lang="js">
 // import PostMeta from './PostMeta.vue'
-import {contnet, utils} from '../utils';
+import {utils} from '../utils';
+import {contentApi} from '../services/contentApi';
+import {dataAPI} from "../services/dataApi";
 
 export default {
     name: 'Feed',
@@ -131,9 +133,9 @@ export default {
         },
 
         fetchTags() {
-            let api = contnet.tagsAPI;
+            let api = contentApi.tagsAPI;
 
-            fetch(api, {cache: "force-cache"})
+            fetch(api, {cache: "default"})
                 .then(response => response.json())
                 .then(data => {
                     // console.log(data.tags);
@@ -146,9 +148,9 @@ export default {
 
         fetchData() {
 
-            let api = contnet.postsAPI + `page=${this.page}`;
+            let api = contentApi.postsAPI + `page=${this.page}`;
 
-            fetch(api, {cache: "force-cache"})
+            fetch(api, {cache: "default"})
                 .then(response => response.json())
                 .then(data => {
                     // console.log(data.posts);
@@ -222,7 +224,7 @@ export default {
             //     postUrls.push(set.dataset.postUrl);
             // });
 
-            const api = contnet.dataViews;
+            const api = dataAPI.dataViews;
 
             fetch(api, {
                 cacheControl: "max-age=1500"

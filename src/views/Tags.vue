@@ -45,11 +45,11 @@
 
                 </div>
             </div>
-            <div class="tags flex">
+            <!-- <div class="tags flex">
                 <span v-for="(t, index) in post.tags" :key="index">
-                    <router-link :to="{ name: 'tag', params: { tagName: t.name }}">{{ t.name }}</router-link>
+                    <router-link :to="{ name: 'tag', params: { tagName: t.slug, tag: t.name }}">{{ t.name }}</router-link>
                 </span>
-            </div>
+            </div> -->
         </div>
         <div id="loadMore2"/>
     </section>
@@ -57,7 +57,8 @@
 
 <script lang="js">
 // import PostMeta from './PostMeta.vue'
-import {contnet, utils} from '../utils';
+import {utils} from '../utils';
+import {contentApi} from "../services/contentApi";
 
 export default {
     name: 'Feed',
@@ -66,6 +67,7 @@ export default {
     },
     beforeMount() {
         this.tag = this.$route.params.tagName;
+        this.tagName = this.$route.params.tag;
         this.getViews();
         this.fetchData();
         this.fetchTags();
@@ -121,9 +123,9 @@ export default {
 
         fetchTags() {
             let decodedTag = decodeURIComponent(encodeURIComponent(this.tag));
-            let api = contnet.tagsAPI + `&${decodedTag}`;
+            let api = contentApi.tagsAPI + `&${decodedTag}`;
 
-            fetch(api, {cache: "force-cache"})
+            fetch(api, {cache: "default"})
                 .then(response => response.json())
                 .then(data => {
                     // console.log(data.tags);
@@ -137,9 +139,9 @@ export default {
         fetchData() {
 
             let decodedTag = decodeURIComponent(encodeURIComponent(this.tag));
-            let api = contnet.postByTagAPI + `&filter=tag:${decodedTag}&page=${this.page}`;
+            let api = contentApi.postByTagAPI + `&filter=tag:${decodedTag}&page=${this.page}`;
 
-            fetch(api, {cache: "force-cache"})
+            fetch(api, {cache: "default"})
                 .then(response => response.json())
                 .then(data => {
                     // console.log(data.posts);
@@ -152,6 +154,8 @@ export default {
                         }
                     });
                     this.posts = this.posts.concat(data.posts);
+                    console.info(this.posts);
+                    this.tag = this.$route.params.tag || this.posts[0].primary_tag.name;
 
                     data.posts.forEach(post => {
                         localStorage.setItem(post.slug, JSON.stringify(post));
@@ -162,9 +166,9 @@ export default {
                     this.page = data.meta.pagination.next || 1;
 
                 }).catch(e => {
-                    console.log(e);
-                    this.$router.push({path: '/'});
-                    // this.error = true;
+                console.log(e);
+                this.$router.push({path: '/'});
+                // this.error = true;
             })
         },
 
@@ -179,7 +183,6 @@ export default {
         },
 
         loadTrigger() {
-
 
             let options = {
                 rootMargin: '0px',
@@ -203,12 +206,11 @@ export default {
                 const processChange = this.debounce(() => observer.observe(triggerElm));
                 processChange();
             }
-
         },
 
         getViews() {
 
-            const api = contnet.dataViews;
+            const api = contentApi.dataViews;
 
             fetch(api, {
                 cacheControl: "max-age=1500"
@@ -412,6 +414,7 @@ footer {
     .post:first-child h2 {
         font-size: 1.5rem;
     }
+
     .post:first-child .tags {
         justify-content: flex-end;
         top: -29px;

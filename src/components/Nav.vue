@@ -65,7 +65,7 @@
 </template>
 
 <script lang="js">
-import {contnet} from '../utils';
+import {contentApi} from '../services/contentApi';
 
 export default {
     name: 'home',
@@ -89,7 +89,7 @@ export default {
         async fetchNav() {
             // console.log('pages: ', this.pages);
 
-            let api = contnet.navAPI;
+            let api = contentApi.navAPI;
             fetch(api, {
                 referrer: ""
             })

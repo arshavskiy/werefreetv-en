@@ -49,7 +49,8 @@
 <script>
 // @ is an alias to /src
 // import Nav from '../components/Nav.vue'
-import {contnet, utils} from '../utils';
+import {utils} from '../utils';
+import {dataAPI} from '../services/dataApi';
 
 export default {
     name: 'Surveys',
@@ -145,7 +146,7 @@ export default {
         },
         getSurvey() {
 
-            fetch(contnet.surveyRuAPI, {
+            fetch(dataAPI.surveyRuAPI, {
                 referrer: "ru.wearefree.tv",
                 referrerPolicy: "no-referrer-when-downgrade",
                 accessControlAllowOrigin: "ru.wearefree.tv",
@@ -178,11 +179,11 @@ export default {
             });
             this.cookies[name] = true;
 
-            let api = `${contnet.surveyRuPostAPI}${encodeURIComponent(name)}/${encodeURIComponent(data)}/${encodeURIComponent(questions)}`;
+            let api = `${dataAPI.surveyRuPostAPI}${encodeURIComponent(name)}/${encodeURIComponent(data)}/${encodeURIComponent(questions)}`;
 
             if (plus) {
                 data = '+';
-                api = `${contnet.surveyRuPostAPI}${encodeURIComponent(name)}/${encodeURIComponent(data)}`;
+                api = `${dataAPI.surveyRuPostAPI}${encodeURIComponent(name)}/${encodeURIComponent(data)}`;
             }
 
             fetch(api, {

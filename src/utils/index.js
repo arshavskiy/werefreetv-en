@@ -1,4 +1,5 @@
 const utils = {};
+
 utils.canIsue = (obj, name) => {
     return obj[name];
 }
@@ -321,20 +322,6 @@ utils.slugify = text => {
 
 }
 
-const contnet = {};
-const key = '86ada218ec30f07f1f44985d57';
-contnet.postsAPI = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=${key}&filter=tag:ru&limit=10&include=tags&version=v3`;
-contnet.postByTagAPI = `https://www.wearefree.tv/ghost/api/v3/content/posts/?key=${key}&limit=10&include=tags&version=v3`;
-contnet.tagsAPI = `https://www.wearefree.tv/ghost/api/v3/content/tags/?key=${key}`;
-contnet.navAPI = `https://www.wearefree.tv/ghost/api/v3/content/pages/?key=${key}`;
-contnet.pageSlug = 'https://www.wearefree.tv/ghost/api/v3/content/page/slug';
-contnet.postAPI = `https://www.wearefree.tv/ghost/api/v3/content/posts/slug/`
-;
-contnet.surveyRuPostAPI = `https://data.wearefree.tv/survey-ru/`;
-contnet.surveyRuAPI = 'https://data.wearefree.tv/get-survey-ru';
-contnet.dataViews = 'https://data.wearefree.tv/views';
-
 export {
-    utils as utils,
-    contnet as contnet
-};
+    utils as utils
+}

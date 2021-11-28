@@ -8,12 +8,12 @@
                      src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png" alt="views"
                      loading="lazy">                  
                 <span class="bull-views">{{ views.count }}</span>
-                <!-- <div class="tags flex">
+                <div class="tags flex">
                     <span v-for="(t, index) in tags" :key="index">
                         <router-link
-                            :to="{ name: 'tag', params: { tagName: t.name }}">{{ filterTags(t.name) }}</router-link>
+                            :to="{ name: 'tag', params: { tagName: t.slug, tag: t.name }}">{{ filterTags(t.name) }}</router-link>
                     </span>
-                </div> -->
+                </div>
             </span>
 
             <span class="likes flex" v-on:click.once="setLike($event)">
@@ -168,7 +168,7 @@ section {
     font-weight: 400;
     font-size: 10px;
     letter-spacing: .2px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 }
 
 .post-card-byline-date .bull {

@@ -17,7 +17,8 @@
 // @ is an alias to /src
 import PostMeta from '../components/PostMeta.vue'
 import Comments from '../components/Comments.vue'
-import {contnet, utils} from '../utils'
+import {utils} from '../utils'
+import {contentApi} from '../services/contentApi'
 
 
 export default {
@@ -142,11 +143,11 @@ export default {
                 xhr.send(urlencoded);
          },
 
-        
+
 
         fetchData(postId) {
             return new Promise((resolve, reject) => {
-                let api = contnet.postAPI + `${postId}/?key=86ada218ec30f07f1f44985d57&include=tags`;
+                let api = contentApi.postAPI + `${postId}/?key=86ada218ec30f07f1f44985d57&include=tags`;
 
                 fetch(api, {
                     cacheControl: "max-age=1500"

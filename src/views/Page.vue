@@ -8,7 +8,7 @@
 <script>
 // @ is an alias to /src
 // import Nav from '../components/Nav.vue'
-import {contnet} from '../utils';
+import {content} from '../utils';
 
 export default {
     name: 'Register',
@@ -56,7 +56,7 @@ export default {
     },
     methods: {
         async getPage(pageName) {
-            let api = `${contnet.pageSlug}/${pageName}?key=86ada218ec30f07f1f44985d57`;
+            let api = `${content.pageSlug}/${pageName}?key=86ada218ec30f07f1f44985d57`;
 
             fetch(api, {
                 cache: "force-cache"
