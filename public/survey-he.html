@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+
+        body {
+            overflow-y: hidden;
+        }
+
+        #survey_holder {
+            width: 100%;
+            max-width: initial;
+            direction: rtl;
+        }
+
+        .question_app {
+            font-family: sans-serif;
+            margin-bottom: 20px;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+        }
+
+        h1, h2 {
+            color: #000;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+        }
+
+        .arrow-inner {
+            right: calc(50% - 55px);
+            top: 38px;
+            width: 0;
+            height: 0;
+            border-left: 17px solid transparent;
+            border-right: 17px solid transparent;
+            border-top: 20px solid #fff;
+        }
+
+        .arrow-down {
+            right: calc(50% - 20px);
+            position: relative;
+            top: 40px;
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-top: 20px solid rgb(185, 185, 185);
+        }
+
+        .arrow-down, .arrow-inner {
+            position: relative;
+            width: 0;
+            height: 0;
+        }
+
+        .survey-sum {
+            background: #eee;
+            min-height: 30vh;
+            max-height: 700px;
+            padding: 30px;
+            border-top: 1px solid rgb(185, 185, 185);
+            margin: 0 -8px;
+            overflow-y: scroll;
+        }
+
+        .survey-sum section#survey_data {
+            max-width: 800px;
+            margin: 0 auto;
+            direction: ltr;
+        }
+
+        .question_app .survey_holder {
+            display: flex;
+            justify-content: center;
+        }
+
+        .survey_holder > div,
+        .survey_holder > form {
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .question_app button,
+        .question_app input {
+            padding: 10px;
+        }
+
+        .question_app textarea,
+        .question_app input {
+            min-width: 350px;
+            border: none;
+            background: #eee;
+            margin: 3px;
+            border-radius: 3px;
+            font-size: 12px;
+            direction: rtl;
+        }
+
+        .question_app textarea {
+            width: 216px;
+            padding: 10px;
+        }
+
+        .question_app button {
+            pointer-events: none;
+            margin-top: 20px;
+            font-size: 16px;
+            background: red;
+            color: #fff;
+            border: none;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        .enable {
+            pointer-events: all !important;
+            background: lightcoral !important;
+            color: #fff !important;
+        }
+
+        section#survey_data {
+            text-align: left;
+            margin: 0;
+            padding: 20px;
+        }
+
+        section#survey_data .survey_data_names,
+        section#survey_data .survey_data_bars {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            color: rgb(61, 137, 184);
+            font-weight: bold;
+            height: 18px;
+        }
+
+        section#survey_data .survey_data_names {
+            justify-content: flex-end;
+            display: inline-flex;
+            width: 300px;
+        }
+
+        section#survey_data .survey_data_bars {
+            justify-content: flex-start;
+            display: inline-flex;
+
+        }
+
+        .surveys-liner {
+            background: rgb(61, 137, 184);
+            bottom: -1px;
+            border-radius: 3px;
+        }
+
+        .surveys-name,
+        .surveys-weight {
+            padding-left: 10px;
+        }
+
+
+        .surveys-name {
+            position: relative;
+            padding: 0;
+            color: rgb(61, 137, 184);
+            font-weight: 500;
+            font-size: 12px;
+            overflow: hidden;
+        }
+
+        .surveys-selected {
+            width: 20px;
+            margin: 0 15px;
+
+        }
+
+        .surveys-select {
+            margin: 0 15px;
+            padding: 0 4px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            align-items: center;
+            background: rgb(61, 137, 184);
+            color: #fff;
+            font-weight: 900;
+        }
+
+        .surveys-select:active {
+            border-color: rgb(61, 137, 184);
+            color: rgb(61, 137, 184);
+        }
+
+
+        @media screen and (max-width: 768px) {
+            .survey-sum {
+                padding: 30px 0;
+
+            }
+
+            .survey-sum section#survey_data {
+                font-size: 12px;
+            }
+
+            section#survey_data .survey_data_bars,
+            section#survey_data .survey_data_names {
+                height: 14px;
+            }
+
+            section#survey_data .survey_data_names {
+                width: 350px;
+            }
+        }
+
+    </style>
+
+    <script src="https://unpkg.com/vue@3.2.26/dist/vue.global.prod.js"></script>
+</head>
+
+<body>
+
+
+<section id="survey_holder">
+
+
+    <section class="survey">
+        <div class="question_app">
+            <h2></h2>
+            <div class="survey_holder">
+                <div>
+                    <input v-model="message" required placeholder="שם המרואיין/ת המוצע/ת"/>
+                    <input v-model="data" required placeholder="פרטי המרואיין/ת (טל, פייסבוק, מייל, אתר וכ״ו)"/>
+                    <textarea v-model="questions" rows="4" cols="50" placeholder="שאלות למרואיין "
+                              name="questions"></textarea>
+                    <button id="send" :class="{ enable: (message && data) }" @click="sendSurvey()">שלח</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <span class="arrow-down"></span>
+        <span class="arrow-inner"></span>
+
+    <section class="survey-sum">
+        <h2>
+            תוצאות הסקר נכון להיום:
+        </h2>
+        <section id="survey_data">
+            <div v-for="(item, index) in surveys" :key="index" style="display: flex; margin: 10px 0;">
+
+                    <span class="survey_data_names">
+                        <span class="surveys-name">{{ item.name }}</span>
+                        <span v-if="!canVote(item.name)" class="surveys-selected"> </span>
+                        <span v-if="canVote(item.name)" class="surveys-select"
+                              v-on:click.once="sendSurvey(item, true)"> + </span>
+
+                    </span>
+
+                <span class="survey_data_bars">
+                        <span class="surveys-liner" :style="{ width: graph(item.weight) + 'px' }"></span>
+                        <span class="surveys-weight">{{ item.weight }}</span>
+
+                    </span>
+
+            </div>
+        </section>
+    </section>
+
+</section>
+
+<script>
+    Vue.createApp({
+
+        data() {
+            return {
+                page: {},
+                message: '',
+                data: '',
+                surveys: {},
+                maxGraph: Number
+            }
+        },
+        beforeMount() {
+            this.getSurvey()
+        },
+        mounted() {
+            console.log('Register get page: ', this.page);
+        },
+        computed: {},
+        methods: {
+            stringToUTF16(string) {
+
+                let UTF = string.split('').map(s => {
+                    return s.charCodeAt(0);
+                })
+
+                return UTF.join('-');
+            },
+            stringFromTF16(array) {
+                let arr = array.split('-');
+                arr = arr.map(char => {
+                    return String.fromCharCode(char)
+                })
+                return arr.join('').replaceAll(',', '');
+            },
+            canIUse(obj, name) {
+                return obj[name];
+            },
+            cookieParser(val) {
+                let temp = document.cookie.split('; ').find(row => row.startsWith(val + '='))
+                if (temp) {
+                    return temp.split('=')[1];
+                }
+                return false;
+            },
+            canVote(name) {
+                return !this.canIUse(this.cookies, name);
+            },
+            setCookies() {
+                let tmpCookies = {};
+                this.surveys.forEach(item => {
+                    let incoded = this.stringToUTF16(item.name)
+                    let cookies = document.cookie.split('; ').find(row => row.startsWith(incoded +
+                        '='))
+                    tmpCookies[item.name] = cookies;
+                })
+                return tmpCookies;
+            },
+            graph(weight) {
+                const max = window.innerWidth > 800 ? 800 : 260;
+                const maxLineLength = max / 2;
+                let lineLength;
+                let multiplayer = maxLineLength / this.maxGraph;
+                if (weight === this.maxGraph) {
+                    lineLength = maxLineLength;
+                } else {
+                    lineLength = weight * multiplayer;
+                }
+                return lineLength;
+            },
+            time(timeStamp) {
+                const time = new Date(timeStamp);
+                const formattedTime = time.toLocaleString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric"
+                });
+
+                return formattedTime;
+
+            },
+            filterRaw(raw) {
+                let temp;
+                temp = raw.filter((json) => {
+                    return json.date;
+                });
+
+
+                temp.forEach(item => {
+                    item.weight = 1;
+                })
+
+                temp.forEach(item => {
+                    if (item.name) {
+                        temp.forEach(set => {
+                            if (item.weight > 0 && (item.date != set.date) && item.name
+                                .includes(set.name)) {
+                                item.weight++;
+                                set.weight = -1;
+                            }
+                        })
+                    }
+                })
+
+                temp = raw.sort((a, b) => {
+                    return b.weight - a.weight;
+                });
+
+
+                return temp.filter(item => item.weight > 0);
+            },
+            getSurvey() {
+                fetch('https://data.wearefree.tv/get-survey', {
+                    referrer: "https://en.wearefree.tv",
+                    referrerPolicy: "no-referrer-when-downgrade",
+                    accessControlAllowOrigin: "https://en.wearefree.tv",
+                }).then(response => response.json())
+                    .then(data => {
+                        console.log('suveys: ', data);
+                        this.surveys = this.filterRaw(data);
+                        this.maxGraph = this.surveys[0].weight;
+                        this.cookies = this.setCookies();
+                    });
+            },
+            sendSurvey(item) {
+                console.debug(this.checkedNames);
+                let name = this.message || item.name;
+                let data = this.data || '+';
+                const canIUse = this.canIUse(this.cookies, name);
+
+                if (canIUse) {
+                    return
+                }
+
+                document.cookie = this.stringToUTF16(name) + '=' + true;
+                this.cookies[name] = true;
+
+                let api =
+                    `https://data.wearefree.tv/survey/${encodeURIComponent(name)}/${encodeURIComponent(data)}`;
+
+                fetch(api, {
+                    referrer: "https://en.wearefree.tv",
+                    referrerPolicy: "no-referrer-when-downgrade",
+                    accessControlAllowOrigin: "https://en.wearefree.tv",
+                }).then(response => response.json())
+                    .then(data => {
+                        this.message = this.data = '';
+                        console.log('suveys: ', data);
+                        this.surveys = this.filterRaw(data);
+                    });
+            },
+
+        }
+    }).mount('#survey_holder');
+</script>
+
+
+</body>
+
+</html>
