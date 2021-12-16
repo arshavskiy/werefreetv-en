@@ -20,11 +20,7 @@ const routes = [
         name: 'register-en',
         component: Register,
     },
-    {
-        path: '/contact-en',
-        name: 'contact-en',
-        component: Contact
-    },
+
     {
         path: '/survey-en',
         name: 'survey-en',
@@ -34,6 +30,11 @@ const routes = [
         path: '/supportus-en',
         name: 'supportus-en',
         component: Support
+    },
+    {
+        path: '/contact-en',
+        name: 'contact-en',
+        component: Contact
     },
     {
         path: '/about',

@@ -35,7 +35,6 @@ export default {
             views: {},
             params: {},
             postId: String,
-
         }
     },
     beforeMount() {
@@ -64,12 +63,8 @@ export default {
 
             this.addMeta(post);
 
-
             if (!share_post_send) {
-
                 this.addPostMetaShare(post);
-
-
             }
 
 
@@ -146,7 +141,10 @@ export default {
                 let api = contentApi.postAPI + `${postId}/?key=86ada218ec30f07f1f44985d57&include=tags`;
 
                 fetch(api, {
-                    cacheControl: "max-age=1500"
+                    headers: {
+                        'Cache-control': "max-age=86400",
+                        'Cache-mode': "force-cache"
+                    }
                 }).then(response => response.json())
                     .then(data => {
                         const post = data.posts[0];
@@ -172,10 +170,10 @@ export default {
 <style scoped>
 
 
-    iframe {
-        max-width: 100%;
-        height: auto;
-    }
+iframe {
+    max-width: 100%;
+    height: auto;
+}
 
 
 </style>
