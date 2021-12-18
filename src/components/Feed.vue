@@ -106,6 +106,7 @@ export default {
             loading: true,
             page: 1,
             pages: 1,
+            next: 1,
             dataObjRaw: {},
             dataObjLike: {}
         }
@@ -148,7 +149,7 @@ export default {
 
         fetchData() {
 
-            let api = contentApi.postsAPI + `page=${this.page}`;
+            let api = contentApi.postsAPI + `&page=${this.next}`;
 
             fetch(api, {cache: "default"})
                 .then(response => response.json())
@@ -169,7 +170,8 @@ export default {
                     this.pages = data.meta.pagination.pages;
                     this.loading = false;
                     this.$store.commit('pageLoaded', true);
-                    this.page = data.meta.pagination.next || 1;
+                    this.page = data.meta.pagination.page;
+                    this.next = data.meta.pagination.next;
 
                 }).catch(e => {
                 console.log(e);
