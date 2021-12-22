@@ -33,7 +33,7 @@
                         <time datetime="2021-05-05">{{ dateForamt(post.published_at) }} </time>
                         <img alt="views"
                              class="byline-meta-views-img" loading="lazy"
-                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png">
+                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/assets/Eye.png">
                         <span class="bull">
                             <span :data-post-url="post.slug" class="bull-views">{{ setViews(post.slug) }}</span>
                         </span>
@@ -42,7 +42,7 @@
                         <img alt="views"
                              class="byline-like"
                              loading="lazy"
-                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg">
+                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/assets/Like.png">
                         <span class="byline-meta-like">{{ setLikes(post.slug) }}</span>
                     </span>
 
@@ -75,9 +75,9 @@ export default {
         msg: String,
     },
     beforeMount() {
-        this.getViews();
         this.fetchData();
         this.fetchTags();
+        this.getViews();
         this.$store.commit('initLoader', false);
     },
     mounted() {
@@ -106,6 +106,7 @@ export default {
             loading: true,
             page: 1,
             pages: 1,
+            next:1,
             dataObjRaw: {},
             dataObjLike: {}
         }
@@ -148,7 +149,7 @@ export default {
 
         fetchData() {
 
-            let api = contentApi.postsAPI + `&page=${this.page}`;
+            let api = contentApi.postsAPI + `&page=${this.next}`;
 
             fetch(api, {cache: "default"})
                 .then(response => response.json())
@@ -162,7 +163,8 @@ export default {
                     this.pages = data.meta.pagination.pages;
                     this.loading = false;
                     this.$store.commit('pageLoaded', true);
-                    this.page = data.meta.pagination.next || 1;
+                    this.page = data.meta.pagination.page;
+                    this.next = data.meta.pagination.next;
 
                 }).catch(e => {
                 console.log(e);
@@ -359,11 +361,9 @@ footer {
 
 .byline-meta-views-img {
     margin: 0 10px;
-    height: 20px;
 }
 
 .byline-like {
-    height: 20px;
     padding: 0 5px;
     position: relative;
     top: -5px;

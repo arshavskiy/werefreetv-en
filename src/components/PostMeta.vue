@@ -5,7 +5,7 @@
             <span class="data post-card-byline-date flex">
                 <time> {{ date }} </time>
                 <img class="byline-meta-views-img"
-                     src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png" alt="views"
+                     src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/assets/Eye.png" alt="views"
                      loading="lazy">                  
                 <span class="bull-views">{{ views.count }}</span>
                 <div class="tags flex">
@@ -22,7 +22,7 @@
                       src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/assets/share_64x64.png"
                       alt="Share us">
 
-                <img class="byline-like" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg"
+                <img class="byline-like" src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/assets/Like.png"
                      alt="views" loading="lazy">
                 <span class="byline-meta-like">{{ views.like }}</span>
             </span>
@@ -148,11 +148,9 @@ section {
 
 .byline-meta-views-img {
     margin: 0 10px;
-    height: 20px;
 }
 
 .byline-like {
-    height: 20px;
     padding: 0 5px;
     margin-left: 10px;
     position: relative;
@@ -183,7 +181,6 @@ section {
 
 .byline-meta-views-img {
     margin: 0 10px;
-    height: 20px;
 }
 
 .share_btn {

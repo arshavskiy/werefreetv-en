@@ -30,7 +30,7 @@
                         <time datetime="2021-05-05">{{ dateForamt(post.published_at) }} </time>
                         <img alt="views"
                              class="byline-meta-views-img" loading="lazy"
-                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/witness.png">
+                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/assets/Eye.png">
                         <span class="bull">
                             <span :data-post-url="post.slug" class="bull-views">{{ setViews(post.slug) }}</span>
                         </span>
@@ -39,7 +39,7 @@
                         <img alt="views"
                              class="byline-like"
                              loading="lazy"
-                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/like.svg">
+                             src="https://wearefreetv-assets.s3.eu-central-1.amazonaws.com/assets/Like.png">
                         <span class="byline-meta-like">{{ setLikes(post.slug) }}</span>
                     </span>
 
@@ -57,8 +57,8 @@
 
 <script lang="js">
 // import PostMeta from './PostMeta.vue'
-import {utils} from '../utils';
-import {contentApi} from "../services/contentApi";
+import {utils} from '@/utils';
+import {contentApi} from "@/services/contentApi";
 
 export default {
     name: 'Feed',
@@ -68,13 +68,13 @@ export default {
     beforeMount() {
         this.tag = this.$route.params.tagName;
         this.tagName = this.$route.params.tag;
-        this.getViews();
         this.fetchData();
-        this.fetchTags();
+        this.getViews();
         this.$store.commit('initLoader', false);
     },
     mounted() {
         // console.debug('$renderTriggered');
+
         window.addEventListener('scroll', this.loadTrigger);
         this.loadTrigger();
 
@@ -119,21 +119,6 @@ export default {
         },
         dateForamt(date) {
             return utils.dateForamt(date);
-        },
-
-        fetchTags() {
-            let decodedTag = decodeURIComponent(encodeURIComponent(this.tag));
-            let api = contentApi.tagsAPI + `&${decodedTag}`;
-
-            fetch(api, {cache: "default"})
-                .then(response => response.json())
-                .then(data => {
-                    // console.log(data.tags);
-                    this.tags = data.tags;
-                }).catch(e => {
-                console.log(e);
-                this.error = true;
-            })
         },
 
         fetchData() {
@@ -203,9 +188,7 @@ export default {
 
         getViews() {
 
-            const api = contentApi.dataViews;
-
-            fetch(api, {
+            fetch('https://data.wearefree.tv/views', {
                 cacheControl: "max-age=1500"
             }).then(response => {
                 return response.json();
@@ -333,11 +316,9 @@ footer {
 
 .byline-meta-views-img {
     margin: 0 10px;
-    height: 20px;
 }
 
 .byline-like {
-    height: 20px;
     padding: 0 5px;
     position: relative;
     top: -5px;
