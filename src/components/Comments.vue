@@ -4,8 +4,8 @@
             <p id="comments_title"> {{ commentsLength }} comments <span> Add a comment: </span></p>
             <div id="input_holder">
                 <input id="comments_name" v-model="userName" placeholder="name: " required name="name" type="text">
-                <input id="comments_input" v-model="userComment" placeholder="comment :" required name="comment"
-                       type="text">
+                <textarea id="comments_input" v-model="userComment" placeholder="comment :" required name="comment"
+                          rows="3"></textarea>
                 <button id="send" :class="{ enable: (userName && userComment) }"
                         @click="sendMessage">Send
                 </button>
@@ -90,6 +90,11 @@ export default {
         sendMessage() {
 
             if (this.userComment && this.userName) {
+
+                if (this.userName.length >= 25) {
+                    this.userName = 'Please limit you name up to 25 characters...'
+                    return;
+                }
                 this.isDataSet = true;
 
                 const name = encodeURIComponent(this.userName);
@@ -198,11 +203,8 @@ section {
 
 #comments_input {
     width: calc(100% - 20px);
-    height: 40px;
-    /* background: #eee; */
     border: none;
-    padding: 0 10px;
-    /* border-top: 1px solid; */
+    padding: 10px;
     font-size: 1rem;
 }
 
